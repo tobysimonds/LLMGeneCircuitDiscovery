@@ -58,7 +58,10 @@ def build_research_system_prompt(gene: str, grn_config: GrnConfig) -> str:
         "mechanistic evidence only if the causal claim is still strong and you make that clear in the evidence summary.\n"
         "- Prefer PubMed IDs in `pmid_citations`. Use an empty list only if none can be confidently identified.\n\n"
         "Output contract:\n"
-        "Return strict JSON only. No markdown, no prose before or after the JSON, no code fences.\n"
+        "Return exactly one valid JSON object as the entire final response.\n"
+        "The first character of your response must be `{` and the last character must be `}`.\n"
+        "Do not include markdown, explanations, search notes, bullet points, analysis, or code fences before or after the JSON.\n"
+        "Any non-JSON text is an invalid response for this task.\n"
         "Use this exact schema:\n"
         "{\n"
         '  "source_gene": "string",\n'
@@ -84,6 +87,8 @@ def build_research_system_prompt(gene: str, grn_config: GrnConfig) -> str:
         "- `interaction_type` must be 1 for activation or -1 for inhibition. Do not emit 0-valued interactions.\n"
         "- `confidence_score` should reflect evidence quality and consistency, not optimism.\n"
         "- Set `raw_model` to the model name you used.\n"
+        "- If you find no sufficiently direct mechanistic edge, communicate that only through `no_direct_effect=true` and an empty "
+        "`interactions` array. Do not add an explanatory paragraph outside the JSON.\n"
     )
 
 
@@ -92,8 +97,10 @@ def build_research_user_prompt(gene: str, grn_config: GrnConfig) -> str:
     return (
         f"Research the DEG {gene} for the PDAC GRN.\n"
         f"Allowed targets: {', '.join(allowed_targets)}.\n"
-        "Return only strict JSON following the provided schema. If you cannot support a direct edge with strong mechanistic "
-        "literature evidence, return `no_direct_effect=true` and an empty `interactions` list."
+        "Search the literature, reason conservatively, and return only the final JSON object following the provided schema.\n"
+        "If you cannot support a direct edge with strong mechanistic literature evidence, return `no_direct_effect=true` and an "
+        "empty `interactions` list.\n"
+        "Do not include any narrative before the opening `{` or after the closing `}`."
     )
 
 
@@ -129,21 +136,25 @@ class OpenAIResearchClient:
 
         result: GeneResearchResult | None = None
         if self._openai_disabled_reason is None:
-            result = await self._call_model(grn_config.model, instructions, prompt, grn_config)
+            result = await self._call_model(gene, grn_config.model, instructions, prompt, grn_config)
             if result is None and grn_config.parser_model != grn_config.model:
-                result = await self._call_model(grn_config.parser_model, instructions, prompt, grn_config)
+                result = await self._call_model(gene, grn_config.parser_model, instructions, prompt, grn_config)
         if result is None:
             result = await self.fallback_client.research_genes([gene], grn_config)
             result = result[0]
 
-        result.source_gene = gene
-        if not result.raw_model:
-            result.raw_model = "pubmed-heuristic"
+        result = _normalize_research_result(
+            result=result,
+            gene=gene,
+            grn_config=grn_config,
+            model_name=result.raw_model or "pubmed-heuristic",
+        )
         write_json(cache_path, result.model_dump())
         return result
 
     async def _call_model(
         self,
+        gene: str,
         model: str,
         instructions: str,
         prompt: str,
@@ -162,8 +173,7 @@ class OpenAIResearchClient:
             parsed = _extract_parsed_response(response)
             if parsed is None:
                 return None
-            parsed.raw_model = model
-            return parsed
+            return _normalize_research_result(parsed, gene=gene, grn_config=grn_config, model_name=model)
         except Exception as exc:
             if "invalid_api_key" in str(exc).lower() or "incorrect api key" in str(exc).lower():
                 self._openai_disabled_reason = str(exc)
@@ -199,10 +209,15 @@ class AnthropicResearchClient:
         system_prompt = build_research_system_prompt(gene, grn_config)
         user_prompt = build_research_user_prompt(gene, grn_config)
 
-        result = await self._call_model(gene, system_prompt, user_prompt, grn_config)
+        result = None
+        for model_name in _unique_model_candidates(grn_config.model, grn_config.parser_model):
+            result = await self._call_model(gene, system_prompt, user_prompt, model_name, grn_config)
+            if result is not None:
+                break
         if result is None:
             fallback = await self.fallback_client.research_genes([gene], grn_config)
             result = fallback[0]
+        result = _normalize_research_result(result, gene=gene, grn_config=grn_config, model_name=result.raw_model or "pubmed-heuristic")
         write_json(cache_path, result.model_dump())
         return result
 
@@ -211,14 +226,16 @@ class AnthropicResearchClient:
         gene: str,
         system_prompt: str,
         user_prompt: str,
+        model_name: str,
         grn_config: GrnConfig,
     ) -> GeneResearchResult | None:
         try:
             message = await self.client.messages.create(
-                model=grn_config.model,
+                model=model_name,
                 max_tokens=1800,
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}],
+                temperature=0,
                 tools=[
                     {
                         "type": "web_search_20250305",
@@ -233,9 +250,7 @@ class AnthropicResearchClient:
                 return None
             parsed = _parse_json_payload(text_payload)
             result = GeneResearchResult.model_validate(parsed)
-            result.source_gene = gene
-            result.raw_model = grn_config.model
-            return result
+            return _normalize_research_result(result, gene=gene, grn_config=grn_config, model_name=model_name)
         except Exception:
             return None
 
@@ -298,6 +313,35 @@ def _parse_json_payload(payload: str) -> dict:
         if match is None:
             raise
         return json.loads(match.group(0))
+
+
+def _unique_model_candidates(primary_model: str, secondary_model: str) -> list[str]:
+    candidates = [primary_model]
+    if secondary_model != primary_model:
+        candidates.append(secondary_model)
+    return candidates
+
+
+def _normalize_research_result(
+    result: GeneResearchResult,
+    gene: str,
+    grn_config: GrnConfig,
+    model_name: str,
+) -> GeneResearchResult:
+    allowed_targets = [grn_config.target_oncogene, *grn_config.immediate_downstream_effectors]
+    normalized_interactions = [
+        interaction.model_copy(update={"source_gene": gene})
+        for interaction in result.interactions
+        if interaction.target in allowed_targets and interaction.interaction_type in (-1, 1)
+    ]
+    result.source_gene = gene
+    result.target_oncogene = grn_config.target_oncogene
+    result.context = grn_config.context
+    result.queried_targets = allowed_targets
+    result.interactions = normalized_interactions
+    result.no_direct_effect = not normalized_interactions
+    result.raw_model = model_name
+    return result
 
 
 class PubMedHeuristicResearchClient:

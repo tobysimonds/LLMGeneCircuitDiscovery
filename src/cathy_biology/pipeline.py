@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from collections import Counter
 from pathlib import Path
 
 import networkx as nx
@@ -12,7 +13,7 @@ from cathy_biology.datasets import load_dataset
 from cathy_biology.deg import compute_top_degs
 from cathy_biology.depmap import DepMapClient
 from cathy_biology.grn import AnthropicResearchClient, OpenAIResearchClient, PubMedHeuristicResearchClient, ResearchClient
-from cathy_biology.models import BenchmarkReport, PipelineRunSummary
+from cathy_biology.models import BenchmarkReport, PipelineRunSummary, ResearchExecutionSummary
 from cathy_biology.utils import ensure_directory, timestamped_output_dir, write_json
 
 
@@ -44,6 +45,16 @@ async def execute_pipeline(
             research_client = PubMedHeuristicResearchClient(settings, run_output_dir / "pubmed_cache")
     research_results = await research_client.research_genes(genes, config.grn)
     write_json(run_output_dir / "gene_interactions.json", [result.model_dump() for result in research_results])
+    model_counts = Counter(result.raw_model or "unknown" for result in research_results)
+    research_execution = ResearchExecutionSummary(
+        requested_backend=config.grn.research_backend,
+        configured_model=config.grn.model,
+        parser_model=config.grn.parser_model,
+        total_genes=len(genes),
+        result_model_counts=dict(sorted(model_counts.items())),
+        fallback_gene_count=sum(count for model, count in model_counts.items() if model == "pubmed-heuristic"),
+    )
+    write_json(run_output_dir / "research_execution.json", research_execution.model_dump())
 
     graph = build_regulatory_graph(genes, research_results, config.grn)
     graph_payload = nx.node_link_data(graph)
@@ -61,6 +72,7 @@ async def execute_pipeline(
         dataset_cells=int(processed_adata.n_obs),
         dataset_genes=int(processed_adata.n_vars),
         degs=degs,
+        research_execution=research_execution,
         graph_nodes=graph.number_of_nodes(),
         graph_edges=graph.number_of_edges(),
         knockout_hits=knockout_hits,

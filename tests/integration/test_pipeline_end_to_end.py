@@ -100,10 +100,14 @@ def test_pipeline_runs_end_to_end_with_h5ad(tmp_path: Path) -> None:
 
     assert summary.dataset_cells == 8
     assert len(summary.degs) == 3
+    assert summary.research_execution.requested_backend == "openai"
+    assert summary.research_execution.result_model_counts == {"mock": 3}
+    assert summary.research_execution.fallback_gene_count == 0
     assert summary.graph_edges >= 4
     assert summary.knockout_hits
     assert summary.benchmark_report.model_count == 3
     assert (summary.output_dir / "summary.json").exists()
+    assert (summary.output_dir / "research_execution.json").exists()
 
 
 def test_mtx_bundle_loader_integration(tmp_path: Path) -> None:

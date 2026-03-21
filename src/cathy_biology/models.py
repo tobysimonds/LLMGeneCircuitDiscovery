@@ -61,10 +61,20 @@ class BenchmarkReport(BaseModel):
     results: list[BenchmarkGeneResult]
 
 
+class ResearchExecutionSummary(BaseModel):
+    requested_backend: str
+    configured_model: str
+    parser_model: str
+    total_genes: int
+    result_model_counts: dict[str, int] = Field(default_factory=dict)
+    fallback_gene_count: int = 0
+
+
 class PipelineRunSummary(BaseModel):
     dataset_cells: int
     dataset_genes: int
     degs: list[DegResult]
+    research_execution: ResearchExecutionSummary
     graph_nodes: int
     graph_edges: int
     knockout_hits: list[KnockoutHit]

@@ -27,6 +27,11 @@ def run(
     typer.echo(f"Completed run in {summary.output_dir}")
     typer.echo(f"Dataset cells: {summary.dataset_cells}, genes: {summary.dataset_genes}")
     typer.echo(f"Top DEG count: {len(summary.degs)}")
+    typer.echo(
+        "Research model usage: "
+        + ", ".join(f"{model}={count}" for model, count in summary.research_execution.result_model_counts.items())
+    )
+    typer.echo(f"Research fallbacks: {summary.research_execution.fallback_gene_count}")
     typer.echo(f"Graph nodes/edges: {summary.graph_nodes}/{summary.graph_edges}")
     typer.echo(f"Knockout hits found: {len(summary.knockout_hits)}")
     typer.echo(f"DepMap models benchmarked: {summary.benchmark_report.model_count}")
