@@ -8,3 +8,4 @@ data/
 dist/
 htmlcov/
 __pycache__/
+tmp/

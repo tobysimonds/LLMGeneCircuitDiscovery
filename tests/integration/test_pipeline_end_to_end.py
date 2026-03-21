@@ -12,7 +12,7 @@ from scipy.sparse import csr_matrix
 from cathy_biology.config import PipelineConfig, Settings
 from cathy_biology.depmap import DepMapClient
 from cathy_biology.grn import MockResearchClient
-from cathy_biology.models import BenchmarkGeneResult, BenchmarkReport, GeneInteraction
+from cathy_biology.models import BenchmarkGeneResult, BenchmarkReport, EvidenceClassScores, GeneInteraction
 from cathy_biology.pipeline import run_pipeline
 
 
@@ -20,22 +20,31 @@ class StubDepMapClient(DepMapClient):
     def __init__(self) -> None:
         pass
 
-    def benchmark_genes(self, genes: list[str], benchmark_config):  # type: ignore[override]
+    def benchmark_genes(self, genes: list[str], benchmark_config, *, stage="final", prior_genes=None, driver_genes=None):  # type: ignore[override]
         return BenchmarkReport(
             release="mock",
             lineage_filter=["Pancreas"],
             primary_disease_filter=["Pancreatic"],
             model_count=3,
+            stage="pre_simulation" if stage == "pre_simulation" else "final",
+            rnai_release="mock-rnai",
             results=[
                 BenchmarkGeneResult(
                     gene_symbol=gene,
                     depmap_column=f"{gene} (mock)",
+                    rnai_depmap_column=f"{gene} (mock-rnai)",
                     n_cell_lines=3,
                     mean_gene_effect=-0.75 if gene == "IFITM3" else -0.2,
                     median_gene_effect=-0.7 if gene == "IFITM3" else -0.1,
                     min_gene_effect=-1.1 if gene == "IFITM3" else -0.4,
                     hit_rate=1.0 if gene == "IFITM3" else 0.0,
                     benchmark_hit=gene == "IFITM3",
+                    rnai_mean_gene_effect=-0.5 if gene == "IFITM3" else -0.1,
+                    rnai_median_gene_effect=-0.45 if gene == "IFITM3" else -0.05,
+                    rnai_hit_rate=1.0 if gene == "IFITM3" else 0.0,
+                    driver_alignment_score=1.0 if gene == "IFITM3" else 0.0,
+                    prior_pathway_hits=[gene] if gene == "IFITM3" else [],
+                    combined_support_score=2.25 if gene == "IFITM3" else 0.3,
                 )
                 for gene in genes
             ],
@@ -80,17 +89,43 @@ def test_pipeline_runs_end_to_end_with_h5ad(tmp_path: Path) -> None:
                 "model": "mock",
                 "parser_model": "mock",
                 "immediate_downstream_effectors": ["RAF1"],
+                "prior": {"enabled": False},
             },
             "simulation": {"knockout_sizes": [1, 2, 3], "max_iterations": 5},
-            "benchmark": {"release": "mock"},
+            "benchmark": {"release": "mock", "rnai_release": "mock-rnai"},
+            "experiments": {"variants": ["llm_verified_only", "llm_plus_priors_pruned"]},
         }
     )
     settings = Settings(data_dir=tmp_path / "data", artifacts_dir=tmp_path / "artifacts")
     research_client = MockResearchClient(
         mapping={
-            "IFITM3": [GeneInteraction(source_gene="IFITM3", target="KRAS", interaction_type=1, confidence_score=0.8)],
-            "KRT19": [GeneInteraction(source_gene="KRT19", target="RAF1", interaction_type=1, confidence_score=0.7)],
-            "EPCAM": [GeneInteraction(source_gene="EPCAM", target="KRAS", interaction_type=1, confidence_score=0.6)],
+            "IFITM3": [
+                GeneInteraction(
+                    source_gene="IFITM3",
+                    target="KRAS",
+                    interaction_type=1,
+                    confidence_score=0.8,
+                    evidence_scores=EvidenceClassScores(direct_mechanistic=1.0, pdac_specific=1.0),
+                )
+            ],
+            "KRT19": [
+                GeneInteraction(
+                    source_gene="KRT19",
+                    target="RAF1",
+                    interaction_type=1,
+                    confidence_score=0.7,
+                    evidence_scores=EvidenceClassScores(direct_mechanistic=0.8, pdac_specific=0.6),
+                )
+            ],
+            "EPCAM": [
+                GeneInteraction(
+                    source_gene="EPCAM",
+                    target="KRAS",
+                    interaction_type=1,
+                    confidence_score=0.6,
+                    evidence_scores=EvidenceClassScores(direct_mechanistic=0.7, pdac_specific=0.6),
+                )
+            ],
         },
         target_oncogene="KRAS",
         context="PDAC",
@@ -100,14 +135,16 @@ def test_pipeline_runs_end_to_end_with_h5ad(tmp_path: Path) -> None:
 
     assert summary.dataset_cells == 8
     assert len(summary.degs) == 3
-    assert summary.research_execution.requested_backend == "openai"
     assert summary.research_execution.result_model_counts == {"mock": 3}
-    assert summary.research_execution.fallback_gene_count == 0
-    assert summary.graph_edges >= 4
+    assert summary.prior_knowledge.node_count == 0
+    assert summary.selected_experiment in {"llm_verified_only", "llm_plus_priors_pruned"}
+    assert summary.experiment_results
     assert summary.knockout_hits
     assert summary.benchmark_report.model_count == 3
     assert (summary.output_dir / "summary.json").exists()
     assert (summary.output_dir / "research_execution.json").exists()
+    assert (summary.output_dir / "pre_simulation_benchmark.json").exists()
+    assert (summary.output_dir / "experiment_report.json").exists()
 
 
 def test_mtx_bundle_loader_integration(tmp_path: Path) -> None:
@@ -127,27 +164,6 @@ def test_mtx_bundle_loader_integration(tmp_path: Path) -> None:
     annotations_path = tmp_path / "annotations.tsv.gz"
     annotations.to_csv(annotations_path, sep="\t", index=False, compression="gzip")
 
-    config = PipelineConfig.model_validate(
-        {
-            "dataset": {"source_type": "mtx_bundle", "path": str(bundle_dir)},
-            "contrast": {
-                "groupby_column": "cell_type_specific",
-                "case_labels": ["Malignant - Basal"],
-                "control_labels": ["Normal Epithelial"],
-            },
-            "qc": {"min_genes": 0, "max_mt_fraction": 1.0},
-            "deg": {"top_n": 2, "adjusted_pvalue_cutoff": 1.0, "min_log2_fold_change": 0.0},
-            "grn": {"target_oncogene": "KRAS", "model": "mock", "parser_model": "mock", "immediate_downstream_effectors": []},
-            "benchmark": {"release": "mock"},
-        }
-    )
-    settings = Settings(data_dir=tmp_path / "data", artifacts_dir=tmp_path / "artifacts")
-    research_client = MockResearchClient(
-        mapping={"geneA": [GeneInteraction(source_gene="geneA", target="KRAS", interaction_type=1, confidence_score=0.9)]},
-        target_oncogene="KRAS",
-        context="PDAC",
-    )
-
     from cathy_biology.datasets import load_mtx_bundle
 
     adata = load_mtx_bundle(bundle_dir)
@@ -155,6 +171,62 @@ def test_mtx_bundle_loader_integration(tmp_path: Path) -> None:
     assert adata.n_obs == 4
     assert "sample_id" in adata.obs
     assert "geneA" in adata.var_names
+
+
+def test_depmap_support_scoring_separates_driver_alignment_from_prior_membership(tmp_path: Path) -> None:
+    release = "DepMap Public Test"
+    rnai_release = "DEMETER2 Test"
+    cache_dir = tmp_path / "depmap_cache"
+    release_dir = cache_dir / release.replace(" ", "_").lower()
+    rnai_dir = cache_dir / rnai_release.replace(" ", "_").lower()
+    release_dir.mkdir(parents=True)
+    rnai_dir.mkdir(parents=True)
+
+    models = pd.DataFrame(
+        {
+            "ModelID": ["ACH-000001", "ACH-000002"],
+            "OncotreeLineage": ["Pancreas", "Pancreas"],
+            "OncotreePrimaryDisease": ["Pancreatic Adenocarcinoma", "Pancreatic Adenocarcinoma"],
+        }
+    )
+    models.to_csv(release_dir / "Model.csv", index=False)
+    pd.DataFrame(
+        {
+            "ModelID": ["ACH-000001", "ACH-000002"],
+            "GENE1 (1001)": [0.2, 0.1],
+            "KRAS (3845)": [-0.8, -0.7],
+        }
+    ).to_csv(release_dir / "CRISPRGeneEffect.csv", index=False)
+    pd.DataFrame(
+        {
+            "ModelID": ["ACH-000001", "ACH-000002"],
+            "GENE1 (1001)": [0.1, 0.05],
+            "KRAS (3845)": [-0.4, -0.5],
+        }
+    ).to_csv(rnai_dir / "D2_combined_gene_dep_scores.csv", index=False)
+    pd.DataFrame(
+        [
+            {"release": release, "release_date": "2026-01-01", "filename": "Model.csv", "url": "local://model"},
+            {"release": release, "release_date": "2026-01-01", "filename": "CRISPRGeneEffect.csv", "url": "local://crispr"},
+            {"release": rnai_release, "release_date": "2026-01-01", "filename": "D2_combined_gene_dep_scores.csv", "url": "local://rnai"},
+        ]
+    ).to_csv(cache_dir / "download_catalog.csv", index=False)
+
+    client = DepMapClient(Settings(data_dir=tmp_path / "data", artifacts_dir=tmp_path / "artifacts"), cache_dir)
+    config = PipelineConfig().benchmark.model_copy(update={"release": release, "rnai_release": rnai_release})
+    report = client.benchmark_genes(
+        ["GENE1", "KRAS"],
+        config,
+        prior_genes={"GENE1"},
+        driver_genes={"KRAS"},
+    )
+
+    results = {result.gene_symbol: result for result in report.results}
+    assert results["GENE1"].prior_pathway_hits == ["GENE1"]
+    assert results["GENE1"].driver_alignment_score == 0.0
+    assert results["GENE1"].combined_support_score == 0.0
+    assert results["KRAS"].driver_alignment_score == 1.0
+    assert results["KRAS"].combined_support_score > 1.0
 
 
 def _write_triplet(bundle_dir: Path, sample_id: str, cell_by_gene: np.ndarray) -> None:

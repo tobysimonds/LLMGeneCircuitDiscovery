@@ -39,6 +39,60 @@ class DegConfig(BaseModel):
     method: Literal["wilcoxon"] = "wilcoxon"
 
 
+class PriorConfig(BaseModel):
+    enabled: bool = True
+    pathway_keywords: list[str] = Field(
+        default_factory=lambda: [
+            "Pancreatic cancer",
+            "Signaling by EGFR",
+            "ERBB2 signaling",
+            "FGFR signaling",
+            "RAS signaling",
+            "MAPK signaling",
+            "PI3K AKT signaling",
+            "STAT3 signaling",
+            "YAP1 signaling",
+        ]
+    )
+    kegg_pathway_ids: list[str] = Field(
+        default_factory=lambda: ["hsa05212", "hsa04010", "hsa04014", "hsa04015", "hsa04012", "hsa04151"]
+    )
+    seed_nodes: list[str] = Field(
+        default_factory=lambda: [
+            "EGFR",
+            "ERBB2",
+            "ERBB3",
+            "FGFR1",
+            "FGFR2",
+            "FGFR3",
+            "MET",
+            "SOS1",
+            "SOS2",
+            "GRB2",
+            "SHC1",
+            "SRC",
+            "PTPN11",
+            "STAT3",
+            "YAP1",
+            "TEAD1",
+            "MYC",
+            "JUN",
+            "FOS",
+            "PRKCA",
+            "PRKCD",
+            "RHOA",
+            "CDC42",
+            "PLCG1",
+            "PIK3R1",
+        ]
+    )
+    pathwaycommons_pathways_per_keyword: int = 2
+    reactome_pathways_per_keyword: int = 2
+    reactome_events_per_pathway: int = 25
+    prior_node_limit: int = 120
+    omnipath_partner_chunk_size: int = 50
+
+
 class GrnConfig(BaseModel):
     research_backend: Literal["openai", "anthropic", "pubmed"] = "openai"
     context: str = "Pancreatic Ductal Adenocarcinoma"
@@ -47,22 +101,43 @@ class GrnConfig(BaseModel):
     parser_model: str = "gpt-5-mini"
     concurrency: int = 4
     confidence_threshold: float = 0.35
+    verification_confidence_threshold: float = 0.45
     max_tool_calls: int = 4
+    discovery_max_edges_per_gene: int = 8
+    allow_deg_to_deg_edges: bool = True
+    allow_intermediate_nodes: bool = True
     immediate_downstream_effectors: list[str] = Field(
         default_factory=lambda: ["RAF1", "BRAF", "MAP2K1", "MAP2K2", "MAPK1", "MAPK3", "PIK3CA", "AKT1"]
     )
+    prior: PriorConfig = Field(default_factory=PriorConfig)
 
 
 class SimulationConfig(BaseModel):
     knockout_sizes: list[int] = Field(default_factory=lambda: [1, 2, 3])
     max_iterations: int = 8
+    activation_threshold: float = 0.55
+    inhibition_threshold: float = 0.45
+    inhibition_dominance: float = 0.9
+    intermediate_activation_threshold: float = 0.5
+    require_multiple_support_for_pathway: bool = False
 
 
 class BenchmarkConfig(BaseModel):
     release: str | None = None
+    rnai_release: str | None = "DEMETER2 Data v6"
     lineage_filters: list[str] = Field(default_factory=lambda: ["Pancreas"])
     primary_disease_filters: list[str] = Field(default_factory=lambda: ["Pancreatic"])
     effect_threshold: float = -0.5
+    rnai_effect_threshold: float = -0.3
+    pre_simulation_prune_threshold: float = 0.0
+    min_driver_alignment_score: float = 0.0
+
+
+class ExperimentConfig(BaseModel):
+    enabled: bool = True
+    variants: list[str] = Field(
+        default_factory=lambda: ["llm_verified_only", "llm_plus_priors", "llm_plus_priors_pruned"]
+    )
 
 
 class PipelineConfig(BaseModel):
@@ -73,6 +148,7 @@ class PipelineConfig(BaseModel):
     grn: GrnConfig = Field(default_factory=GrnConfig)
     simulation: SimulationConfig = Field(default_factory=SimulationConfig)
     benchmark: BenchmarkConfig = Field(default_factory=BenchmarkConfig)
+    experiments: ExperimentConfig = Field(default_factory=ExperimentConfig)
 
 
 class Settings(BaseSettings):

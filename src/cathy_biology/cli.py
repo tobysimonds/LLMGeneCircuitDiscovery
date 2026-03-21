@@ -32,6 +32,10 @@ def run(
         + ", ".join(f"{model}={count}" for model, count in summary.research_execution.result_model_counts.items())
     )
     typer.echo(f"Research fallbacks: {summary.research_execution.fallback_gene_count}")
+    typer.echo(
+        f"Prior nodes/edges: {summary.prior_knowledge.node_count}/{summary.prior_knowledge.edge_count}"
+    )
+    typer.echo(f"Selected experiment: {summary.selected_experiment}")
     typer.echo(f"Graph nodes/edges: {summary.graph_nodes}/{summary.graph_edges}")
     typer.echo(f"Knockout hits found: {len(summary.knockout_hits)}")
     typer.echo(f"DepMap models benchmarked: {summary.benchmark_report.model_count}")
