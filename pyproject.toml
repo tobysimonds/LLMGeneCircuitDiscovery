@@ -1,0 +1,40 @@
+[project]
+name = "cathy-biology"
+version = "0.1.0"
+description = "DEG-to-network target discovery pipeline for scRNA-seq datasets"
+readme = "README.md"
+authors = [
+    { name = "tamassimonds", email = "tamassimonds@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "networkx>=3.6.1",
+    "openai>=2.29.0",
+    "pandas>=3.0.1",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "scanpy>=1.12",
+    "typer>=0.24.1",
+]
+
+[project.scripts]
+cathy-biology = "cathy_biology:main"
+
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.uv.build-backend]
+module-name = "cathy_biology"
+module-root = "src"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+]

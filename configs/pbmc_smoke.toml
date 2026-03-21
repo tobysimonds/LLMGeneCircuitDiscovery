@@ -1,0 +1,39 @@
+[dataset]
+source_type = "scanpy_builtin"
+builtin_name = "pbmc3k"
+
+[contrast]
+groupby_column = "cohort"
+case_labels = ["case"]
+control_labels = ["control"]
+
+[qc]
+min_genes = 0
+max_mt_fraction = 1.0
+max_cells = 800
+random_seed = 7
+
+[deg]
+top_n = 10
+adjusted_pvalue_cutoff = 0.05
+min_log2_fold_change = 0.0
+
+[grn]
+context = "Pancreatic Ductal Adenocarcinoma"
+target_oncogene = "KRAS"
+model = "mock"
+parser_model = "mock"
+concurrency = 2
+confidence_threshold = 0.25
+max_tool_calls = 2
+immediate_downstream_effectors = ["RAF1", "AKT1"]
+
+[simulation]
+knockout_sizes = [1, 2, 3]
+max_iterations = 6
+
+[benchmark]
+release = "mock"
+lineage_filters = ["Pancreas"]
+primary_disease_filters = ["Pancreatic"]
+effect_threshold = -0.5

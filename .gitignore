@@ -1,0 +1,10 @@
+.env
+.pytest_cache/
+.python-version
+.ruff_cache/
+.venv/
+artifacts/
+data/
+dist/
+htmlcov/
+__pycache__/
