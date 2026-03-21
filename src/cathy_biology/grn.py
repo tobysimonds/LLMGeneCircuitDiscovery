@@ -10,7 +10,6 @@ from xml.etree import ElementTree
 import httpx
 from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI
-from openai.types.responses import ParsedResponse
 
 from cathy_biology.aliases import GeneAliasResolver
 from cathy_biology.config import GrnConfig, Settings
@@ -287,17 +286,34 @@ class OpenAIResearchClient:
 
     async def _call_openai(self, model_name: str, instructions: str, prompt: str) -> GeneResearchResult | None:
         try:
-            response = await self.client.responses.parse(
+            response = await self.client.responses.create(
                 model=model_name,
                 instructions=instructions,
                 input=prompt,
                 tools=[{"type": "web_search_preview"}],
-                text_format=GeneResearchResult,
                 max_output_tokens=2_000,
             )
-            return _extract_parsed_response(response)
+            text_payload = getattr(response, "output_text", "").strip()
+            if not text_payload:
+                text_payload = _extract_openai_text(response)
+            if not text_payload:
+                return None
+            parsed = _parse_json_payload(text_payload)
+            return GeneResearchResult.model_validate(parsed)
         except Exception as exc:
-            if "invalid_api_key" in str(exc).lower() or "incorrect api key" in str(exc).lower():
+            error_message = str(exc).lower()
+            if any(
+                marker in error_message
+                for marker in [
+                    "invalid_api_key",
+                    "incorrect api key",
+                    "insufficient_quota",
+                    "billing",
+                    "must be verified",
+                    "model_not_found",
+                    "quota",
+                ]
+            ):
                 self._openai_disabled_reason = str(exc)
             return None
 
@@ -459,15 +475,16 @@ class MockResearchClient:
         return ResearchOutput(discovery_results=discovery_results, verification_results=verification_results)
 
 
-def _extract_parsed_response(response: ParsedResponse[GeneResearchResult]) -> GeneResearchResult | None:
-    for output_item in response.output:
+def _extract_openai_text(response: object) -> str:
+    texts: list[str] = []
+    for output_item in getattr(response, "output", []):
         if not hasattr(output_item, "content"):
             continue
         for content in output_item.content:
-            parsed = getattr(content, "parsed", None)
-            if parsed is not None:
-                return parsed
-    return None
+            text = getattr(content, "text", "")
+            if text:
+                texts.append(text)
+    return "\n".join(texts).strip()
 
 
 def _extract_anthropic_text(content_blocks: Sequence[object]) -> str:

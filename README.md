@@ -12,6 +12,7 @@
 uv sync
 uv run run_pipeline.py --config configs/pdac_gse242230.toml
 uv run run_pipeline.py --config configs/pdac_gse242230_anthropic.toml
+uv run build_results_site.py --primary-run artifacts/pdac-expanded-pubmed-live-20260321-v3 --baseline-run artifacts/pdac-live-run-v6 --output-dir artifacts/pdac-results-site
 ```
 
 To switch GRN backends at runtime:
@@ -34,6 +35,14 @@ The main outputs are written to a timestamped directory under `artifacts/`:
 - `experiment_report.json`
 - `research_execution.json`
 - `summary.json`
+
+The website builder packages a run directory into a static interactive explorer with:
+
+- comparison cards for baseline vs primary runs
+- interactive network graph visualization
+- DEG and benchmark charts
+- knockout hit panels and benchmark tables
+- research execution diagnostics
 
 ## Configs
 
