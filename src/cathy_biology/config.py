@@ -40,6 +40,7 @@ class DegConfig(BaseModel):
 
 
 class GrnConfig(BaseModel):
+    research_backend: Literal["openai", "anthropic", "pubmed"] = "openai"
     context: str = "Pancreatic Ductal Adenocarcinoma"
     target_oncogene: str = "KRAS"
     model: str = "o4-mini-deep-research"
@@ -78,6 +79,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     openai_api_key: SecretStr | None = None
+    anthropic_api_key: SecretStr | None = None
     data_dir: Path = Path("data")
     artifacts_dir: Path = Path("artifacts")
     request_timeout_seconds: int = 900

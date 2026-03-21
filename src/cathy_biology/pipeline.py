@@ -11,7 +11,7 @@ from cathy_biology.config import PipelineConfig, Settings
 from cathy_biology.datasets import load_dataset
 from cathy_biology.deg import compute_top_degs
 from cathy_biology.depmap import DepMapClient
-from cathy_biology.grn import OpenAIResearchClient, PubMedHeuristicResearchClient, ResearchClient
+from cathy_biology.grn import AnthropicResearchClient, OpenAIResearchClient, PubMedHeuristicResearchClient, ResearchClient
 from cathy_biology.models import BenchmarkReport, PipelineRunSummary
 from cathy_biology.utils import ensure_directory, timestamped_output_dir, write_json
 
@@ -34,10 +34,14 @@ async def execute_pipeline(
 
     genes = [deg.gene for deg in degs]
     if research_client is None:
-        if config.grn.model == "pubmed_heuristic" or settings.openai_api_key is None:
+        if config.grn.research_backend == "pubmed":
             research_client = PubMedHeuristicResearchClient(settings, run_output_dir / "pubmed_cache")
-        else:
+        elif config.grn.research_backend == "anthropic":
+            research_client = AnthropicResearchClient(settings, run_output_dir / "anthropic_cache")
+        elif settings.openai_api_key is not None:
             research_client = OpenAIResearchClient(settings, run_output_dir / "openai_cache")
+        else:
+            research_client = PubMedHeuristicResearchClient(settings, run_output_dir / "pubmed_cache")
     research_results = await research_client.research_genes(genes, config.grn)
     write_json(run_output_dir / "gene_interactions.json", [result.model_dump() for result in research_results])
 

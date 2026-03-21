@@ -22,11 +22,11 @@ adjusted_pvalue_cutoff = 0.05
 min_log2_fold_change = 0.1
 
 [grn]
-research_backend = "openai"
+research_backend = "anthropic"
 context = "Pancreatic Ductal Adenocarcinoma"
 target_oncogene = "KRAS"
-model = "o4-mini-deep-research"
-parser_model = "gpt-5-mini"
+model = "claude-sonnet-4-20250514"
+parser_model = "claude-sonnet-4-20250514"
 concurrency = 4
 confidence_threshold = 0.35
 max_tool_calls = 4

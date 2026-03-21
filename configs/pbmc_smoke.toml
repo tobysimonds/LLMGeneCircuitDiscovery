@@ -19,6 +19,7 @@ adjusted_pvalue_cutoff = 0.05
 min_log2_fold_change = 0.0
 
 [grn]
+research_backend = "pubmed"
 context = "Pancreatic Ductal Adenocarcinoma"
 target_oncogene = "KRAS"
 model = "mock"

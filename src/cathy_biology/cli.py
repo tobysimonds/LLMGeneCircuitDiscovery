@@ -14,9 +14,15 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 def run(
     config: Path = typer.Option(..., exists=True, dir_okay=False, readable=True, help="Path to a TOML pipeline config."),
     output_dir: Path | None = typer.Option(None, file_okay=False, help="Optional output directory."),
+    research_backend: str | None = typer.Option(
+        None,
+        help="Override the GRN backend: openai, anthropic, or pubmed.",
+    ),
 ) -> None:
     settings = Settings()
     pipeline_config = load_pipeline_config(config)
+    if research_backend is not None:
+        pipeline_config.grn.research_backend = research_backend
     summary = run_pipeline(pipeline_config, settings, output_dir)
     typer.echo(f"Completed run in {summary.output_dir}")
     typer.echo(f"Dataset cells: {summary.dataset_cells}, genes: {summary.dataset_genes}")

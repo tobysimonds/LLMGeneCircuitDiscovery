@@ -13,6 +13,13 @@ uv sync
 uv run run_pipeline.py --config configs/pdac_gse242230.toml
 ```
 
+To switch GRN backends at runtime:
+
+```bash
+uv run run_pipeline.py --config configs/pdac_gse242230.toml --research-backend anthropic
+uv run run_pipeline.py --config configs/pdac_gse242230.toml --research-backend pubmed
+```
+
 The main outputs are written to a timestamped directory under `artifacts/`:
 
 - `top_degs.csv`

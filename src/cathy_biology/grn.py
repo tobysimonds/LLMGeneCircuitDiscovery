@@ -8,6 +8,7 @@ from typing import Protocol, Sequence
 from xml.etree import ElementTree
 
 import httpx
+from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI
 from openai.types.responses import ParsedResponse
 
@@ -19,6 +20,81 @@ from cathy_biology.utils import ensure_directory, write_json
 class ResearchClient(Protocol):
     async def research_genes(self, genes: Sequence[str], grn_config: GrnConfig) -> list[GeneResearchResult]:
         ...
+
+
+def build_research_system_prompt(gene: str, grn_config: GrnConfig) -> str:
+    allowed_targets = [grn_config.target_oncogene, *grn_config.immediate_downstream_effectors]
+    return (
+        "You are a senior computational oncology research agent building a causal gene-regulatory network for a "
+        "three-stage target-discovery pipeline.\n\n"
+        "Pipeline context:\n"
+        "1. Upstream code has already processed a PDAC single-cell RNA-seq dataset and identified top differentially "
+        f"expressed genes. The current DEG under review is {gene}.\n"
+        f"2. The network is centered on the oncogene {grn_config.target_oncogene} and its immediate downstream "
+        "signaling effectors.\n"
+        "3. Your output will be consumed by deterministic code that builds a directed Boolean network and then brute-force "
+        "tests 1-, 2-, and 3-gene knockouts.\n"
+        "4. Incorrect edges are more harmful than missing edges. Be conservative.\n\n"
+        f"Disease context: {grn_config.context}.\n"
+        f"Allowed target nodes for direct edges: {', '.join(allowed_targets)}.\n\n"
+        "Research task:\n"
+        f"- Determine whether {gene} directly UP-REGULATES (+1), DOWN-REGULATES (-1), or has NO DIRECT EFFECT (0) on "
+        f"{grn_config.target_oncogene} or one of the allowed target nodes in the specific context of PDAC or closely "
+        "relevant pancreatic cancer signaling biology.\n"
+        "- Use web search and prioritize peer-reviewed primary literature, PubMed-indexed articles, and highly credible "
+        "mechanistic reviews only when they clearly summarize direct evidence.\n"
+        "- Prefer direct mechanistic statements over broad associations, co-expression, prognostic correlations, or vague "
+        "pathway mentions.\n"
+        "- Only include an edge when the literature supports directionality from the source DEG to the target node.\n"
+        "- If evidence is mixed, weak, indirect, tissue-mismatched, or only implies pathway membership, omit the edge.\n"
+        "- If the DEG affects a downstream effector rather than KRAS itself, that is acceptable only if the target is one "
+        "of the allowed nodes.\n\n"
+        "Evidence rules:\n"
+        "- Direct transcriptional activation, repression, phosphorylation-driven activation, pathway stimulation, or "
+        "experimentally supported inhibition are acceptable.\n"
+        "- Biomarker associations, expression signatures, survival correlations, or generic statements like 'associated "
+        "with the MAPK pathway' are not sufficient by themselves.\n"
+        "- PDAC evidence is best. If PDAC-specific evidence does not exist, you may use closely related pancreatic cancer "
+        "mechanistic evidence only if the causal claim is still strong and you make that clear in the evidence summary.\n"
+        "- Prefer PubMed IDs in `pmid_citations`. Use an empty list only if none can be confidently identified.\n\n"
+        "Output contract:\n"
+        "Return strict JSON only. No markdown, no prose before or after the JSON, no code fences.\n"
+        "Use this exact schema:\n"
+        "{\n"
+        '  "source_gene": "string",\n'
+        '  "target_oncogene": "string",\n'
+        '  "context": "string",\n'
+        '  "interactions": [\n'
+        "    {\n"
+        '      "source_gene": "string",\n'
+        '      "target": "string",\n'
+        '      "interaction_type": -1 | 0 | 1,\n'
+        '      "pmid_citations": ["string"],\n'
+        '      "confidence_score": 0.0,\n'
+        '      "evidence_summary": "string"\n'
+        "    }\n"
+        "  ],\n"
+        '  "no_direct_effect": true,\n'
+        '  "queried_targets": ["string"],\n'
+        '  "raw_model": "string"\n'
+        "}\n\n"
+        "Validation constraints:\n"
+        "- `interactions` must be empty when `no_direct_effect` is true.\n"
+        "- Every `target` must be one of the allowed target nodes.\n"
+        "- `interaction_type` must be 1 for activation or -1 for inhibition. Do not emit 0-valued interactions.\n"
+        "- `confidence_score` should reflect evidence quality and consistency, not optimism.\n"
+        "- Set `raw_model` to the model name you used.\n"
+    )
+
+
+def build_research_user_prompt(gene: str, grn_config: GrnConfig) -> str:
+    allowed_targets = [grn_config.target_oncogene, *grn_config.immediate_downstream_effectors]
+    return (
+        f"Research the DEG {gene} for the PDAC GRN.\n"
+        f"Allowed targets: {', '.join(allowed_targets)}.\n"
+        "Return only strict JSON following the provided schema. If you cannot support a direct edge with strong mechanistic "
+        "literature evidence, return `no_direct_effect=true` and an empty `interactions` list."
+    )
 
 
 class OpenAIResearchClient:
@@ -48,27 +124,8 @@ class OpenAIResearchClient:
         if cache_path.exists():
             return GeneResearchResult.model_validate_json(cache_path.read_text(encoding="utf-8"))
 
-        allowed_targets = [grn_config.target_oncogene, *grn_config.immediate_downstream_effectors]
-        instructions = (
-            "You are a computational biology agent. Research only peer-reviewed or primary biomedical sources. "
-            "Determine whether the queried DEG directly activates (+1), inhibits (-1), or has no direct effect (0) "
-            "on the target oncogene or one of the allowed immediate downstream effectors in PDAC. "
-            "Return direct literature-supported interactions only. Prefer PubMed identifiers when possible."
-        )
-        prompt = (
-            f"Gene: {gene}\n"
-            f"Cancer context: {grn_config.context}\n"
-            f"Target oncogene: {grn_config.target_oncogene}\n"
-            f"Allowed pathway targets: {', '.join(allowed_targets)}\n"
-            "Return a structured response with:\n"
-            "- `source_gene`\n"
-            "- `target_oncogene`\n"
-            "- `context`\n"
-            "- `queried_targets`\n"
-            "- `no_direct_effect`\n"
-            "- `interactions`: zero or more direct edges, each with source_gene, target, interaction_type, pmid_citations, confidence_score, evidence_summary.\n"
-            "If there is no credible direct edge, set `no_direct_effect=true` and return an empty `interactions` list."
-        )
+        instructions = build_research_system_prompt(gene, grn_config)
+        prompt = build_research_user_prompt(gene, grn_config)
 
         result: GeneResearchResult | None = None
         if self._openai_disabled_reason is None:
@@ -113,6 +170,76 @@ class OpenAIResearchClient:
             return None
 
 
+class AnthropicResearchClient:
+    def __init__(self, settings: Settings, cache_dir: Path) -> None:
+        if settings.anthropic_api_key is None:
+            raise ValueError("ANTHROPIC_API_KEY is required for Anthropic-backed GRN extraction.")
+        self.settings = settings
+        self.cache_dir = ensure_directory(cache_dir)
+        self.fallback_client = PubMedHeuristicResearchClient(settings, cache_dir / "pubmed_fallback")
+        self.client = AsyncAnthropic(
+            api_key=settings.anthropic_api_key.get_secret_value(),
+            timeout=settings.request_timeout_seconds,
+        )
+
+    async def research_genes(self, genes: Sequence[str], grn_config: GrnConfig) -> list[GeneResearchResult]:
+        semaphore = asyncio.Semaphore(grn_config.concurrency)
+
+        async def run_gene(gene: str) -> GeneResearchResult:
+            async with semaphore:
+                return await self._research_gene(gene, grn_config)
+
+        return await asyncio.gather(*(run_gene(gene) for gene in genes))
+
+    async def _research_gene(self, gene: str, grn_config: GrnConfig) -> GeneResearchResult:
+        cache_path = self.cache_dir / f"{gene}.json"
+        if cache_path.exists():
+            return GeneResearchResult.model_validate_json(cache_path.read_text(encoding="utf-8"))
+
+        system_prompt = build_research_system_prompt(gene, grn_config)
+        user_prompt = build_research_user_prompt(gene, grn_config)
+
+        result = await self._call_model(gene, system_prompt, user_prompt, grn_config)
+        if result is None:
+            fallback = await self.fallback_client.research_genes([gene], grn_config)
+            result = fallback[0]
+        write_json(cache_path, result.model_dump())
+        return result
+
+    async def _call_model(
+        self,
+        gene: str,
+        system_prompt: str,
+        user_prompt: str,
+        grn_config: GrnConfig,
+    ) -> GeneResearchResult | None:
+        try:
+            message = await self.client.messages.create(
+                model=grn_config.model,
+                max_tokens=1800,
+                system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+                tools=[
+                    {
+                        "type": "web_search_20250305",
+                        "name": "web_search",
+                        "max_uses": grn_config.max_tool_calls,
+                        "allowed_callers": ["direct"],
+                    }
+                ],
+            )
+            text_payload = _extract_anthropic_text(message.content)
+            if not text_payload:
+                return None
+            parsed = _parse_json_payload(text_payload)
+            result = GeneResearchResult.model_validate(parsed)
+            result.source_gene = gene
+            result.raw_model = grn_config.model
+            return result
+        except Exception:
+            return None
+
+
 class MockResearchClient:
     def __init__(self, mapping: dict[str, list[GeneInteraction]], target_oncogene: str, context: str) -> None:
         self.mapping = mapping
@@ -146,6 +273,31 @@ def _extract_parsed_response(response: ParsedResponse[GeneResearchResult]) -> Ge
             if parsed is not None:
                 return parsed
     return None
+
+
+def _extract_anthropic_text(content_blocks: Sequence[object]) -> str:
+    texts: list[str] = []
+    for block in content_blocks:
+        block_type = getattr(block, "type", "")
+        if block_type == "text":
+            text = getattr(block, "text", "")
+            if text:
+                texts.append(text)
+    return "\n".join(texts).strip()
+
+
+def _parse_json_payload(payload: str) -> dict:
+    payload = payload.strip()
+    if payload.startswith("```"):
+        payload = payload.strip("`")
+        payload = payload.removeprefix("json").strip()
+    try:
+        return json.loads(payload)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", payload, flags=re.DOTALL)
+        if match is None:
+            raise
+        return json.loads(match.group(0))
 
 
 class PubMedHeuristicResearchClient:
