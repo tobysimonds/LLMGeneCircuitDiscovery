@@ -215,21 +215,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         <section id="intro" class="section prose">
           <p>
-            In this post, we describe a working prototype for a question that appears often in translational biology:
-            how do we move from thousands of cancer-associated transcriptional features to a short list of intervention points
-            that are specific enough to test, mechanistic enough to explain, and grounded enough to benchmark?
+            Cancer single-cell datasets are rich in signal and poor in explanation. They can show which genes rise in malignant cells,
+            but they do not by themselves explain which of those genes are upstream control points, which are downstream consequences,
+            and which belong to the same causal program. That gap is exactly where target discovery becomes difficult.
           </p>
           <p>
-            Our pipeline focuses on pancreatic ductal adenocarcinoma. It begins with malignant-versus-normal differential expression,
-            asks a language model to recover mechanistic signaling edges for the resulting genes, projects those edges into a compact
-            intervention graph, and then ranks knockouts in two different ways. The first is explicit search over the graph. The second
-            is a model-based reading of the graph itself: Claude Opus is asked to inspect the final network and recommend the most plausible
-            knockouts directly.
+            Large language models are useful here not because they replace biology, but because they can turn scattered mechanistic literature
+            into a structured working hypothesis. Instead of manually reviewing dozens of papers for every candidate gene, we can ask the model
+            to do that gene-by-gene, return explicit signed edges, attach citations, and preserve the raw outputs for inspection. The result is
+            a graph that can be explored, simulated, challenged, and compared against external benchmark data.
           </p>
           <p>
-            The result is not a validated therapeutic claim. It is a more useful outcome than that: a transparent record of what the system
-            believes, where those beliefs come from, how the recommendations differ by ranking strategy, and where external benchmark data
-            refuses to agree.
+            Our pipeline focuses on pancreatic ductal adenocarcinoma. It begins with malignant-versus-normal differential expression, asks a language
+            model to recover mechanistic signaling edges for each resulting DEG, projects those edges into a compact intervention graph, and then ranks
+            knockouts in two different ways. The first is explicit search over the graph. The second is a model-based reading of the graph itself:
+            Claude Opus is asked to inspect the final network and recommend the most plausible knockouts directly. The value of the system is not just
+            the final answer; it is the way it gives researchers a tighter, more navigable view of the problem.
           </p>
         </section>
 
@@ -258,20 +259,56 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </div>
           <div class="method-detail">
             <div class="detail-card">
-              <p class="detail-label">What we added beyond the original concept note</p>
-              <ul>
-                <li>Parallel per-gene literature calls, with raw request and response artifacts saved for inspection.</li>
-                <li>A projected 50-node DEG graph, so intermediates can support reasoning without overwhelming the intervention layer.</li>
-                <li>Benchmark-aware pruning and post hoc DepMap checks, which prevent graph-only hits from being mistaken for validated targets.</li>
-                <li>A second ranking head in which Claude Opus reads the graph directly and proposes knockouts as a mechanistic reviewer.</li>
-              </ul>
+              <p class="detail-label">The AI research loop in detail</p>
+              <p>
+                We treat each DEG as its own research problem. In the featured run, the system took the top 50 PDAC DEGs and launched one
+                independent discovery call per gene. Each call gave Claude Sonnet 4.6 the seed gene, the PDAC context, the current DEG universe,
+                a bridge-node universe drawn from curated pathway knowledge, and a strict request: return only mechanistic gene-to-gene edges that
+                can plausibly connect the seed gene to PDAC-relevant signaling.
+              </p>
+              <p>
+                The prompt is deliberately structured for machine use rather than prose. It asks for compact JSON, signed edges, short evidence summaries,
+                PMIDs or source references, and a bounded number of candidates. This keeps the output parsable, limits drift into narrative explanation,
+                and makes it possible to compare hundreds of model outputs side by side.
+              </p>
             </div>
             <div class="detail-card">
-              <p class="detail-label">Why the projection step matters</p>
+              <p class="detail-label">Prompt optimization and evidence handling</p>
               <p>
-                In biological terms, intermediate nodes are often necessary to explain how a DEG reaches KRAS or MAPK signaling, but they are not always the nodes we
-                want to optimize over. The projected graph separates those concerns. Claude can recover paths like <span class="mono">A → B → C</span>, while the final
-                intervention surface keeps the emphasis on the tumor-altered genes themselves.
+                Several prompt-engineering choices mattered. We kept the discovery schema compact, capped the number of cited sources per edge, and allowed follow-up
+                rounds in the same conversation when a first pass appeared incomplete. We also saved the raw requests, raw responses, parsed JSON, and any parsing errors
+                per gene, which makes debugging the model behavior much easier than treating it as a black box. In the run shown here, 43 genes returned model-backed
+                outputs and 7 fell back to a PubMed heuristic path when the model did not yield usable edges.
+              </p>
+              <p>
+                An optional verification pass exists in the system, but the run described here is intentionally discovery-led. The final comparison instead happens downstream:
+                once the graph is built, we compare a solver-based ranking against a direct Claude Opus reading of the graph itself.
+              </p>
+            </div>
+          </div>
+          <div class="method-detail">
+            <div class="detail-card">
+              <p class="detail-label">From pathways to an intervention surface</p>
+              <p>
+                Intermediate biology is useful for explanation but can overwhelm optimization if every receptor, adaptor, kinase, and transcription factor is given equal weight.
+                We therefore let the model recover paths like <span class="mono">A → B → C</span>, but then project those paths back onto a DEG-centered control graph. This
+                preserves the mechanistic route while keeping the final intervention layer readable and experimentally relevant.
+              </p>
+              <p>
+                In practice, that means the system can reason through intermediates without requiring the final graph to become a generic signaling atlas. Researchers can inspect
+                the full path evidence, while the simulator and the direct Opus ranker operate on a smaller, clearer representation.
+              </p>
+            </div>
+            <div class="detail-card">
+              <p class="detail-label">How the two ranking methods differ</p>
+              <p>
+                The Boolean solver is explicit and exhaustive. It tries one-, two-, and three-gene knockouts over the selected graph and asks which combinations flip the synthetic
+                KRAS-signaling endpoint to off. Claude Opus is used differently: it receives the graph, the evidence, and the benchmark rows, and then produces a ranked set of
+                knockout suggestions as a structured mechanistic assessment. One method is combinatorial search; the other is model-based synthesis over the same evidence surface.
+              </p>
+              <p>
+                We then benchmark the nominated genes against DepMap pancreatic dependency data. This turns the pipeline into a research tool rather than a generator of opaque answers:
+                the recommendation, the evidence, and the external counter-evidence all remain visible at once.
               </p>
             </div>
           </div>
@@ -382,22 +419,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <section id="results" class="section">
           <div class="section-header">
             <p class="eyebrow">Results</p>
-            <h2>What the system found, and what the benchmark refused to confirm</h2>
+            <h2>What the system surfaced in the final PDAC run</h2>
           </div>
           <div class="prose">
             <p>
-              In the final run, both ranking methods converged on <span class="mono">EFS</span> as the leading single-gene knockout. Within the graph,
-              that recommendation is easy to understand: EFS connects into SRC-centered signaling and sits on the shortest path to several tracked KRAS pathway nodes.
-              The solver reports a full pathway shutdown when EFS is removed, and Opus reaches the same top call after reading the graph directly.
+              In the final run, both ranking methods converged on <span class="mono">EFS</span> as the leading single-gene knockout. That agreement is the most encouraging result in the page:
+              an explicit solver and a direct graph-reading model, operating very differently, still pointed to the same intervention. Within the graph, that recommendation is easy to read.
+              EFS connects into SRC-centered signaling and lies on a short route to several tracked KRAS pathway nodes.
             </p>
             <p>
-              The benchmark result is the counterweight. DepMap does not support EFS strongly as a PDAC dependency. That means the system is producing a coherent
-              mechanistic hypothesis, but not yet a confident translational target. This is precisely the kind of outcome that a benchmark layer should surface.
+              The benchmark adds the right kind of friction. DepMap does not support EFS strongly as a PDAC dependency, so the system should be read as surfacing a coherent mechanistic
+              hypothesis rather than declaring a validated therapeutic target. That is still a strong outcome for a research tool: it narrows the search space, shows the mechanistic rationale,
+              and makes the disagreement with external evidence explicit instead of hiding it.
             </p>
           </div>
           <div class="figure-card">
             <canvas id="benchmark-chart"></canvas>
-            <p class="figure-caption">Benchmark rows for the genes most relevant to the final solver and Opus recommendations.</p>
+            <p class="figure-caption">External benchmark context for the genes most relevant to the final solver and Opus recommendations.</p>
           </div>
           <div class="results-grid">
             <div class="result-card" id="solver-card"></div>
@@ -411,34 +449,33 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <h2>Why this approach is still promising</h2>
           </div>
           <p>
-            The immediate result is not that EFS should now be treated as a validated therapeutic target. The more important result is that the system can connect
-            differential expression, mechanistic evidence extraction, graph projection, explicit simulation, and model-based ranking in a single reproducible workflow.
+            The most important implication is not a single gene. It is that researchers can now move from single-cell expression to an inspectable mechanistic graph in one reproducible pass,
+            then explore the consequences of different intervention strategies without losing sight of the underlying evidence.
           </p>
           <p>
-            That matters because the pipeline is now modular. Each weak point is inspectable. The DEG layer can be improved with better state labels; the graph layer
-            can be improved with stronger extraction prompts or curated priors; the benchmark layer can be expanded with normal-tissue toxicity or additional perturbation data.
-            The method is therefore valuable not because it solved PDAC target discovery outright, but because it produces a tractable loop for improving it.
+            That is a meaningful capability. Existing single-cell datasets are often too sparse, too high-dimensional, and too labor-intensive to review manually at the pathway level.
+            A system like this makes the literature review step operational: it can be rerun, refined, stress-tested, and expanded as better priors, better prompts, and better benchmarks become available.
           </p>
           <p>
-            More generally, the combination of explicit search and direct graph-reading models is useful. The solver gives a disciplined, auditable baseline. The direct
-            LLM ranker offers a different kind of synthesis: one that can reason across topology, evidence quality, and benchmark weakness in a single pass. Used together,
-            they make it easier to distinguish graph artifacts from biologically persuasive candidates.
+            More generally, the combination of explicit search and direct graph-reading models looks especially powerful. The solver gives a disciplined, auditable baseline.
+            The direct LLM ranker offers a second perspective that can synthesize topology, evidence quality, and benchmark context in one pass. Used together, they make the problem more legible,
+            and that is exactly what a good research interface should do.
           </p>
         </section>
 
         <section id="conclusion" class="section prose">
           <div class="section-header">
             <p class="eyebrow">Conclusion</p>
-            <h2>A prototype that is honest about its limits</h2>
+            <h2>A promising interface for target discovery</h2>
           </div>
           <p>
-            We now have an end-to-end system that starts with single-cell data and ends with ranked knockout hypotheses, accompanied by mechanistic evidence and external benchmark checks.
-            In the present PDAC run, the top answer is consistent across the solver and the direct Opus ranker, but external validation remains weak. That is not a failure of the benchmark;
-            it is the benchmark doing its job.
+            We now have an end-to-end system that starts with single-cell data and ends with ranked knockout hypotheses, accompanied by mechanistic evidence, graph structure, and external benchmark checks.
+            In the present PDAC run, the top answer is consistent across the solver and the direct Opus ranker, which is exactly the kind of convergence one hopes to see in an exploratory system.
           </p>
           <p>
-            The value of the prototype is therefore not that it eliminates uncertainty. It is that it renders uncertainty legible. Every stage is inspectable, every major decision is attributable,
-            and every recommendation can be interrogated in the graph itself. That makes the next iteration more scientific than the first.
+            The benchmark remains cautious, and that is healthy. But the larger story is positive: this pipeline already acts as a useful scientific instrument. It helps researchers compress the literature,
+            see how candidate genes connect, compare multiple ranking strategies, and interrogate why a hypothesis looks strong or weak. That makes the space of possible follow-up experiments much clearer,
+            and it suggests a compelling direction for how LLMs can assist biology: not by replacing judgment, but by making complex mechanistic problems easier to explore.
           </p>
         </section>
       </main>
@@ -960,13 +997,16 @@ function renderResultCard(title, record, solver) {
     return `<h3>${escapeHtml(title)}</h3><p>No result available.</p>`;
   }
   const genes = solver ? (record.knocked_out_genes || []) : (record.knocked_out_genes || []);
+  const blurb = solver
+    ? "Minimal simulated intervention that turns the modeled KRAS-signaling endpoint off."
+    : "Direct model-based recommendation from Claude Opus after reading the graph, evidence, and benchmark context.";
   const note = solver
     ? `Pathway nodes off: ${(record.pathway_nodes_off || []).join(", ") || "none"}`
     : (record.benchmark_assessment || "");
   return `
     <h3>${escapeHtml(title)}</h3>
     <p class="mono">${escapeHtml(genes.join(" + "))}</p>
-    <p>${escapeHtml(solver ? "The solver chooses the smallest knockout that collapses the boss node." : record.rationale || "")}</p>
+    <p>${escapeHtml(blurb)}</p>
     <p class="muted">${escapeHtml(note)}</p>
   `;
 }
