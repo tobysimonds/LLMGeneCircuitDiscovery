@@ -5,9 +5,9 @@ from pathlib import Path
 import httpx
 import pandas as pd
 
-from cathy_biology.config import BenchmarkConfig, Settings
-from cathy_biology.models import BenchmarkGeneResult, BenchmarkReport
-from cathy_biology.utils import ensure_directory
+from llmgenecircuitdiscovery.config import BenchmarkConfig, Settings
+from llmgenecircuitdiscovery.models import BenchmarkGeneResult, BenchmarkReport
+from llmgenecircuitdiscovery.utils import ensure_directory
 
 
 class DepMapClient:

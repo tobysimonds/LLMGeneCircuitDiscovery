@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from cathy_biology.site import build_results_site
+from llmgenecircuitdiscovery.site import build_results_site
 
 
 def test_build_results_site_writes_interactive_bundle(tmp_path: Path) -> None:

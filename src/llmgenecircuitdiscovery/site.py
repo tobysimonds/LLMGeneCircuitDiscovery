@@ -7,7 +7,7 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-from cathy_biology.utils import ensure_directory, write_json
+from llmgenecircuitdiscovery.utils import ensure_directory, write_json
 
 REQUIRED_RUN_FILES = {
     "summary": "summary.json",

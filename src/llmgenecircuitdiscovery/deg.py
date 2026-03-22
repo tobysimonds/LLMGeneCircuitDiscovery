@@ -5,8 +5,8 @@ import pandas as pd
 import scanpy as sc
 from anndata import AnnData
 
-from cathy_biology.config import ContrastConfig, DegConfig, QcConfig
-from cathy_biology.models import DegResult
+from llmgenecircuitdiscovery.config import ContrastConfig, DegConfig, QcConfig
+from llmgenecircuitdiscovery.models import DegResult
 
 
 def compute_top_degs(

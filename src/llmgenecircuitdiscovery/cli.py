@@ -5,11 +5,11 @@ import sys
 
 import typer
 
-from cathy_biology.blog_site import build_blog_site
-from cathy_biology.config import Settings, load_pipeline_config
-from cathy_biology.llm_knockout import run_anthropic_knockout_ranking
-from cathy_biology.pipeline import run_pipeline
-from cathy_biology.site import build_results_site
+from llmgenecircuitdiscovery.blog_site import build_blog_site
+from llmgenecircuitdiscovery.config import Settings, load_pipeline_config
+from llmgenecircuitdiscovery.llm_knockout import run_anthropic_knockout_ranking
+from llmgenecircuitdiscovery.pipeline import run_pipeline
+from llmgenecircuitdiscovery.site import build_results_site
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
 

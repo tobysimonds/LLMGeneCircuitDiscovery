@@ -1,5 +1,5 @@
 [project]
-name = "cathy-biology"
+name = "LLMGeneCircuitDiscovery"
 version = "0.1.0"
 description = "DEG-to-network target discovery pipeline for scRNA-seq datasets"
 readme = "README.md"
@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
-cathy-biology = "cathy_biology:main"
+LLMGeneCircuitDiscovery = "llmgenecircuitdiscovery:main"
 
 [build-system]
 requires = ["uv_build>=0.10.7,<0.11.0"]
@@ -32,7 +32,7 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 
 [tool.uv.build-backend]
-module-name = "cathy_biology"
+module-name = "llmgenecircuitdiscovery"
 module-root = "src"
 
 [dependency-groups]

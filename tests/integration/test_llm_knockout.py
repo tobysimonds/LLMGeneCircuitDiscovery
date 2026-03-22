@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from cathy_biology.llm_knockout import LlmKnockoutRanking, build_knockout_user_prompt, load_run_context
+from llmgenecircuitdiscovery.llm_knockout import LlmKnockoutRanking, build_knockout_user_prompt, load_run_context
 
 
 def test_load_run_context_and_prompt(tmp_path: Path) -> None:

@@ -4,9 +4,9 @@ from pathlib import Path
 
 import networkx as nx
 
-from cathy_biology.boolean_network import build_projected_deg_graph
-from cathy_biology.config import GrnConfig, SimulationConfig
-from cathy_biology.render import render_circular_graph_png
+from llmgenecircuitdiscovery.boolean_network import build_projected_deg_graph
+from llmgenecircuitdiscovery.config import GrnConfig, SimulationConfig
+from llmgenecircuitdiscovery.render import render_circular_graph_png
 
 
 def test_build_projected_deg_graph_collapses_hidden_intermediate_path() -> None:

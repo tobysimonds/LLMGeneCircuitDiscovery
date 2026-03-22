@@ -1,6 +1,6 @@
 # Cathy Biology
 
-`cathy-biology` is a uv-managed Python application that implements a three-stage DEG-to-network target discovery pipeline:
+`LLMGeneCircuitDiscovery` is a uv-managed Python application that implements a three-stage DEG-to-network target discovery pipeline:
 
 1. Load scRNA-seq data, quality filter it, and extract top DEGs with Scanpy.
 2. Use OpenAI-, Anthropic-, or PubMed-backed discovery/verification literature search to convert DEGs into a mechanistic regulatory graph.

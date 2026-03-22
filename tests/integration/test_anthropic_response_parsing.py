@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from cathy_biology.aliases import GeneAliasResolver
-from cathy_biology.config import GrnConfig, Settings
-from cathy_biology.grn import AnthropicResearchClient, _coerce_research_result, _normalize_research_result, _parse_json_payload
-from cathy_biology.models import GeneInteraction, GeneResearchResult, PriorKnowledgeSummary
+from llmgenecircuitdiscovery.aliases import GeneAliasResolver
+from llmgenecircuitdiscovery.config import GrnConfig, Settings
+from llmgenecircuitdiscovery.grn import AnthropicResearchClient, _coerce_research_result, _normalize_research_result, _parse_json_payload
+from llmgenecircuitdiscovery.models import GeneInteraction, GeneResearchResult, PriorKnowledgeSummary
 
 
 def test_parse_json_payload_recovers_anthropic_narrative_wrapped_json() -> None:

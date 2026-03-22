@@ -11,9 +11,9 @@ import httpx
 from anthropic import AsyncAnthropic
 from openai import AsyncOpenAI
 
-from cathy_biology.aliases import GeneAliasResolver
-from cathy_biology.config import GrnConfig, Settings
-from cathy_biology.models import (
+from llmgenecircuitdiscovery.aliases import GeneAliasResolver
+from llmgenecircuitdiscovery.config import GrnConfig, Settings
+from llmgenecircuitdiscovery.models import (
     EvidenceClassScores,
     GeneInteraction,
     GeneResearchResult,
@@ -21,7 +21,7 @@ from cathy_biology.models import (
     ResearchOutput,
     ResolvedEntity,
 )
-from cathy_biology.utils import ensure_directory, write_json
+from llmgenecircuitdiscovery.utils import ensure_directory, write_json
 
 
 class ResearchClient(Protocol):
@@ -1131,7 +1131,7 @@ class PubMedHeuristicResearchClient:
         async with httpx.AsyncClient(
             timeout=self.settings.request_timeout_seconds,
             follow_redirects=True,
-            headers={"User-Agent": "cathy-biology/0.2"},
+            headers={"User-Agent": "LLMGeneCircuitDiscovery/0.2"},
         ) as client:
             semaphore = asyncio.Semaphore(1)
 

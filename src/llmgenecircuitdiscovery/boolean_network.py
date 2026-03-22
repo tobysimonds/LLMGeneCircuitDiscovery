@@ -6,8 +6,8 @@ from typing import Iterable
 
 import networkx as nx
 
-from cathy_biology.config import GrnConfig, SimulationConfig
-from cathy_biology.models import GeneResearchResult, KnockoutHit, PriorKnowledgeSummary
+from llmgenecircuitdiscovery.config import GrnConfig, SimulationConfig
+from llmgenecircuitdiscovery.models import GeneResearchResult, KnockoutHit, PriorKnowledgeSummary
 
 
 def boss_node_name(target_oncogene: str) -> str:

@@ -7,28 +7,28 @@ from pathlib import Path
 import networkx as nx
 import pandas as pd
 
-from cathy_biology.boolean_network import (
+from llmgenecircuitdiscovery.boolean_network import (
     build_regulatory_graph,
     build_projected_deg_graph,
     build_projected_graph,
     prune_genes_from_graph,
     search_knockout_combinations,
 )
-from cathy_biology.config import PipelineConfig, Settings
-from cathy_biology.datasets import load_dataset
-from cathy_biology.deg import compute_top_degs
-from cathy_biology.depmap import DepMapClient
-from cathy_biology.grn import AnthropicResearchClient, OpenAIResearchClient, PubMedHeuristicResearchClient, ResearchClient
-from cathy_biology.models import (
+from llmgenecircuitdiscovery.config import PipelineConfig, Settings
+from llmgenecircuitdiscovery.datasets import load_dataset
+from llmgenecircuitdiscovery.deg import compute_top_degs
+from llmgenecircuitdiscovery.depmap import DepMapClient
+from llmgenecircuitdiscovery.grn import AnthropicResearchClient, OpenAIResearchClient, PubMedHeuristicResearchClient, ResearchClient
+from llmgenecircuitdiscovery.models import (
     BenchmarkReport,
     ExperimentResult,
     PipelineRunSummary,
     PriorKnowledgeSummary,
     ResearchExecutionSummary,
 )
-from cathy_biology.priors import PriorKnowledgeBuilder
-from cathy_biology.render import render_circular_graph_png
-from cathy_biology.utils import ensure_directory, timestamped_output_dir, write_json
+from llmgenecircuitdiscovery.priors import PriorKnowledgeBuilder
+from llmgenecircuitdiscovery.render import render_circular_graph_png
+from llmgenecircuitdiscovery.utils import ensure_directory, timestamped_output_dir, write_json
 
 
 async def execute_pipeline(
@@ -292,7 +292,7 @@ def _benchmark_candidates_from_graph(graph: nx.DiGraph) -> list[str]:
 
 
 def cache_dir_alias_builder(cache_dir: Path):
-    from cathy_biology.aliases import GeneAliasResolver
+    from llmgenecircuitdiscovery.aliases import GeneAliasResolver
 
     return GeneAliasResolver(cache_dir / "aliases")
 

@@ -13,8 +13,8 @@ import scanpy as sc
 from anndata import AnnData
 from scipy.io import mmread
 
-from cathy_biology.config import DatasetConfig, QcConfig, Settings
-from cathy_biology.utils import ensure_directory
+from llmgenecircuitdiscovery.config import DatasetConfig, QcConfig, Settings
+from llmgenecircuitdiscovery.utils import ensure_directory
 
 
 def load_dataset(dataset_config: DatasetConfig, qc_config: QcConfig, settings: Settings) -> AnnData:

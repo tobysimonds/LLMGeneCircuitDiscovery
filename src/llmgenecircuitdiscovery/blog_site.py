@@ -8,8 +8,8 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-from cathy_biology.site import _attach_graph_evidence, _build_edge_evidence_index, _build_full_edge_index, _normalize_graph
-from cathy_biology.utils import ensure_directory, write_json
+from llmgenecircuitdiscovery.site import _attach_graph_evidence, _build_edge_evidence_index, _build_full_edge_index, _normalize_graph
+from llmgenecircuitdiscovery.utils import ensure_directory, write_json
 
 REQUIRED_RUN_FILES = {
     "summary": "summary.json",

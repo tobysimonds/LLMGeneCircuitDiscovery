@@ -8,9 +8,9 @@ from typing import Any
 from anthropic import AsyncAnthropic
 from pydantic import BaseModel, Field
 
-from cathy_biology.config import Settings
-from cathy_biology.grn import _anthropic_message_to_dict, _parse_json_payload
-from cathy_biology.utils import ensure_directory, write_json
+from llmgenecircuitdiscovery.config import Settings
+from llmgenecircuitdiscovery.grn import _anthropic_message_to_dict, _parse_json_payload
+from llmgenecircuitdiscovery.utils import ensure_directory, write_json
 
 
 class LlmKnockoutCandidate(BaseModel):

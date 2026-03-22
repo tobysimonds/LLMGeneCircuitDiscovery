@@ -5,7 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from cathy_biology.utils import ensure_directory
+from llmgenecircuitdiscovery.utils import ensure_directory
 
 
 def render_circular_graph_png(graph: nx.DiGraph, output_path: Path, *, title: str) -> Path:

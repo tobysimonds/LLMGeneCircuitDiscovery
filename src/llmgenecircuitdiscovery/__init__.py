@@ -1,6 +1,6 @@
 import anndata as ad
 
-from cathy_biology.cli import main
+from llmgenecircuitdiscovery.cli import main
 
 ad.settings.allow_write_nullable_strings = True
 

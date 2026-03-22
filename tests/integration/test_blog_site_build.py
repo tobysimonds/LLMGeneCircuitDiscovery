@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from cathy_biology.blog_site import build_blog_site
+from llmgenecircuitdiscovery.blog_site import build_blog_site
 
 
 MINIMAL_PNG = bytes.fromhex(

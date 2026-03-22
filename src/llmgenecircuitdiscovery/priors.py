@@ -7,10 +7,10 @@ from pathlib import Path
 
 import httpx
 
-from cathy_biology.aliases import GeneAliasResolver
-from cathy_biology.config import GrnConfig, Settings
-from cathy_biology.models import EvidenceClassScores, GeneInteraction, PriorKnowledgeSummary, ResolvedEntity
-from cathy_biology.utils import ensure_directory, write_json
+from llmgenecircuitdiscovery.aliases import GeneAliasResolver
+from llmgenecircuitdiscovery.config import GrnConfig, Settings
+from llmgenecircuitdiscovery.models import EvidenceClassScores, GeneInteraction, PriorKnowledgeSummary, ResolvedEntity
+from llmgenecircuitdiscovery.utils import ensure_directory, write_json
 
 
 class PriorKnowledgeBuilder:

@@ -9,11 +9,11 @@ from anndata import AnnData
 from scipy.io import mmwrite
 from scipy.sparse import csr_matrix
 
-from cathy_biology.config import PipelineConfig, Settings
-from cathy_biology.depmap import DepMapClient
-from cathy_biology.grn import MockResearchClient
-from cathy_biology.models import BenchmarkGeneResult, BenchmarkReport, EvidenceClassScores, GeneInteraction
-from cathy_biology.pipeline import run_pipeline
+from llmgenecircuitdiscovery.config import PipelineConfig, Settings
+from llmgenecircuitdiscovery.depmap import DepMapClient
+from llmgenecircuitdiscovery.grn import MockResearchClient
+from llmgenecircuitdiscovery.models import BenchmarkGeneResult, BenchmarkReport, EvidenceClassScores, GeneInteraction
+from llmgenecircuitdiscovery.pipeline import run_pipeline
 
 
 class StubDepMapClient(DepMapClient):
@@ -164,7 +164,7 @@ def test_mtx_bundle_loader_integration(tmp_path: Path) -> None:
     annotations_path = tmp_path / "annotations.tsv.gz"
     annotations.to_csv(annotations_path, sep="\t", index=False, compression="gzip")
 
-    from cathy_biology.datasets import load_mtx_bundle
+    from llmgenecircuitdiscovery.datasets import load_mtx_bundle
 
     adata = load_mtx_bundle(bundle_dir)
     adata.obs = adata.obs.join(annotations.set_index("cell_id"), how="left", rsuffix="_annotation")

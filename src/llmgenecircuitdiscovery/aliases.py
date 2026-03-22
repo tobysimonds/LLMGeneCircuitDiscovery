@@ -6,8 +6,8 @@ from typing import Iterable
 
 import httpx
 
-from cathy_biology.models import ResolvedEntity
-from cathy_biology.utils import ensure_directory
+from llmgenecircuitdiscovery.models import ResolvedEntity
+from llmgenecircuitdiscovery.utils import ensure_directory
 
 
 class GeneAliasResolver:
