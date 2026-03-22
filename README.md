@@ -1,4 +1,4 @@
-# Cathy Biology
+# LLMGeneCircuitDiscovery
 
 `LLMGeneCircuitDiscovery` is a uv-managed Python application that implements a three-stage DEG-to-network target discovery pipeline:
 
