@@ -13,6 +13,7 @@ REQUIRED_RUN_FILES = {
     "summary": "summary.json",
     "top_degs": "top_degs.json",
     "analysis_interactions": "analysis_interactions.json",
+    "regulatory_graph_full": "regulatory_graph_full.json",
     "regulatory_graph": "regulatory_graph.json",
     "regulatory_graph_projected": "regulatory_graph_projected.json",
     "deg_graph_with_llm": "deg_graph_with_llm.json",
@@ -90,6 +91,7 @@ def _build_site_bundle(run_dir: Path) -> dict[str, Any]:
     experiment_report = json.loads((run_dir / REQUIRED_RUN_FILES["experiment_report"]).read_text(encoding="utf-8"))
     research_execution = json.loads((run_dir / REQUIRED_RUN_FILES["research_execution"]).read_text(encoding="utf-8"))
     prior_knowledge = json.loads((run_dir / REQUIRED_RUN_FILES["prior_knowledge"]).read_text(encoding="utf-8"))
+    full_graph = _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["regulatory_graph_full"]).read_text(encoding="utf-8")))
     graphs = {
         "selected": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["regulatory_graph"]).read_text(encoding="utf-8"))),
         "projected": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["regulatory_graph_projected"]).read_text(encoding="utf-8"))),
@@ -97,10 +99,11 @@ def _build_site_bundle(run_dir: Path) -> dict[str, Any]:
         "deg_prior": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["deg_graph_prior_only"]).read_text(encoding="utf-8"))),
     }
     edge_evidence = _build_edge_evidence_index(analysis_interactions)
+    full_edge_index = _build_full_edge_index(full_graph)
     node_profiles = _build_node_profiles(graphs, analysis_interactions, top_degs, benchmark_report)
 
     for graph in graphs.values():
-        _attach_graph_evidence(graph, edge_evidence)
+        _attach_graph_evidence(graph, edge_evidence, full_edge_index)
 
     top_hit = knockout_hits[0]["knocked_out_genes"] if knockout_hits else []
     return {
@@ -164,6 +167,7 @@ def _normalize_graph(raw_graph: dict[str, Any]) -> dict[str, Any]:
                 "evidence_scores": edge.get("evidence_scores", {}),
                 "benchmark_support_score": edge.get("benchmark_support_score", 0.0),
                 "direct_evidence": [],
+                "step_evidence": [],
             }
             for edge in raw_graph.get("edges", [])
         ],
@@ -200,10 +204,54 @@ def _build_edge_evidence_index(analysis_interactions: list[dict[str, Any]]) -> d
     return index
 
 
-def _attach_graph_evidence(graph: dict[str, Any], edge_evidence: dict[tuple[str, str, int], list[dict[str, Any]]]) -> None:
+def _build_full_edge_index(full_graph: dict[str, Any]) -> dict[tuple[str, str], list[dict[str, Any]]]:
+    index: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for edge in full_graph["edges"]:
+        index.setdefault((edge["source"], edge["target"]), []).append(edge)
+    return index
+
+
+def _attach_graph_evidence(
+    graph: dict[str, Any],
+    edge_evidence: dict[tuple[str, str, int], list[dict[str, Any]]],
+    full_edge_index: dict[tuple[str, str], list[dict[str, Any]]],
+) -> None:
     for edge in graph["edges"]:
         key = (edge["source"], edge["target"], int(edge["sign"]))
         edge["direct_evidence"] = edge_evidence.get(key, [])
+        edge["step_evidence"] = _build_step_evidence(edge, edge_evidence, full_edge_index)
+
+
+def _build_step_evidence(
+    edge: dict[str, Any],
+    edge_evidence: dict[tuple[str, str, int], list[dict[str, Any]]],
+    full_edge_index: dict[tuple[str, str], list[dict[str, Any]]],
+) -> list[dict[str, Any]]:
+    path = edge.get("collapsed_path") or []
+    if len(path) < 2:
+        return []
+
+    steps: list[dict[str, Any]] = []
+    for source, target in zip(path[:-1], path[1:], strict=True):
+        full_edges = full_edge_index.get((source, target), [])
+        direct = []
+        for full_edge in full_edges:
+            direct.extend(edge_evidence.get((source, target, int(full_edge.get("sign", 0))), []))
+        provenance = sorted({item for full_edge in full_edges for item in full_edge.get("provenance", [])})
+        collapsed_via = []
+        for full_edge in full_edges:
+            collapsed_via.extend(full_edge.get("collapsed_via", []))
+        steps.append(
+            {
+                "source": source,
+                "target": target,
+                "provenance": provenance,
+                "collapsed_via": sorted(set(collapsed_via)),
+                "direct_evidence": direct,
+                "confidence": max((full_edge.get("confidence") or full_edge.get("weight") or 0.0) for full_edge in full_edges) if full_edges else None,
+            }
+        )
+    return steps
 
 
 def _build_node_profiles(
@@ -696,9 +744,10 @@ function renderGraph() {
   document.getElementById("graph-title").textContent = GRAPH_LABELS[state.currentGraphKey];
   document.getElementById("graph-stats").innerHTML =
     `<span>${graph.nodes.length} nodes</span><span>${graph.edges.length} edges</span>`;
+  const positionedNodes = buildCircularNodeLayout(graph.nodes);
 
   const visNodes = new vis.DataSet(
-    graph.nodes.map((node) => ({
+    positionedNodes.map((node) => ({
       id: node.id,
       label: node.id,
       color: kindColors[node.kind] || kindColors.unknown,
@@ -706,6 +755,8 @@ function renderGraph() {
       size: node.kind === "boss" ? 22 : node.kind === "pathway" ? 18 : 14,
       font: { color: "#111111", face: "Space Grotesk", size: 14 },
       borderWidth: 1,
+      x: node.x,
+      y: node.y,
     })),
   );
   const visEdges = new vis.DataSet(
@@ -733,7 +784,7 @@ function renderGraph() {
     {
       interaction: { hover: true, navigationButtons: true, keyboard: true },
       physics: { enabled: false },
-      layout: { improvedLayout: true },
+      layout: { improvedLayout: false },
     },
   );
   state.network.on("click", (params) => handleGraphClick(params, graph));
@@ -827,6 +878,33 @@ function renderEdgeCard(edge) {
           <div class="mono">${renderRefs(item.source_refs || [], item.pmid_citations || [])}</div>
         </div>`).join("")
     : `<div class="muted">No direct LLM evidence stored for this edge. This usually means it came from curated priors or a collapsed projected path.</div>`;
+  const stepEvidence = (edge.step_evidence || []).length
+    ? `
+      <div>
+        <strong>Collapsed pathway support</strong>
+        <div class="evidence-list">
+          ${edge.step_evidence.map((step) => `
+            <div class="evidence-card">
+              <strong>${step.source} → ${step.target}</strong>
+              <div>confidence: ${fmt(step.confidence)}</div>
+              <div>provenance: ${(step.provenance || []).join(", ") || "none"}</div>
+              ${step.collapsed_via?.length ? `<div class="tag-row"><span class="tag">via ${escapeHtml(step.collapsed_via.join(" → "))}</span></div>` : ""}
+              ${(step.direct_evidence || []).length ? `
+                <div class="evidence-list">
+                  ${step.direct_evidence.map((item) => `
+                    <div class="evidence-card">
+                      <div class="muted">${escapeHtml(item.evidence_summary || "No summary")}</div>
+                      <div class="tag-row">
+                        <span class="tag">conf ${fmt(item.confidence_score)}</span>
+                        ${(item.provenance_sources || []).map((source) => `<span class="tag">${escapeHtml(source)}</span>`).join("")}
+                      </div>
+                      <div class="mono">${renderRefs(item.source_refs || [], item.pmid_citations || [])}</div>
+                    </div>
+                  `).join("")}
+                </div>` : `<div class="muted">No direct model citation stored for this step.</div>`}
+            </div>`).join("")}
+        </div>
+      </div>` : "";
   const collapsed = edge.collapsed_via?.length
     ? `<div class="tag-row"><span class="tag">collapsed via ${escapeHtml(edge.collapsed_via.join(" → "))}</span></div>`
     : "";
@@ -838,7 +916,21 @@ function renderEdgeCard(edge) {
       <div>provenance: ${(edge.provenance || []).join(", ") || "none"}</div>
       ${collapsed}
       <div class="evidence-list">${evidenceHtml}</div>
+      ${stepEvidence}
     </div>`;
+}
+
+function buildCircularNodeLayout(nodes) {
+  const ordered = [...nodes].sort((a, b) => a.id.localeCompare(b.id));
+  const radius = Math.max(260, ordered.length * 8);
+  return ordered.map((node, index) => {
+    const angle = (Math.PI * 2 * index) / Math.max(ordered.length, 1);
+    return {
+      ...node,
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+    };
+  });
 }
 
 function renderDataPanels(bundle) {
