@@ -300,24 +300,26 @@ class OpenAIResearchClient:
         discovery_cache_path = self.discovery_cache_dir / f"{gene}.json"
         verification_cache_path = self.verification_cache_dir / f"{gene}.json"
         if discovery_cache_path.exists() and verification_cache_path.exists():
+            cached_discovery = GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8"))
+            cached_verification = GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8"))
             discovery_result = _normalize_research_result(
-                GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8")),
+                cached_discovery,
                 seed_gene=gene,
                 deg_universe=deg_universe,
                 prior_knowledge=prior_knowledge,
                 grn_config=grn_config,
-                model_name=grn_config.model,
-                phase="discovery",
+                model_name=cached_discovery.raw_model or grn_config.model,
+                phase=cached_discovery.phase or "discovery",
                 alias_resolver=self.alias_resolver,
             )
             verification_result = _normalize_research_result(
-                GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8")),
+                cached_verification,
                 seed_gene=gene,
                 deg_universe=deg_universe,
                 prior_knowledge=prior_knowledge,
                 grn_config=grn_config,
-                model_name=grn_config.parser_model if grn_config.enable_verification else grn_config.model,
-                phase="verification" if grn_config.enable_verification else "discovery",
+                model_name=cached_verification.raw_model or (grn_config.parser_model if grn_config.enable_verification else grn_config.model),
+                phase=cached_verification.phase or ("verification" if grn_config.enable_verification else "discovery"),
                 alias_resolver=self.alias_resolver,
             )
             return discovery_result, verification_result
@@ -493,24 +495,26 @@ class AnthropicResearchClient:
         discovery_cache_path = self.discovery_cache_dir / f"{gene}.json"
         verification_cache_path = self.verification_cache_dir / f"{gene}.json"
         if discovery_cache_path.exists() and verification_cache_path.exists():
+            cached_discovery = GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8"))
+            cached_verification = GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8"))
             discovery_result = _normalize_research_result(
-                GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8")),
+                cached_discovery,
                 seed_gene=gene,
                 deg_universe=deg_universe,
                 prior_knowledge=prior_knowledge,
                 grn_config=grn_config,
-                model_name=grn_config.model,
-                phase="discovery",
+                model_name=cached_discovery.raw_model or grn_config.model,
+                phase=cached_discovery.phase or "discovery",
                 alias_resolver=self.alias_resolver,
             )
             verification_result = _normalize_research_result(
-                GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8")),
+                cached_verification,
                 seed_gene=gene,
                 deg_universe=deg_universe,
                 prior_knowledge=prior_knowledge,
                 grn_config=grn_config,
-                model_name=grn_config.parser_model if grn_config.enable_verification else grn_config.model,
-                phase="verification" if grn_config.enable_verification else "discovery",
+                model_name=cached_verification.raw_model or (grn_config.parser_model if grn_config.enable_verification else grn_config.model),
+                phase=cached_verification.phase or ("verification" if grn_config.enable_verification else "discovery"),
                 alias_resolver=self.alias_resolver,
             )
             return discovery_result, verification_result

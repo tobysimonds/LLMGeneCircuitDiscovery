@@ -12,10 +12,14 @@ from cathy_biology.utils import ensure_directory, write_json
 REQUIRED_RUN_FILES = {
     "summary": "summary.json",
     "top_degs": "top_degs.json",
-    "gene_interactions": "gene_interactions.json",
+    "analysis_interactions": "analysis_interactions.json",
     "regulatory_graph": "regulatory_graph.json",
+    "regulatory_graph_projected": "regulatory_graph_projected.json",
+    "deg_graph_with_llm": "deg_graph_with_llm.json",
+    "deg_graph_prior_only": "deg_graph_prior_only.json",
     "knockout_hits": "knockout_hits.json",
     "benchmark_report": "benchmark_report.json",
+    "pre_simulation_benchmark": "pre_simulation_benchmark.json",
     "experiment_report": "experiment_report.json",
     "research_execution": "research_execution.json",
     "prior_knowledge": "prior_knowledge.json",
@@ -32,11 +36,12 @@ def build_results_site(
     output_dir = ensure_directory(output_dir)
     data_dir = ensure_directory(output_dir / "data")
 
-    primary_payload = _copy_run_bundle(primary_run_dir, data_dir, slug="primary", label="Primary run")
     manifest: dict[str, Any] = {
         "title": title,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "runs": {"primary": primary_payload},
+        "runs": {
+            "primary": _copy_run_bundle(primary_run_dir, data_dir, slug="primary", label="Primary run"),
+        },
     }
     if baseline_run_dir is not None:
         manifest["runs"]["baseline"] = _copy_run_bundle(baseline_run_dir, data_dir, slug="baseline", label="Baseline run")
@@ -52,98 +57,189 @@ def _copy_run_bundle(run_dir: Path, data_root: Path, *, slug: str, label: str) -
     if not run_dir.exists():
         raise FileNotFoundError(f"Run directory does not exist: {run_dir}")
     target_dir = ensure_directory(data_root / slug)
-    summary_source = run_dir / REQUIRED_RUN_FILES["summary"]
-    if not summary_source.exists():
-        raise FileNotFoundError(f"Run directory {run_dir} is missing required artifact summary.json.")
-    summary = json.loads(summary_source.read_text(encoding="utf-8"))
-    legacy_fallbacks = _legacy_run_fallbacks(summary, label)
-
-    copied_files: dict[str, str] = {}
-    for logical_name, filename in REQUIRED_RUN_FILES.items():
+    for filename in REQUIRED_RUN_FILES.values():
         source = run_dir / filename
-        if source.exists():
-            shutil.copy2(source, target_dir / filename)
-        elif logical_name in legacy_fallbacks:
-            write_json(target_dir / filename, legacy_fallbacks[logical_name])
-        else:
+        if not source.exists():
             raise FileNotFoundError(f"Run directory {run_dir} is missing required artifact {filename}.")
-        copied_files[logical_name] = f"data/{slug}/{filename}"
+        shutil.copy2(source, target_dir / filename)
 
-    benchmark = json.loads((run_dir / "benchmark_report.json").read_text(encoding="utf-8"))
-    knockout_hits = json.loads((run_dir / "knockout_hits.json").read_text(encoding="utf-8"))
+    payload = _build_site_bundle(target_dir)
+    write_json(target_dir / "site_bundle.json", payload)
+
+    summary = payload["summary"]
     return {
         "slug": slug,
         "label": label,
         "source_dir": str(run_dir),
-        "selected_experiment": summary.get("selected_experiment"),
-        "graph_nodes": summary.get("graph_nodes"),
-        "graph_edges": summary.get("graph_edges"),
-        "dataset_cells": summary.get("dataset_cells"),
-        "dataset_genes": summary.get("dataset_genes"),
-        "deg_count": len(summary.get("degs", [])),
-        "top_hit": knockout_hits[0]["knocked_out_genes"] if knockout_hits else [],
-        "benchmark_model_count": benchmark.get("model_count", 0),
-        "benchmark_hit_count": sum(1 for result in benchmark.get("results", []) if result.get("benchmark_hit")),
-        "files": copied_files,
+        "bundle": f"data/{slug}/site_bundle.json",
+        "graph_nodes": summary["graph_nodes"],
+        "graph_edges": summary["graph_edges"],
+        "dataset_cells": summary["dataset_cells"],
+        "dataset_genes": summary["dataset_genes"],
+        "top_hit": summary["top_hit"],
     }
 
 
-def _legacy_run_fallbacks(summary: dict[str, Any], label: str) -> dict[str, Any]:
-    benchmark_report = summary.get(
-        "benchmark_report",
-        {
-            "release": "legacy",
-            "lineage_filter": [],
-            "primary_disease_filter": [],
-            "model_count": 0,
-            "stage": "final",
-            "results": [],
-        },
-    )
-    knockout_hits = summary.get("knockout_hits", [])
-    experiment_name = summary.get("selected_experiment") or label.lower().replace(" ", "-")
+def _build_site_bundle(run_dir: Path) -> dict[str, Any]:
+    summary = json.loads((run_dir / REQUIRED_RUN_FILES["summary"]).read_text(encoding="utf-8"))
+    top_degs = json.loads((run_dir / REQUIRED_RUN_FILES["top_degs"]).read_text(encoding="utf-8"))
+    analysis_interactions = json.loads((run_dir / REQUIRED_RUN_FILES["analysis_interactions"]).read_text(encoding="utf-8"))
+    knockout_hits = json.loads((run_dir / REQUIRED_RUN_FILES["knockout_hits"]).read_text(encoding="utf-8"))
+    benchmark_report = json.loads((run_dir / REQUIRED_RUN_FILES["benchmark_report"]).read_text(encoding="utf-8"))
+    pre_benchmark_report = json.loads((run_dir / REQUIRED_RUN_FILES["pre_simulation_benchmark"]).read_text(encoding="utf-8"))
+    experiment_report = json.loads((run_dir / REQUIRED_RUN_FILES["experiment_report"]).read_text(encoding="utf-8"))
+    research_execution = json.loads((run_dir / REQUIRED_RUN_FILES["research_execution"]).read_text(encoding="utf-8"))
+    prior_knowledge = json.loads((run_dir / REQUIRED_RUN_FILES["prior_knowledge"]).read_text(encoding="utf-8"))
+    graphs = {
+        "selected": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["regulatory_graph"]).read_text(encoding="utf-8"))),
+        "projected": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["regulatory_graph_projected"]).read_text(encoding="utf-8"))),
+        "deg_llm": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["deg_graph_with_llm"]).read_text(encoding="utf-8"))),
+        "deg_prior": _normalize_graph(json.loads((run_dir / REQUIRED_RUN_FILES["deg_graph_prior_only"]).read_text(encoding="utf-8"))),
+    }
+    edge_evidence = _build_edge_evidence_index(analysis_interactions)
+    node_profiles = _build_node_profiles(graphs, analysis_interactions, top_degs, benchmark_report)
+
+    for graph in graphs.values():
+        _attach_graph_evidence(graph, edge_evidence)
+
+    top_hit = knockout_hits[0]["knocked_out_genes"] if knockout_hits else []
     return {
-        "top_degs": summary.get("degs", []),
+        "summary": {
+            "dataset_cells": summary.get("dataset_cells"),
+            "dataset_genes": summary.get("dataset_genes"),
+            "graph_nodes": summary.get("graph_nodes"),
+            "graph_edges": summary.get("graph_edges"),
+            "selected_experiment": summary.get("selected_experiment"),
+            "top_hit": top_hit,
+            "knockout_count": len(knockout_hits),
+            "benchmark_model_count": benchmark_report.get("model_count", 0),
+        },
+        "graphs": graphs,
+        "node_profiles": node_profiles,
+        "top_degs": [
+            {
+                "gene": row.get("gene"),
+                "log2_fold_change": row.get("log2_fold_change"),
+                "adjusted_pvalue": row.get("adjusted_pvalue"),
+            }
+            for row in top_degs
+        ],
         "knockout_hits": knockout_hits,
         "benchmark_report": benchmark_report,
-        "research_execution": summary.get(
-            "research_execution",
-            {
-                "requested_backend": "legacy-artifact",
-                "configured_model": "legacy-artifact",
-                "parser_model": "legacy-artifact",
-                "total_genes": len(summary.get("degs", [])),
-                "result_model_counts": {},
-                "fallback_gene_count": 0,
-            },
-        ),
-        "prior_knowledge": summary.get(
-            "prior_knowledge",
-            {
-                "node_count": 0,
-                "edge_count": 0,
-                "source_counts": {},
-                "nodes": [],
-                "edges": [],
-            },
-        ),
-        "experiment_report": summary.get(
-            "experiment_results",
-            [
-                {
-                    "name": experiment_name,
-                    "description": "Legacy run synthesized from summary artifacts.",
-                    "graph_nodes": summary.get("graph_nodes", 0),
-                    "graph_edges": summary.get("graph_edges", 0),
-                    "knockout_hits": knockout_hits,
-                    "benchmark_report": benchmark_report,
-                    "pruned_genes": [],
-                    "score": knockout_hits[0].get("score", -1_000.0) if knockout_hits else -1_000.0,
-                    "selected": True,
-                }
-            ],
-        ),
+        "pre_simulation_benchmark": pre_benchmark_report,
+        "experiment_report": experiment_report,
+        "research_execution": research_execution,
+        "prior_knowledge": {
+            "node_count": prior_knowledge.get("node_count", 0),
+            "edge_count": prior_knowledge.get("edge_count", 0),
+            "source_counts": prior_knowledge.get("source_counts", {}),
+        },
     }
+
+
+def _normalize_graph(raw_graph: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "nodes": [
+            {
+                "id": node.get("id"),
+                "kind": node.get("kind", "unknown"),
+                "logic_mode": node.get("logic_mode", ""),
+                "basal_state": node.get("basal_state", 0),
+                "activation_threshold": node.get("activation_threshold"),
+                "inhibition_dominance": node.get("inhibition_dominance"),
+            }
+            for node in raw_graph.get("nodes", [])
+        ],
+        "edges": [
+            {
+                "source": edge.get("source"),
+                "target": edge.get("target"),
+                "sign": edge.get("sign", 1),
+                "weight": edge.get("weight"),
+                "confidence": edge.get("confidence"),
+                "provenance": edge.get("provenance", []),
+                "collapsed_via": edge.get("collapsed_via", []),
+                "collapsed_path": edge.get("collapsed_path", []),
+                "path_length": edge.get("path_length"),
+                "evidence_scores": edge.get("evidence_scores", {}),
+                "benchmark_support_score": edge.get("benchmark_support_score", 0.0),
+                "direct_evidence": [],
+            }
+            for edge in raw_graph.get("edges", [])
+        ],
+    }
+
+
+def _build_edge_evidence_index(analysis_interactions: list[dict[str, Any]]) -> dict[tuple[str, str, int], list[dict[str, Any]]]:
+    index: dict[tuple[str, str, int], list[dict[str, Any]]] = {}
+    for result in analysis_interactions:
+        seed_gene = result.get("source_gene")
+        for edge in result.get("interactions", []):
+            key = (
+                edge.get("source_gene"),
+                edge.get("target"),
+                int(edge.get("interaction_type", 0)),
+            )
+            index.setdefault(key, []).append(
+                {
+                    "seed_gene": seed_gene,
+                    "source_gene": edge.get("source_gene"),
+                    "target": edge.get("target"),
+                    "interaction_type": edge.get("interaction_type"),
+                    "confidence_score": edge.get("confidence_score"),
+                    "evidence_summary": edge.get("evidence_summary", ""),
+                    "pmid_citations": edge.get("pmid_citations", []),
+                    "source_refs": edge.get("source_refs", []),
+                    "provenance_sources": edge.get("provenance_sources", []),
+                    "source_type": edge.get("source_type", "unknown"),
+                    "target_type": edge.get("target_type", "unknown"),
+                    "mechanistic_depth": edge.get("mechanistic_depth", 1),
+                    "evidence_scores": edge.get("evidence_scores", {}),
+                }
+            )
+    return index
+
+
+def _attach_graph_evidence(graph: dict[str, Any], edge_evidence: dict[tuple[str, str, int], list[dict[str, Any]]]) -> None:
+    for edge in graph["edges"]:
+        key = (edge["source"], edge["target"], int(edge["sign"]))
+        edge["direct_evidence"] = edge_evidence.get(key, [])
+
+
+def _build_node_profiles(
+    graphs: dict[str, dict[str, Any]],
+    analysis_interactions: list[dict[str, Any]],
+    top_degs: list[dict[str, Any]],
+    benchmark_report: dict[str, Any],
+) -> dict[str, Any]:
+    deg_index = {row["gene"]: row for row in top_degs}
+    benchmark_index = {row["gene_symbol"]: row for row in benchmark_report.get("results", [])}
+    interaction_index: dict[str, dict[str, list[dict[str, Any]]]] = {}
+    for result in analysis_interactions:
+        for edge in result.get("interactions", []):
+            interaction_index.setdefault(edge["source_gene"], {"outgoing": [], "incoming": []})["outgoing"].append(edge)
+            interaction_index.setdefault(edge["target"], {"outgoing": [], "incoming": []})["incoming"].append(edge)
+
+    profiles: dict[str, Any] = {}
+    all_nodes = {node["id"] for graph in graphs.values() for node in graph["nodes"]}
+    for node_id in sorted(all_nodes):
+        graph_presence = {}
+        for graph_name, graph in graphs.items():
+            incoming = [edge for edge in graph["edges"] if edge["target"] == node_id]
+            outgoing = [edge for edge in graph["edges"] if edge["source"] == node_id]
+            if incoming or outgoing or any(node["id"] == node_id for node in graph["nodes"]):
+                graph_presence[graph_name] = {
+                    "incoming_count": len(incoming),
+                    "outgoing_count": len(outgoing),
+                }
+        profiles[node_id] = {
+            "node_id": node_id,
+            "deg_stats": deg_index.get(node_id),
+            "benchmark": benchmark_index.get(node_id),
+            "interactions": interaction_index.get(node_id, {"outgoing": [], "incoming": []}),
+            "graph_presence": graph_presence,
+        }
+    return profiles
 
 
 HTML_TEMPLATE = """<!DOCTYPE html>
@@ -154,175 +250,89 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <title>__SITE_TITLE__</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="background-orb orb-a"></div>
-    <div class="background-orb orb-b"></div>
-    <header class="hero reveal">
-      <div class="hero-copy">
-        <p class="eyebrow">Interactive run atlas</p>
-        <h1 id="hero-title">__SITE_TITLE__</h1>
-        <p id="hero-summary" class="hero-summary">Loading run metadata...</p>
-        <div id="hero-pills" class="hero-pills"></div>
+    <div class="page-bg"></div>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Interactive evidence explorer</p>
+        <h1 id="site-title">__SITE_TITLE__</h1>
+        <p id="hero-summary" class="hero-summary">Loading final run...</p>
       </div>
-      <aside class="hero-panel">
-        <p class="panel-label">Selected run</p>
-        <h2 id="hero-run-name">Loading...</h2>
-        <dl class="hero-stats">
-          <div>
-            <dt>Graph</dt>
-            <dd id="hero-graph">-</dd>
-          </div>
-          <div>
-            <dt>Knockouts</dt>
-            <dd id="hero-hits">-</dd>
-          </div>
-          <div>
-            <dt>Benchmark</dt>
-            <dd id="hero-benchmark">-</dd>
-          </div>
-        </dl>
-      </aside>
+      <div class="hero-controls">
+        <label>
+          <span>Run</span>
+          <select id="run-select"></select>
+        </label>
+        <label>
+          <span>Graph view</span>
+          <select id="graph-select"></select>
+        </label>
+        <label>
+          <span>Find node</span>
+          <input id="node-search" type="search" placeholder="SOX2, EFS, KRAS..." />
+        </label>
+      </div>
     </header>
 
-    <main class="page-shell">
-      <section class="metric-grid reveal" id="overview-metrics"></section>
-
-      <section class="section reveal">
-        <div class="section-heading">
+    <main class="layout">
+      <section class="panel graph-panel">
+        <div class="panel-heading">
           <div>
-            <p class="eyebrow">Run comparison</p>
-            <h2>Baseline versus upgraded system</h2>
+            <p class="eyebrow">Graph explorer</p>
+            <h2 id="graph-title">Graph</h2>
           </div>
-          <p class="section-copy">Compare graph density, knockout outcomes, and benchmark support between the latest run and the baseline reference.</p>
+          <div id="graph-stats" class="graph-stats"></div>
         </div>
-        <div id="comparison-grid" class="comparison-grid"></div>
+        <div class="legend">
+          <span><i class="swatch deg"></i> DEG</span>
+          <span><i class="swatch pathway"></i> Pathway</span>
+          <span><i class="swatch prior"></i> Prior / intermediate</span>
+          <span><i class="swatch boss"></i> Boss node</span>
+          <span><i class="swatch act"></i> Activation</span>
+          <span><i class="swatch inh"></i> Inhibition</span>
+        </div>
+        <div id="network" class="network"></div>
       </section>
 
-      <section class="section reveal">
-        <div class="section-heading">
+      <aside class="panel inspector-panel">
+        <div class="panel-heading">
           <div>
-            <p class="eyebrow">Experiment ablations</p>
-            <h2>Which architecture variants actually helped?</h2>
+            <p class="eyebrow">Inspector</p>
+            <h2 id="inspector-title">Click a node or edge</h2>
           </div>
-          <p class="section-copy">Each card reflects the exact experiment report emitted by the pipeline, including pruning effects and benchmark outcomes.</p>
         </div>
-        <div id="experiment-grid" class="experiment-grid"></div>
-      </section>
+        <div id="inspector-body" class="inspector-body"></div>
+      </aside>
 
-      <section class="section reveal">
-        <div class="section-heading">
+      <section class="panel data-panel">
+        <div class="panel-heading">
           <div>
-            <p class="eyebrow">Network explorer</p>
-            <h2>Mechanistic graph</h2>
+            <p class="eyebrow">Top findings</p>
+            <h2>Knockouts, benchmarks, and DEGs</h2>
           </div>
-          <p class="section-copy">Explore the selected run's directed network. Search for genes, filter node classes, and inspect edge provenance and sign.</p>
         </div>
-        <div class="network-controls">
-          <label class="search-shell">
-            <span>Jump to gene</span>
-            <input id="network-search" type="search" placeholder="EGFR, KRAS, SOX2..." />
-          </label>
-          <button id="network-focus" class="ghost-button" type="button">Focus</button>
-          <button id="network-physics" class="ghost-button" type="button">Pause motion</button>
-        </div>
-        <div id="network-kind-filters" class="chip-row"></div>
-        <div class="network-layout">
-          <div id="network-canvas" class="network-canvas"></div>
-          <aside class="network-sidepanel">
-            <h3>Legend</h3>
-            <ul id="network-legend" class="legend-list"></ul>
-            <div class="network-callout">
-              <p class="panel-label">Selected knockout</p>
-              <div id="network-hit-callout">No lethal combination recorded for this run.</div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="section reveal split-section">
-        <div class="chart-card">
-          <div class="section-heading compact">
-            <div>
-              <p class="eyebrow">Top DEGs</p>
-              <h2>Largest malignant versus normal shifts</h2>
-            </div>
-          </div>
-          <canvas id="deg-chart" height="320"></canvas>
-        </div>
-        <div class="chart-card">
-          <div class="section-heading compact">
-            <div>
-              <p class="eyebrow">Benchmark</p>
-              <h2>Dependency support for nominated genes</h2>
-            </div>
-          </div>
-          <canvas id="benchmark-chart" height="320"></canvas>
-        </div>
-      </section>
-
-      <section class="section reveal split-section">
-        <div class="data-card">
-          <div class="section-heading compact">
-            <div>
-              <p class="eyebrow">Knockout outcomes</p>
-              <h2>Cheat-code candidates</h2>
-            </div>
-          </div>
-          <div id="knockout-grid" class="stack-grid"></div>
-        </div>
-        <div class="data-card">
-          <div class="section-heading compact">
-            <div>
-              <p class="eyebrow">Verified literature edges</p>
-              <h2>LLM-backed mechanistic evidence</h2>
-            </div>
-          </div>
-          <div id="interaction-list" class="interaction-list"></div>
-        </div>
-      </section>
-
-      <section class="section reveal">
-        <div class="section-heading">
+        <div id="summary-cards" class="summary-cards"></div>
+        <div class="split">
           <div>
-            <p class="eyebrow">Benchmark table</p>
-            <h2>DepMap and RNAi support</h2>
+            <h3>Knockout suggestions</h3>
+            <div id="knockout-list" class="stack"></div>
           </div>
-          <p class="section-copy">More negative gene-effect values are better. The table reflects the selected experiment's final benchmark report.</p>
-        </div>
-        <div class="table-shell">
-          <table>
-            <thead>
-              <tr>
-                <th>Gene</th>
-                <th>Mean CRISPR effect</th>
-                <th>Hit rate</th>
-                <th>Driver alignment</th>
-                <th>Combined support</th>
-                <th>Benchmark hit</th>
-              </tr>
-            </thead>
-            <tbody id="benchmark-table"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="section reveal">
-        <div class="section-heading">
           <div>
-            <p class="eyebrow">Run diagnostics</p>
-            <h2>Research execution and provenance</h2>
+            <h3>Top benchmark rows</h3>
+            <div id="benchmark-list" class="stack"></div>
           </div>
-          <p class="section-copy">This section shows exactly which model or fallback generated the literature graph and how much of the final network came from priors versus verified edges.</p>
         </div>
-        <div id="diagnostic-grid" class="diagnostic-grid"></div>
+        <div>
+          <h3>Top DEGs</h3>
+          <div id="deg-list" class="deg-list"></div>
+        </div>
       </section>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="app.js"></script>
   </body>
@@ -332,1010 +342,585 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 STYLESHEET = """
 :root {
-  --bg: #f4ecdf;
-  --panel: rgba(255, 251, 245, 0.88);
-  --panel-strong: #fff9f0;
-  --ink: #17202a;
-  --muted: #5a646f;
-  --accent: #1f6f61;
-  --accent-soft: rgba(31, 111, 97, 0.13);
-  --warning: #a74c2d;
-  --warning-soft: rgba(167, 76, 45, 0.14);
-  --border: rgba(23, 32, 42, 0.08);
-  --shadow: 0 18px 48px rgba(73, 54, 31, 0.12);
+  --bg: #f2efe7;
+  --ink: #121212;
+  --muted: #5e5a54;
+  --panel: rgba(255, 252, 247, 0.94);
+  --stroke: rgba(18, 18, 18, 0.12);
+  --accent: #c84d28;
+  --accent-2: #1a6d6d;
+  --deg: #c84d28;
+  --pathway: #1a6d6d;
+  --prior: #8a6f2a;
+  --boss: #111111;
+  --act: #198754;
+  --inh: #c0392b;
 }
 
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at top left, rgba(215, 145, 72, 0.22), transparent 30%),
-    radial-gradient(circle at 85% 12%, rgba(31, 111, 97, 0.16), transparent 28%),
-    linear-gradient(180deg, #f9f1e6 0%, #f4ecdf 35%, #efe4d4 100%);
-  color: var(--ink);
   font-family: "Space Grotesk", sans-serif;
-  min-height: 100vh;
+  color: var(--ink);
+  background: radial-gradient(circle at top left, #fff9ef 0%, var(--bg) 42%, #e7e1d2 100%);
 }
 
-.background-orb {
+.page-bg {
   position: fixed;
-  border-radius: 999px;
-  filter: blur(18px);
-  opacity: 0.45;
+  inset: 0;
+  background:
+    linear-gradient(125deg, rgba(200, 77, 40, 0.10), transparent 28%),
+    linear-gradient(310deg, rgba(26, 109, 109, 0.10), transparent 24%);
   pointer-events: none;
-  z-index: 0;
 }
 
-.orb-a {
-  width: 260px;
-  height: 260px;
-  top: 7rem;
-  right: 6rem;
-  background: rgba(215, 145, 72, 0.22);
-}
-
-.orb-b {
-  width: 320px;
-  height: 320px;
-  bottom: 8rem;
-  left: -4rem;
-  background: rgba(31, 111, 97, 0.12);
-}
-
-.hero,
-.page-shell {
+.hero, .layout {
   position: relative;
   z-index: 1;
 }
 
 .hero {
+  padding: 32px;
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.8fr);
-  gap: 1.5rem;
-  padding: 3rem clamp(1.2rem, 3vw, 3rem) 1.8rem;
+  gap: 24px;
+  grid-template-columns: 1.4fr 1fr;
 }
 
-.hero-copy,
-.hero-panel,
-.section,
-.chart-card,
-.data-card,
-.metric-card,
-.comparison-card,
-.experiment-card {
-  backdrop-filter: blur(16px);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.hero-copy {
-  padding: 2.2rem;
-  border-radius: 28px;
-}
-
-.hero-panel {
-  border-radius: 24px;
-  padding: 1.7rem;
-  align-self: stretch;
-}
-
-.eyebrow,
-.panel-label {
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.72rem;
   color: var(--muted);
-  margin: 0 0 0.8rem;
 }
 
-h1,
-h2,
-h3 {
-  margin: 0;
+#site-title {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 5vw, 54px);
   line-height: 0.95;
 }
 
-h1,
-h2 {
-  font-family: "Instrument Serif", serif;
-  font-weight: 400;
-}
-
-h1 {
-  font-size: clamp(3.2rem, 8vw, 6.4rem);
-  max-width: 10ch;
-}
-
-h2 {
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
-}
-
-h3 {
-  font-size: 1rem;
-}
-
-.hero-summary,
-.section-copy,
-.metric-caption,
-.subtle {
+.hero-summary {
+  max-width: 70ch;
   color: var(--muted);
 }
 
-.hero-summary {
-  font-size: 1.08rem;
-  line-height: 1.65;
-  max-width: 56ch;
-  margin: 1.1rem 0 0;
-}
-
-.hero-pills,
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-top: 1.4rem;
-}
-
-.pill,
-.chip,
-.ghost-button {
-  border-radius: 999px;
-  border: 1px solid transparent;
-  font: inherit;
-}
-
-.pill {
-  padding: 0.55rem 0.9rem;
-  background: rgba(255, 255, 255, 0.76);
-  border-color: rgba(23, 32, 42, 0.08);
-  font-size: 0.9rem;
-}
-
-.pill strong {
-  color: var(--accent);
-}
-
-.hero-stats {
-  margin: 1.25rem 0 0;
+.hero-controls {
   display: grid;
-  gap: 1rem;
+  gap: 12px;
+  align-content: start;
 }
 
-.hero-stats div {
+.hero-controls label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hero-controls select,
+.hero-controls input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.84);
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+}
+
+.layout {
+  padding: 0 32px 32px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.8fr) minmax(340px, 0.95fr);
+  grid-template-areas:
+    "graph inspector"
+    "data inspector";
+}
+
+.panel {
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  box-shadow: 0 18px 60px rgba(22, 18, 10, 0.08);
+  padding: 22px;
+}
+
+.graph-panel { grid-area: graph; }
+.inspector-panel { grid-area: inspector; max-height: calc(100vh - 96px); overflow: auto; }
+.data-panel { grid-area: data; }
+
+.panel-heading {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.95rem 0;
-  border-top: 1px solid rgba(23, 32, 42, 0.08);
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.hero-stats dt {
-  color: var(--muted);
-}
-
-.hero-stats dd {
+.panel-heading h2, .panel-heading h3, .data-panel h3 {
   margin: 0;
-  font-weight: 700;
 }
 
-.page-shell {
-  padding: 0 1.2rem 3rem;
+.legend, .graph-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 14px;
 }
 
-.section,
-.chart-card,
-.data-card {
-  border-radius: 24px;
-  padding: 1.4rem;
-  margin: 1rem auto 0;
-  width: min(1320px, 100%);
+.swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  margin-right: 6px;
+}
+
+.swatch.deg { background: var(--deg); }
+.swatch.pathway { background: var(--pathway); }
+.swatch.prior { background: var(--prior); }
+.swatch.boss { background: var(--boss); }
+.swatch.act { background: var(--act); }
+.swatch.inh { background: var(--inh); }
+
+.network {
+  height: 760px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,240,231,0.95));
+}
+
+.inspector-body {
+  display: grid;
+  gap: 14px;
+}
+
+.metric-card, .evidence-card, .edge-card, .hit-card, .bench-card, .deg-chip {
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+
+.metric-card strong,
+.hit-card strong,
+.bench-card strong,
+.edge-card strong {
+  display: block;
+  margin-bottom: 4px;
 }
 
 .metric-grid,
-.comparison-grid,
-.experiment-grid,
-.diagnostic-grid,
-.stack-grid {
-  width: min(1320px, 100%);
-  margin: 0 auto;
-}
-
-.metric-grid {
+.summary-cards {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-.metric-card,
-.comparison-card,
-.experiment-card {
-  border-radius: 20px;
-  padding: 1.1rem;
-}
-
-.metric-card {
-  min-height: 140px;
-}
-
-.metric-value {
-  font-family: "Instrument Serif", serif;
-  font-size: 2.6rem;
-  margin-top: 0.4rem;
-}
-
-.comparison-grid,
-.experiment-grid,
-.diagnostic-grid,
-.stack-grid {
+.stack {
   display: grid;
-  gap: 1rem;
+  gap: 10px;
 }
 
-.comparison-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.experiment-grid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.diagnostic-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.comparison-card.primary {
-  border: 1px solid rgba(31, 111, 97, 0.24);
-}
-
-.comparison-card.baseline {
-  border: 1px solid rgba(167, 76, 45, 0.2);
-}
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.4rem;
-  align-items: end;
-  margin-bottom: 1.2rem;
-}
-
-.section-heading.compact {
-  margin-bottom: 0.8rem;
-}
-
-.network-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-}
-
-.search-shell {
+.split {
   display: grid;
-  gap: 0.35rem;
-  min-width: min(100%, 320px);
-}
-
-.search-shell span {
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
-input[type="search"] {
-  border-radius: 14px;
-  border: 1px solid rgba(23, 32, 42, 0.12);
-  padding: 0.85rem 1rem;
-  font: inherit;
-  background: rgba(255, 255, 255, 0.84);
-}
-
-.ghost-button {
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(23, 32, 42, 0.08);
-  cursor: pointer;
-}
-
-.ghost-button.active,
-.chip.active {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
-.chip {
-  padding: 0.55rem 0.85rem;
-  background: white;
-  border: 1px solid rgba(23, 32, 42, 0.08);
-  cursor: pointer;
-}
-
-.network-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.6fr);
-  gap: 1rem;
-  align-items: stretch;
-}
-
-.network-canvas,
-.network-sidepanel {
-  border-radius: 22px;
-  border: 1px solid rgba(23, 32, 42, 0.08);
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.network-canvas {
-  min-height: 680px;
-}
-
-.network-sidepanel {
-  padding: 1rem;
-}
-
-.legend-list,
-.interaction-list,
-.stack-grid {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.legend-list {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.legend-swatch {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-}
-
-.network-callout {
-  margin-top: 1.2rem;
-  padding: 1rem;
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(31, 111, 97, 0.1), rgba(31, 111, 97, 0.04));
-}
-
-.split-section {
-  display: grid;
-  gap: 1rem;
+  gap: 20px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 18px 0;
 }
 
-.data-card {
-  min-height: 100%;
-}
-
-.knockout-card,
-.interaction-card,
-.diagnostic-card {
-  padding: 1rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(23, 32, 42, 0.08);
-}
-
-.interaction-list,
-.stack-grid {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.hit-genes {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 0.4rem;
-}
-
-.mini-pill-row {
+.deg-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.7rem;
+  gap: 10px;
 }
 
-.mini-pill {
-  padding: 0.35rem 0.6rem;
+.deg-chip {
+  min-width: 170px;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.muted { color: var(--muted); }
+
+.evidence-list, .edge-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
   border-radius: 999px;
-  font-size: 0.82rem;
-  background: rgba(31, 111, 97, 0.11);
+  background: rgba(18, 18, 18, 0.06);
+  color: var(--ink);
+  font-size: 12px;
 }
 
-.warning {
-  background: var(--warning-soft);
-  color: var(--warning);
+a {
+  color: var(--accent-2);
+  text-decoration: none;
 }
 
-.good {
-  background: var(--accent-soft);
-  color: var(--accent);
+a:hover {
+  text-decoration: underline;
 }
 
-.table-shell {
-  overflow-x: auto;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(23, 32, 42, 0.08);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid rgba(23, 32, 42, 0.08);
-  font-size: 0.94rem;
-}
-
-th {
-  color: var(--muted);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.reveal {
-  animation: rise-in 620ms ease both;
-}
-
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 1080px) {
+@media (max-width: 1100px) {
   .hero,
-  .network-layout,
-  .split-section {
+  .layout {
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 720px) {
-  .hero {
-    padding: 1.2rem 0.9rem 1rem;
+  .layout {
+    grid-template-areas:
+      "graph"
+      "inspector"
+      "data";
   }
-
-  .page-shell {
-    padding: 0 0.9rem 2rem;
+  .inspector-panel {
+    max-height: none;
   }
-
-  .hero-copy,
-  .hero-panel,
-  .section,
-  .chart-card,
-  .data-card {
-    padding: 1rem;
+  .network {
+    height: 560px;
   }
-
-  .network-canvas {
-    min-height: 420px;
-  }
-
-  h1 {
-    font-size: 3.3rem;
+  .split {
+    grid-template-columns: 1fr;
   }
 }
 """
 
 
 APP_SCRIPT = """
-const NODE_STYLES = {
-  deg: { color: '#1f6f61', label: 'DEG' },
-  pathway: { color: '#c26a2d', label: 'Core pathway' },
-  prior: { color: '#b24f45', label: 'Curated prior' },
-  intermediate: { color: '#7a5f9a', label: 'Intermediate' },
-  boss: { color: '#101820', label: 'Boss node' },
-  unknown: { color: '#7e8a96', label: 'Unknown' },
+const manifestUrl = "data/manifest.json";
+const GRAPH_LABELS = {
+  selected: "Selected final graph",
+  projected: "Projected simulation graph",
+  deg_llm: "50-node DEG graph with LLM edges",
+  deg_prior: "50-node DEG graph without LLM edges",
 };
 
-let networkInstance = null;
-let networkPhysicsEnabled = true;
-let networkNodes = [];
-let networkEdges = [];
-let activeKinds = new Set(Object.keys(NODE_STYLES));
+let state = {
+  manifest: null,
+  currentRunKey: "primary",
+  currentGraphKey: "selected",
+  bundle: null,
+  network: null,
+  nodes: null,
+  edges: null,
+};
 
-async function fetchJson(path) {
-  const response = await fetch(path);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${path}: ${response.status}`);
-  }
-  return response.json();
+const kindColors = {
+  deg: "#c84d28",
+  pathway: "#1a6d6d",
+  prior: "#8a6f2a",
+  intermediate: "#8a6f2a",
+  boss: "#111111",
+  unknown: "#6b675f",
+};
+
+async function init() {
+  const manifest = await fetch(manifestUrl).then((response) => response.json());
+  state.manifest = manifest;
+  document.getElementById("site-title").textContent = manifest.title;
+  buildRunSelect();
+  buildGraphSelect();
+  await loadRun("primary");
+  document.getElementById("run-select").addEventListener("change", async (event) => {
+    await loadRun(event.target.value);
+  });
+  document.getElementById("graph-select").addEventListener("change", (event) => {
+    state.currentGraphKey = event.target.value;
+    renderGraph();
+  });
+  document.getElementById("node-search").addEventListener("change", focusNodeFromSearch);
 }
 
-function formatNumber(value) {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) {
-    return '-';
-  }
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(Number(value));
-}
-
-function formatSigned(value) {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) {
-    return '-';
-  }
-  const number = Number(value);
-  return number > 0 ? `+${number.toFixed(2)}` : number.toFixed(2);
-}
-
-function asList(value) {
-  return Array.isArray(value) ? value : [];
-}
-
-async function loadRun(runMeta) {
-  const files = runMeta.files;
-  const [summary, topDegs, interactions, graph, knockoutHits, benchmarkReport, experimentReport, researchExecution, priorKnowledge] = await Promise.all([
-    fetchJson(files.summary),
-    fetchJson(files.top_degs),
-    fetchJson(files.gene_interactions),
-    fetchJson(files.regulatory_graph),
-    fetchJson(files.knockout_hits),
-    fetchJson(files.benchmark_report),
-    fetchJson(files.experiment_report),
-    fetchJson(files.research_execution),
-    fetchJson(files.prior_knowledge),
-  ]);
-  return { meta: runMeta, summary, topDegs, interactions, graph, knockoutHits, benchmarkReport, experimentReport, researchExecution, priorKnowledge };
-}
-
-function setText(id, value) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = value;
+function buildRunSelect() {
+  const select = document.getElementById("run-select");
+  select.innerHTML = "";
+  for (const [runKey, runMeta] of Object.entries(state.manifest.runs)) {
+    const option = document.createElement("option");
+    option.value = runKey;
+    option.textContent = runMeta.label;
+    select.appendChild(option);
   }
 }
 
-function renderHero(manifest, primary, baseline) {
-  setText('hero-title', manifest.title);
-  setText('hero-run-name', primary.meta.label);
-  setText(
-    'hero-summary',
-    `Primary run processed ${formatNumber(primary.summary.dataset_cells)} cells, distilled ${formatNumber(primary.summary.degs.length)} DEGs, and selected the ${primary.summary.selected_experiment || 'latest'} experiment for knockout search.`
-  );
-  setText('hero-graph', `${formatNumber(primary.summary.graph_nodes)} nodes / ${formatNumber(primary.summary.graph_edges)} edges`);
-  setText('hero-hits', `${formatNumber(primary.summary.knockout_hits.length)} lethal combinations`);
-  setText('hero-benchmark', `${formatNumber(primary.summary.benchmark_report.model_count)} pancreatic models`);
-
-  const pills = [
-    { label: 'Primary run', value: primary.meta.label },
-    { label: 'Selected experiment', value: primary.summary.selected_experiment || 'n/a' },
-    { label: 'Research backend', value: Object.keys(primary.researchExecution.result_model_counts || {}).join(', ') || 'unknown' },
-  ];
-  if (baseline) {
-    pills.push({ label: 'Baseline', value: baseline.meta.label });
+function buildGraphSelect() {
+  const select = document.getElementById("graph-select");
+  select.innerHTML = "";
+  for (const [graphKey, label] of Object.entries(GRAPH_LABELS)) {
+    const option = document.createElement("option");
+    option.value = graphKey;
+    option.textContent = label;
+    select.appendChild(option);
   }
-  document.getElementById('hero-pills').innerHTML = pills
-    .map((pill) => `<span class="pill"><strong>${pill.label}</strong> ${pill.value}</span>`)
-    .join('');
 }
 
-function renderOverview(primary, baseline) {
-  const metrics = [
-    {
-      title: 'Dataset cells',
-      value: formatNumber(primary.summary.dataset_cells),
-      caption: `Across ${formatNumber(primary.summary.dataset_genes)} genes after QC.`,
-    },
-    {
-      title: 'Top DEGs',
-      value: formatNumber(primary.topDegs.length),
-      caption: `Selected by Scanpy differential expression.`,
-    },
-    {
-      title: 'Verified literature edges',
-      value: formatNumber(primary.interactions.reduce((count, item) => count + asList(item.interactions).length, 0)),
-      caption: `Structured edges that survived verification for the selected run.`,
-    },
-    {
-      title: 'Prior knowledge seed',
-      value: formatNumber(primary.priorKnowledge.edge_count),
-      caption: `Edges imported from KEGG, Reactome, OmniPath, and Pathway Commons.`,
-    },
-    {
-      title: 'Benchmark-supported genes',
-      value: formatNumber(primary.benchmarkReport.results.filter((item) => item.benchmark_hit).length),
-      caption: `Genes meeting the final benchmark threshold in the selected experiment.`,
-    },
-    {
-      title: 'Fallback genes',
-      value: formatNumber(primary.researchExecution.fallback_gene_count),
-      caption: baseline ? 'Useful when comparing provider-backed runs against fallback behavior.' : 'Lower is better; high values mean provider fallback dominated.',
-    },
-  ];
-  document.getElementById('overview-metrics').innerHTML = metrics
-    .map(
-      (metric) => `
-        <article class="metric-card">
-          <p class="panel-label">${metric.title}</p>
-          <div class="metric-value">${metric.value}</div>
-          <p class="metric-caption">${metric.caption}</p>
-        </article>
-      `
-    )
-    .join('');
+async function loadRun(runKey) {
+  state.currentRunKey = runKey;
+  const runMeta = state.manifest.runs[runKey];
+  const bundle = await fetch(runMeta.bundle).then((response) => response.json());
+  state.bundle = bundle;
+  renderSummary(runMeta, bundle);
+  renderGraph();
+  renderDataPanels(bundle);
 }
 
-function renderComparison(primary, baseline) {
-  const cards = [primary, baseline].filter(Boolean).map((run) => {
-    const className = run === primary ? 'comparison-card primary' : 'comparison-card baseline';
-    const hit = asList(run.summary.knockout_hits)[0];
-    const knockoutLabel = hit ? hit.knocked_out_genes.join(' + ') : 'No lethal combination';
-    const benchmarkHitCount = run.summary.benchmark_report.results.filter((item) => item.benchmark_hit).length;
-    return `
-      <article class="${className}">
-        <p class="panel-label">${run.meta.label}</p>
-        <h3>${run.summary.selected_experiment || 'n/a'}</h3>
-        <div class="mini-pill-row">
-          <span class="mini-pill">${formatNumber(run.summary.graph_nodes)} nodes</span>
-          <span class="mini-pill">${formatNumber(run.summary.graph_edges)} edges</span>
-          <span class="mini-pill">${formatNumber(run.summary.knockout_hits.length)} hits</span>
-        </div>
-        <p class="hero-summary">Top hit: ${knockoutLabel}.</p>
-        <p class="subtle">Benchmark hits: ${formatNumber(benchmarkHitCount)} of ${formatNumber(run.summary.benchmark_report.results.length)} nominated genes.</p>
-      </article>
-    `;
-  });
-  document.getElementById('comparison-grid').innerHTML = cards.join('');
+function renderSummary(runMeta, bundle) {
+  const summary = bundle.summary;
+  document.getElementById("hero-summary").textContent =
+    `${runMeta.label}: ${summary.dataset_cells.toLocaleString()} cells, ${summary.dataset_genes.toLocaleString()} genes, ${summary.graph_nodes} selected nodes, ${summary.graph_edges} selected edges.`;
 }
 
-function renderExperiments(primary) {
-  const cards = primary.experimentReport.map((experiment) => {
-    const benchmarkHits = experiment.benchmark_report.results.filter((item) => item.benchmark_hit).length;
-    const leadHit = experiment.knockout_hits[0]?.knocked_out_genes?.join(' + ') || 'No lethal combination';
-    return `
-      <article class="experiment-card">
-        <p class="panel-label">${experiment.selected ? 'Selected experiment' : 'Experiment'}</p>
-        <h3>${experiment.name}</h3>
-        <p class="subtle">${experiment.description || 'No description recorded.'}</p>
-        <div class="mini-pill-row">
-          <span class="mini-pill">${formatNumber(experiment.graph_nodes)} nodes</span>
-          <span class="mini-pill">${formatNumber(experiment.graph_edges)} edges</span>
-          <span class="mini-pill">${formatNumber(experiment.pruned_genes.length)} pruned</span>
-        </div>
-        <p class="hero-summary">Lead outcome: ${leadHit}</p>
-        <p class="subtle">Benchmark hits: ${benchmarkHits}. Score: ${formatSigned(experiment.score)}</p>
-      </article>
-    `;
-  });
-  document.getElementById('experiment-grid').innerHTML = cards.join('');
-}
+function renderGraph() {
+  const graph = state.bundle.graphs[state.currentGraphKey];
+  document.getElementById("graph-title").textContent = GRAPH_LABELS[state.currentGraphKey];
+  document.getElementById("graph-stats").innerHTML =
+    `<span>${graph.nodes.length} nodes</span><span>${graph.edges.length} edges</span>`;
 
-function renderNetwork(primary) {
-  const graph = primary.graph;
-  networkNodes = graph.nodes.map((node) => {
-    const style = NODE_STYLES[node.kind] || NODE_STYLES.unknown;
-    return {
-      ...node,
-      color: style.color,
-      label: node.id,
-      title: `${node.id} (${node.kind || 'unknown'})`,
-    };
-  });
-  networkEdges = graph.edges.map((edge) => ({
-    ...edge,
-    from: edge.source,
-    to: edge.target,
-    color: edge.sign === -1 ? '#b24f45' : '#1f6f61',
-  }));
-
-  const filterHost = document.getElementById('network-kind-filters');
-  filterHost.innerHTML = Object.entries(NODE_STYLES)
-    .map(
-      ([kind, style]) => `
-        <button type="button" class="chip active" data-kind="${kind}">
-          ${style.label}
-        </button>
-      `
-    )
-    .join('');
-  filterHost.querySelectorAll('.chip').forEach((button) => {
-    button.addEventListener('click', () => {
-      const kind = button.dataset.kind;
-      if (activeKinds.has(kind)) {
-        activeKinds.delete(kind);
-        button.classList.remove('active');
-      } else {
-        activeKinds.add(kind);
-        button.classList.add('active');
-      }
-      drawNetwork(primary);
-    });
-  });
-
-  document.getElementById('network-focus').addEventListener('click', () => {
-    const value = document.getElementById('network-search').value.trim().toUpperCase();
-    if (!value || !networkInstance) {
-      return;
-    }
-    const match = networkNodes.find((node) => node.id.toUpperCase() === value);
-    if (match) {
-      networkInstance.focus(match.id, { scale: 1.3, animation: true });
-      networkInstance.selectNodes([match.id]);
-    }
-  });
-
-  document.getElementById('network-physics').addEventListener('click', (event) => {
-    networkPhysicsEnabled = !networkPhysicsEnabled;
-    event.currentTarget.classList.toggle('active', !networkPhysicsEnabled);
-    event.currentTarget.textContent = networkPhysicsEnabled ? 'Pause motion' : 'Resume motion';
-    drawNetwork(primary);
-  });
-
-  drawNetwork(primary);
-  document.getElementById('network-legend').innerHTML = Object.values(NODE_STYLES)
-    .map(
-      (style) => `
-        <li class="legend-item">
-          <span class="legend-swatch" style="background:${style.color}"></span>
-          <span>${style.label}</span>
-        </li>
-      `
-    )
-    .join('');
-
-  const topHit = primary.knockoutHits[0];
-  document.getElementById('network-hit-callout').innerHTML = topHit
-    ? `
-      <p class="hit-genes">${topHit.knocked_out_genes.join(' + ')}</p>
-      <p class="subtle">Boss node state: ${topHit.boss_state}. Pathway nodes off: ${topHit.pathway_nodes_off.join(', ')}</p>
-    `
-    : `<p class="subtle">This run did not produce a lethal combination after simulation.</p>`;
-}
-
-function drawNetwork(primary) {
-  const knockoutGenes = new Set((primary.knockoutHits[0]?.knocked_out_genes || []).map((gene) => gene.toUpperCase()));
-  const visibleNodes = networkNodes.filter((node) => activeKinds.has(node.kind || 'unknown'));
-  const visibleNodeIds = new Set(visibleNodes.map((node) => node.id));
-  const degree = new Map();
-  networkEdges.forEach((edge) => {
-    degree.set(edge.from, (degree.get(edge.from) || 0) + 1);
-    degree.set(edge.to, (degree.get(edge.to) || 0) + 1);
-  });
-
-  const nodeDataset = new vis.DataSet(
-    visibleNodes.map((node) => ({
+  const visNodes = new vis.DataSet(
+    graph.nodes.map((node) => ({
       id: node.id,
-      label: node.label,
-      color: node.color,
-      borderWidth: knockoutGenes.has(node.id.toUpperCase()) ? 4 : 1.5,
-      size: 16 + Math.min(20, (degree.get(node.id) || 0) * 1.8),
-      font: { face: 'Space Grotesk', color: '#17202a', size: 18 },
-      shape: 'dot',
-      title: `${node.id} | ${node.kind || 'unknown'} | degree ${(degree.get(node.id) || 0)}`,
-    }))
+      label: node.id,
+      color: kindColors[node.kind] || kindColors.unknown,
+      shape: node.kind === "boss" ? "hexagon" : "dot",
+      size: node.kind === "boss" ? 22 : node.kind === "pathway" ? 18 : 14,
+      font: { color: "#111111", face: "Space Grotesk", size: 14 },
+      borderWidth: 1,
+    })),
   );
-  const edgeDataset = new vis.DataSet(
-    networkEdges
-      .filter((edge) => visibleNodeIds.has(edge.from) && visibleNodeIds.has(edge.to))
-      .map((edge) => ({
-        from: edge.from,
-        to: edge.to,
-        arrows: 'to',
-        color: { color: edge.color, highlight: edge.color, hover: edge.color },
-        width: Math.max(1.5, Number(edge.weight || edge.confidence || 1) * 3),
-        smooth: { type: 'dynamic' },
-        title: `${edge.from} ${edge.sign === -1 ? '-|' : '->'} ${edge.to} | provenance: ${(edge.provenance || []).join(', ') || 'unknown'}`,
-      }))
+  const visEdges = new vis.DataSet(
+    graph.edges.map((edge, index) => ({
+      id: `${edge.source}|${edge.target}|${edge.sign}|${index}`,
+      from: edge.source,
+      to: edge.target,
+      color: edge.sign === -1 ? "#c0392b" : "#198754",
+      arrows: "to",
+      width: Math.max(1.5, (edge.confidence || edge.weight || 0.35) * 4),
+      dashes: edge.direct_evidence?.length ? false : [6, 5],
+      smooth: { type: "dynamic" },
+    })),
   );
-  const container = document.getElementById('network-canvas');
-  networkInstance = new vis.Network(
+
+  state.nodes = visNodes;
+  state.edges = visEdges;
+  const container = document.getElementById("network");
+  if (state.network) {
+    state.network.destroy();
+  }
+  state.network = new vis.Network(
     container,
-    { nodes: nodeDataset, edges: edgeDataset },
+    { nodes: visNodes, edges: visEdges },
     {
-      autoResize: true,
-      interaction: { hover: true, multiselect: true },
-      physics: networkPhysicsEnabled
-        ? {
-            solver: 'forceAtlas2Based',
-            forceAtlas2Based: { gravitationalConstant: -70, centralGravity: 0.008, springLength: 130 },
-            stabilization: { iterations: 180 },
-          }
-        : false,
-      edges: { selectionWidth: 2.2 },
-      nodes: { shadow: true },
-    }
+      interaction: { hover: true, navigationButtons: true, keyboard: true },
+      physics: { enabled: false },
+      layout: { improvedLayout: true },
+    },
   );
+  state.network.on("click", (params) => handleGraphClick(params, graph));
+  renderInspectorIntro();
 }
 
-function renderDegChart(primary) {
-  const topGenes = primary.topDegs.slice(0, 15);
-  new Chart(document.getElementById('deg-chart'), {
-    type: 'bar',
-    data: {
-      labels: topGenes.map((item) => item.gene),
-      datasets: [
-        {
-          label: 'log2 fold change',
-          data: topGenes.map((item) => item.log2_fold_change),
-          backgroundColor: '#1f6f61',
-          borderRadius: 12,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#5a646f' } },
-        y: { ticks: { color: '#5a646f' } },
-      },
-    },
-  });
-}
-
-function renderBenchmarkChart(primary) {
-  const sorted = [...primary.benchmarkReport.results]
-    .sort((left, right) => (left.mean_gene_effect ?? 999) - (right.mean_gene_effect ?? 999))
-    .slice(0, 15);
-  new Chart(document.getElementById('benchmark-chart'), {
-    type: 'bar',
-    data: {
-      labels: sorted.map((item) => item.gene_symbol),
-      datasets: [
-        {
-          label: 'mean CRISPR effect',
-          data: sorted.map((item) => item.mean_gene_effect),
-          backgroundColor: sorted.map((item) => (item.benchmark_hit ? '#1f6f61' : '#c26a2d')),
-          borderRadius: 12,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: '#5a646f' } },
-        y: { ticks: { color: '#5a646f' } },
-      },
-    },
-  });
-}
-
-function renderKnockouts(primary, baseline) {
-  const baselineTopHit = baseline?.summary.knockout_hits?.[0]?.knocked_out_genes?.join(' + ') || null;
-  const host = document.getElementById('knockout-grid');
-  if (!primary.knockoutHits.length) {
-    host.innerHTML = `<div class="knockout-card"><p class="subtle">No lethal combination was found for the selected experiment.</p></div>`;
+function handleGraphClick(params, graph) {
+  if (params.nodes.length) {
+    const nodeId = params.nodes[0];
+    renderNodeInspector(nodeId, graph);
     return;
   }
-  host.innerHTML = primary.knockoutHits
-    .map(
-      (hit, index) => `
-        <article class="knockout-card">
-          <p class="panel-label">Combination ${index + 1}</p>
-          <p class="hit-genes">${hit.knocked_out_genes.join(' + ')}</p>
-          <p class="subtle">Boss state: ${hit.boss_state}. Convergence: ${hit.convergence_steps} step(s). Pathway shutdown: ${hit.pathway_nodes_off.length} nodes.</p>
-          <div class="mini-pill-row">
-            <span class="mini-pill">Score ${formatSigned(hit.score)}</span>
-            <span class="mini-pill">Support ${formatSigned(hit.support_score)}</span>
-            <span class="mini-pill ${hit.benchmark_score > 0 ? 'good' : 'warning'}">Benchmark ${formatSigned(hit.benchmark_score)}</span>
-          </div>
-          ${baselineTopHit ? `<p class="subtle">Baseline top hit: ${baselineTopHit}</p>` : ''}
-        </article>
-      `
-    )
-    .join('');
+  if (params.edges.length) {
+    const edgeId = params.edges[0];
+    const edge = graph.edges.find((candidate, index) => `${candidate.source}|${candidate.target}|${candidate.sign}|${index}` === edgeId);
+    if (edge) {
+      renderEdgeInspector(edge);
+    }
+  }
 }
 
-function renderInteractions(primary) {
-  const interactions = primary.interactions.flatMap((item) => asList(item.interactions)).slice(0, 20);
-  const host = document.getElementById('interaction-list');
-  if (!interactions.length) {
-    host.innerHTML = `<div class="interaction-card"><p class="subtle">No verified literature edges were retained for this run.</p></div>`;
+function focusNodeFromSearch() {
+  const query = document.getElementById("node-search").value.trim().toUpperCase();
+  if (!query || !state.network || !state.nodes.get(query)) {
     return;
   }
-  host.innerHTML = interactions
-    .map(
-      (edge) => `
-        <article class="interaction-card">
-          <p class="hit-genes">${edge.source_gene} ${edge.interaction_type === -1 ? '-|' : '->'} ${edge.target}</p>
-          <p class="subtle">${edge.evidence_summary || 'No evidence summary provided.'}</p>
-          <div class="mini-pill-row">
-            <span class="mini-pill">Confidence ${formatSigned(edge.confidence_score)}</span>
-            <span class="mini-pill">Depth ${edge.mechanistic_depth}</span>
-            <span class="mini-pill">${(edge.pmid_citations || []).length} PMID(s)</span>
+  state.network.selectNodes([query]);
+  state.network.focus(query, { scale: 1.2, animation: true });
+  renderNodeInspector(query, state.bundle.graphs[state.currentGraphKey]);
+}
+
+function renderInspectorIntro() {
+  document.getElementById("inspector-title").textContent = "Click a node or edge";
+  document.getElementById("inspector-body").innerHTML = `
+    <div class="metric-card">
+      <strong>What you can inspect here</strong>
+      <div class="muted">Click a node to see its DEG stats, benchmark row, incoming/outgoing regulators, and evidence-supported edges. Click an edge to see its sign, provenance, collapsed path, PMIDs, and model/database support.</div>
+    </div>`;
+}
+
+function renderNodeInspector(nodeId, graph) {
+  const profile = state.bundle.node_profiles[nodeId] || {};
+  const nodeMeta = graph.nodes.find((node) => node.id === nodeId) || { kind: "unknown" };
+  const incoming = graph.edges.filter((edge) => edge.target === nodeId);
+  const outgoing = graph.edges.filter((edge) => edge.source === nodeId);
+  document.getElementById("inspector-title").textContent = nodeId;
+
+  const degStats = profile.deg_stats
+    ? `<div class="metric-card"><strong>DEG stats</strong><div>log2FC: ${fmt(profile.deg_stats.log2_fold_change)}</div><div>adj p: ${fmt(profile.deg_stats.adjusted_pvalue)}</div></div>`
+    : "";
+  const benchmark = profile.benchmark
+    ? `<div class="metric-card"><strong>DepMap benchmark</strong><div>mean effect: ${fmt(profile.benchmark.mean_gene_effect)}</div><div>hit rate: ${fmt(profile.benchmark.hit_rate)}</div><div>benchmark hit: ${boolLabel(profile.benchmark.benchmark_hit)}</div></div>`
+    : "";
+
+  document.getElementById("inspector-body").innerHTML = `
+    <div class="summary-cards">
+      <div class="metric-card"><strong>Node type</strong><div>${nodeMeta.kind}</div></div>
+      <div class="metric-card"><strong>Graph degree</strong><div>${incoming.length} incoming / ${outgoing.length} outgoing</div></div>
+      <div class="metric-card"><strong>Present in</strong><div>${Object.keys(profile.graph_presence || {}).join(", ") || "current graph only"}</div></div>
+      ${degStats}
+      ${benchmark}
+    </div>
+    <div>
+      <h3>Incoming influences</h3>
+      <div class="edge-list">${incoming.length ? incoming.map(renderEdgeCard).join("") : '<div class="muted">No incoming edges in this graph view.</div>'}</div>
+    </div>
+    <div>
+      <h3>Outgoing influences</h3>
+      <div class="edge-list">${outgoing.length ? outgoing.map(renderEdgeCard).join("") : '<div class="muted">No outgoing edges in this graph view.</div>'}</div>
+    </div>
+  `;
+}
+
+function renderEdgeInspector(edge) {
+  document.getElementById("inspector-title").textContent = `${edge.source} ${edge.sign === -1 ? "−|" : "→"} ${edge.target}`;
+  document.getElementById("inspector-body").innerHTML = renderEdgeCard(edge);
+}
+
+function renderEdgeCard(edge) {
+  const evidence = edge.direct_evidence || [];
+  const evidenceHtml = evidence.length
+    ? evidence.map((item) => `
+        <div class="evidence-card">
+          <strong>${item.source_gene} ${item.interaction_type === -1 ? "−|" : "→"} ${item.target}</strong>
+          <div class="muted">${escapeHtml(item.evidence_summary || "No summary")}</div>
+          <div class="tag-row">
+            <span class="tag">conf ${fmt(item.confidence_score)}</span>
+            <span class="tag">depth ${item.mechanistic_depth}</span>
+            ${(item.provenance_sources || []).map((source) => `<span class="tag">${escapeHtml(source)}</span>`).join("")}
           </div>
-        </article>
-      `
-    )
-    .join('');
+          <div class="mono">${renderRefs(item.source_refs || [], item.pmid_citations || [])}</div>
+        </div>`).join("")
+    : `<div class="muted">No direct LLM evidence stored for this edge. This usually means it came from curated priors or a collapsed projected path.</div>`;
+  const collapsed = edge.collapsed_via?.length
+    ? `<div class="tag-row"><span class="tag">collapsed via ${escapeHtml(edge.collapsed_via.join(" → "))}</span></div>`
+    : "";
+  return `
+    <div class="edge-card">
+      <strong>${edge.source} ${edge.sign === -1 ? "−|" : "→"} ${edge.target}</strong>
+      <div>confidence: ${fmt(edge.confidence || edge.weight)}</div>
+      <div>benchmark support: ${fmt(edge.benchmark_support_score)}</div>
+      <div>provenance: ${(edge.provenance || []).join(", ") || "none"}</div>
+      ${collapsed}
+      <div class="evidence-list">${evidenceHtml}</div>
+    </div>`;
 }
 
-function renderBenchmarkTable(primary) {
-  const rows = [...primary.benchmarkReport.results]
-    .sort((left, right) => (left.mean_gene_effect ?? 999) - (right.mean_gene_effect ?? 999))
-    .map(
-      (item) => `
-        <tr>
-          <td>${item.gene_symbol}</td>
-          <td>${formatSigned(item.mean_gene_effect)}</td>
-          <td>${formatNumber(item.hit_rate)}</td>
-          <td>${formatNumber(item.driver_alignment_score)}</td>
-          <td>${formatSigned(item.combined_support_score)}</td>
-          <td>${item.benchmark_hit ? '<span class="mini-pill good">Yes</span>' : '<span class="mini-pill warning">No</span>'}</td>
-        </tr>
-      `
-    )
-    .join('');
-  document.getElementById('benchmark-table').innerHTML = rows;
-}
-
-function renderDiagnostics(primary) {
-  const cards = [
-    {
-      title: 'Research model usage',
-      body: Object.entries(primary.researchExecution.result_model_counts || {})
-        .map(([name, count]) => `${name}: ${count}`)
-        .join(', ') || 'No model usage recorded.',
-    },
-    {
-      title: 'Fallback count',
-      body: `${formatNumber(primary.researchExecution.fallback_gene_count)} genes used fallback research output.`,
-    },
-    {
-      title: 'Prior knowledge seed',
-      body: `${formatNumber(primary.priorKnowledge.node_count)} nodes and ${formatNumber(primary.priorKnowledge.edge_count)} curated edges were imported before simulation.`,
-    },
-    {
-      title: 'Selected experiment',
-      body: `${primary.summary.selected_experiment || 'n/a'} with ${formatNumber(primary.summary.graph_nodes)} nodes and ${formatNumber(primary.summary.graph_edges)} edges.`,
-    },
+function renderDataPanels(bundle) {
+  const summaryCards = [
+    ["Selected experiment", bundle.summary.selected_experiment],
+    ["Top hit", (bundle.summary.top_hit || []).join(" + ") || "none"],
+    ["Knockout hits", String(bundle.knockout_hits.length)],
+    ["Benchmark models", String(bundle.summary.benchmark_model_count)],
+    ["Research backends", Object.entries(bundle.research_execution.result_model_counts || {}).map(([key, value]) => `${key}=${value}`).join(", ")],
+    ["Prior knowledge", `${bundle.prior_knowledge.node_count} nodes / ${bundle.prior_knowledge.edge_count} edges`],
   ];
-  document.getElementById('diagnostic-grid').innerHTML = cards
-    .map(
-      (item) => `
-        <article class="diagnostic-card">
-          <p class="panel-label">${item.title}</p>
-          <p class="subtle">${item.body}</p>
-        </article>
-      `
-    )
-    .join('');
+  document.getElementById("summary-cards").innerHTML = summaryCards.map(([label, value]) => `
+    <div class="metric-card">
+      <strong>${escapeHtml(label)}</strong>
+      <div>${escapeHtml(value)}</div>
+    </div>`).join("");
+
+  document.getElementById("knockout-list").innerHTML = bundle.knockout_hits.map((hit) => `
+    <div class="hit-card">
+      <strong>${(hit.knocked_out_genes || []).join(" + ")}</strong>
+      <div>boss state: ${hit.boss_state}</div>
+      <div>score: ${fmt(hit.score)}</div>
+      <div>pathway nodes off: ${(hit.pathway_nodes_off || []).join(", ")}</div>
+    </div>`).join("") || '<div class="muted">No knockout hits found.</div>';
+
+  document.getElementById("benchmark-list").innerHTML = (bundle.benchmark_report.results || []).slice(0, 12).map((row) => `
+    <div class="bench-card">
+      <strong>${row.gene_symbol}</strong>
+      <div>mean effect: ${fmt(row.mean_gene_effect)}</div>
+      <div>hit rate: ${fmt(row.hit_rate)}</div>
+      <div>benchmark hit: ${boolLabel(row.benchmark_hit)}</div>
+    </div>`).join("") || '<div class="muted">No benchmark rows.</div>';
+
+  document.getElementById("deg-list").innerHTML = (bundle.top_degs || []).slice(0, 24).map((row) => `
+    <div class="deg-chip">
+      <strong>${row.gene}</strong>
+      <div>log2FC ${fmt(row.log2_fold_change)}</div>
+      <div class="muted">adj p ${fmt(row.adjusted_pvalue)}</div>
+    </div>`).join("");
 }
 
-async function main() {
-  const manifest = await fetchJson('data/manifest.json');
-  const primary = await loadRun(manifest.runs.primary);
-  const baseline = manifest.runs.baseline ? await loadRun(manifest.runs.baseline) : null;
-  renderHero(manifest, primary, baseline);
-  renderOverview(primary, baseline);
-  renderComparison(primary, baseline);
-  renderExperiments(primary);
-  renderNetwork(primary);
-  renderDegChart(primary);
-  renderBenchmarkChart(primary);
-  renderKnockouts(primary, baseline);
-  renderInteractions(primary);
-  renderBenchmarkTable(primary);
-  renderDiagnostics(primary);
+function renderRefs(sourceRefs, pmids) {
+  const refs = [];
+  for (const ref of sourceRefs) {
+    if (ref.startsWith("http")) {
+      refs.push(`<a href="${ref}" target="_blank" rel="noreferrer">${escapeHtml(ref)}</a>`);
+    } else {
+      refs.push(escapeHtml(ref));
+    }
+  }
+  for (const pmid of pmids) {
+    const label = `PMID:${pmid}`;
+    const url = `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`;
+    refs.push(`<a href="${url}" target="_blank" rel="noreferrer">${label}</a>`);
+  }
+  return refs.join(" · ");
 }
 
-main().catch((error) => {
-  console.error(error);
-  document.getElementById('hero-summary').textContent = `Failed to load site data: ${error.message}`;
+function fmt(value) {
+  if (value === null || value === undefined || value === "") {
+    return "n/a";
+  }
+  if (typeof value === "number") {
+    return Number.isInteger(value) ? String(value) : value.toFixed(3);
+  }
+  return String(value);
+}
+
+function boolLabel(value) {
+  return value ? "yes" : "no";
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+init().catch((error) => {
+  document.getElementById("hero-summary").textContent = `Failed to load site: ${error}`;
 });
 """
