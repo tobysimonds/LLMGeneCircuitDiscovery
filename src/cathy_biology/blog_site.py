@@ -257,60 +257,45 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <p>We compare a brute-force Boolean search against a direct graph-reading LLM ranker using Claude Opus 4.6.</p>
             </article>
           </div>
-          <div class="method-detail">
-            <div class="detail-card">
-              <p class="detail-label">The AI research loop in detail</p>
-              <p>
-                We treat each DEG as its own research problem. In the featured run, the system took the top 50 PDAC DEGs and launched one
-                independent discovery call per gene. Each call gave Claude Sonnet 4.6 the seed gene, the PDAC context, the current DEG universe,
-                a bridge-node universe drawn from curated pathway knowledge, and a strict request: return only mechanistic gene-to-gene edges that
-                can plausibly connect the seed gene to PDAC-relevant signaling.
-              </p>
-              <p>
-                The prompt is deliberately structured for machine use rather than prose. It asks for compact JSON, signed edges, short evidence summaries,
-                PMIDs or source references, and a bounded number of candidates. This keeps the output parsable, limits drift into narrative explanation,
-                and makes it possible to compare hundreds of model outputs side by side.
-              </p>
-            </div>
-            <div class="detail-card">
-              <p class="detail-label">Prompt optimization and evidence handling</p>
-              <p>
-                Several prompt-engineering choices mattered. We kept the discovery schema compact, capped the number of cited sources per edge, and allowed follow-up
-                rounds in the same conversation when a first pass appeared incomplete. We also saved the raw requests, raw responses, parsed JSON, and any parsing errors
-                per gene, which makes debugging the model behavior much easier than treating it as a black box. In the run shown here, 43 genes returned model-backed
-                outputs and 7 fell back to a PubMed heuristic path when the model did not yield usable edges.
-              </p>
-              <p>
-                An optional verification pass exists in the system, but the run described here is intentionally discovery-led. The final comparison instead happens downstream:
-                once the graph is built, we compare a solver-based ranking against a direct Claude Opus reading of the graph itself.
-              </p>
-            </div>
-          </div>
-          <div class="method-detail">
-            <div class="detail-card">
-              <p class="detail-label">From pathways to an intervention surface</p>
-              <p>
-                Intermediate biology is useful for explanation but can overwhelm optimization if every receptor, adaptor, kinase, and transcription factor is given equal weight.
-                We therefore let the model recover paths like <span class="mono">A → B → C</span>, but then project those paths back onto a DEG-centered control graph. This
-                preserves the mechanistic route while keeping the final intervention layer readable and experimentally relevant.
-              </p>
-              <p>
-                In practice, that means the system can reason through intermediates without requiring the final graph to become a generic signaling atlas. Researchers can inspect
-                the full path evidence, while the simulator and the direct Opus ranker operate on a smaller, clearer representation.
-              </p>
-            </div>
-            <div class="detail-card">
-              <p class="detail-label">How the two ranking methods differ</p>
-              <p>
-                The Boolean solver is explicit and exhaustive. It tries one-, two-, and three-gene knockouts over the selected graph and asks which combinations flip the synthetic
-                KRAS-signaling endpoint to off. Claude Opus is used differently: it receives the graph, the evidence, and the benchmark rows, and then produces a ranked set of
-                knockout suggestions as a structured mechanistic assessment. One method is combinatorial search; the other is model-based synthesis over the same evidence surface.
-              </p>
-              <p>
-                We then benchmark the nominated genes against DepMap pancreatic dependency data. This turns the pipeline into a research tool rather than a generator of opaque answers:
-                the recommendation, the evidence, and the external counter-evidence all remain visible at once.
-              </p>
-            </div>
+          <div class="prose methodology-prose">
+            <p>
+              We treat each DEG as its own research problem. In the featured run, the system took the top 50 PDAC DEGs and launched one independent discovery
+              call per gene. Each call gave Claude Sonnet 4.6 the seed gene, the PDAC context, the current DEG universe, a bridge-node universe drawn from curated
+              pathway knowledge, and a strict request: return only mechanistic gene-to-gene edges that can plausibly connect the seed gene to PDAC-relevant signaling.
+            </p>
+            <p>
+              The prompt is deliberately structured for machine use rather than prose. It asks for compact JSON, signed edges, short evidence summaries, PMIDs or
+              source references, and a bounded number of candidates. This keeps the output parsable, limits drift into narrative explanation, and makes it possible
+              to compare hundreds of model outputs side by side.
+            </p>
+            <p>
+              Several prompt-engineering choices mattered. We kept the discovery schema compact, capped the number of cited sources per edge, and allowed follow-up
+              rounds in the same conversation when a first pass appeared incomplete. We also saved the raw requests, raw responses, parsed JSON, and any parsing errors
+              per gene, which makes debugging the model behavior much easier than treating it as a black box. In the run shown here, 43 genes returned model-backed outputs
+              and 7 fell back to a PubMed heuristic path when the model did not yield usable edges.
+            </p>
+            <p>
+              An optional verification pass exists in the system, but the run described here is intentionally discovery-led. The final comparison instead happens downstream:
+              once the graph is built, we compare a solver-based ranking against a direct Claude Opus reading of the graph itself.
+            </p>
+            <p>
+              Intermediate biology is useful for explanation but can overwhelm optimization if every receptor, adaptor, kinase, and transcription factor is given equal weight.
+              We therefore let the model recover paths like <span class="mono">A → B → C</span>, but then project those paths back onto a DEG-centered control graph. This
+              preserves the mechanistic route while keeping the final intervention layer readable and experimentally relevant.
+            </p>
+            <p>
+              In practice, that means the system can reason through intermediates without requiring the final graph to become a generic signaling atlas. Researchers can inspect
+              the full path evidence, while the simulator and the direct Opus ranker operate on a smaller, clearer representation.
+            </p>
+            <p>
+              The Boolean solver is explicit and exhaustive. It tries one-, two-, and three-gene knockouts over the selected graph and asks which combinations flip the synthetic
+              KRAS-signaling endpoint to off. Claude Opus is used differently: it receives the graph, the evidence, and the benchmark rows, and then produces a ranked set of knockout
+              suggestions as a structured mechanistic assessment. One method is combinatorial search; the other is model-based synthesis over the same evidence surface.
+            </p>
+            <p>
+              We then benchmark the nominated genes against DepMap pancreatic dependency data. This turns the pipeline into a research tool rather than a generator of opaque answers:
+              the recommendation, the evidence, and the external counter-evidence all remain visible at once.
+            </p>
           </div>
         </section>
 
@@ -646,8 +631,7 @@ body {
 .figure-grid,
 .results-grid,
 .comparison-grid,
-.interactive-layout,
-.method-detail {
+.interactive-layout {
   display: grid;
   gap: 18px;
 }
@@ -658,8 +642,7 @@ body {
 
 .method-card,
 .figure-card,
-.result-card,
-.detail-card {
+.result-card {
   padding: 22px;
 }
 
@@ -672,38 +655,14 @@ body {
 }
 
 .method-card p,
-.result-card p,
-.detail-card p {
+.result-card p {
   margin: 0;
   color: #2d2924;
   line-height: 1.7;
 }
 
-.method-detail {
-  grid-template-columns: 1.1fr 0.9fr;
+.methodology-prose {
   margin-top: 18px;
-}
-
-.detail-card {
-  border: 1px solid var(--line);
-  background: rgba(255, 249, 239, 0.9);
-  border-radius: 26px;
-  box-shadow: 0 18px 60px rgba(28, 22, 14, 0.05);
-}
-
-.detail-label {
-  margin-bottom: 12px !important;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-}
-
-.detail-card ul {
-  margin: 0;
-  padding-left: 18px;
-  color: #2d2924;
-  line-height: 1.8;
 }
 
 .figure-card canvas {
