@@ -6,6 +6,7 @@ import sys
 import typer
 
 from cathy_biology.config import Settings, load_pipeline_config
+from cathy_biology.llm_knockout import run_anthropic_knockout_ranking
 from cathy_biology.pipeline import run_pipeline
 from cathy_biology.site import build_results_site
 
@@ -65,6 +66,21 @@ def build_site(
     site_dir = build_results_site(primary_run, output_dir, baseline_run_dir=baseline_run, title=title)
     typer.echo(f"Built site in {site_dir}")
     typer.echo(f"Serve locally with: uv run python -m http.server -d {site_dir}")
+
+
+@app.command("rank-llm-knockouts")
+def rank_llm_knockouts(
+    run_dir: Path = typer.Option(..., exists=True, file_okay=False, readable=True, help="Completed artifact directory."),
+    model: str = typer.Option("claude-opus-4-6", help="Anthropic model to use for graph-based knockout ranking."),
+) -> None:
+    settings = Settings()
+    ranking = run_anthropic_knockout_ranking(run_dir, settings, model_name=model)
+    typer.echo(f"LLM knockout ranking written to {run_dir / 'llm_knockout_opus' / 'rankings.json'}")
+    typer.echo(f"Final recommendation: {', '.join(ranking.final_recommendation) or 'none'}")
+    for candidate in ranking.candidates:
+        typer.echo(
+            f"#{candidate.rank}: {' + '.join(candidate.knocked_out_genes)} | conf={candidate.confidence_score:.2f} | toxicity={candidate.toxicity_risk}"
+        )
 
 
 def main() -> None:
