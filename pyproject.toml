@@ -33,7 +33,7 @@ asyncio_mode = "auto"
 
 [tool.uv.build-backend]
 module-name = "llmgenecircuitdiscovery"
-module-root = "src"
+module-root = "."
 
 [dependency-groups]
 dev = [
