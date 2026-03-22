@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from itertools import combinations
 from typing import Iterable
 
@@ -85,7 +86,12 @@ def build_regulatory_graph(
         for interaction in result.interactions:
             if interaction.interaction_type == 0:
                 continue
-            if interaction.confidence_score < grn_config.verification_confidence_threshold:
+            threshold = (
+                grn_config.verification_confidence_threshold
+                if result.phase == "verification" and grn_config.enable_verification
+                else grn_config.confidence_threshold
+            )
+            if interaction.confidence_score < threshold:
                 continue
             weight = compute_edge_weight(interaction)
             _ensure_node_defaults(
@@ -117,6 +123,93 @@ def build_regulatory_graph(
     return graph
 
 
+def build_projected_graph(
+    full_graph: nx.DiGraph,
+    deg_genes: Iterable[str],
+    grn_config: GrnConfig,
+    simulation_config: SimulationConfig,
+) -> nx.DiGraph:
+    deg_set = {gene.upper() for gene in deg_genes}
+    tracked_targets = [grn_config.target_oncogene.upper(), *(node.upper() for node in grn_config.immediate_downstream_effectors)]
+    visible_nodes = sorted({*deg_set, *tracked_targets})
+    boss_node = boss_node_name(grn_config.target_oncogene.upper())
+    projected = nx.DiGraph()
+
+    for node in visible_nodes:
+        kind = "deg" if node in deg_set else "pathway"
+        projected.add_node(
+            node,
+            kind=kind,
+            basal_state=1 if kind == "deg" else 0,
+            logic_mode="source" if kind == "deg" else "weighted_or",
+            activation_threshold=1.0 if kind == "deg" else simulation_config.activation_threshold,
+            inhibition_dominance=simulation_config.inhibition_dominance,
+        )
+
+    for source in sorted(deg_set):
+        for target in visible_nodes:
+            if source == target:
+                continue
+            collapsed_edge = _best_projected_edge(
+                full_graph,
+                source=source,
+                target=target,
+                visible_nodes=set(visible_nodes),
+                max_path_length=grn_config.projection_max_path_length,
+            )
+            if collapsed_edge is None:
+                continue
+            projected.add_edge(source, target, **collapsed_edge)
+
+    projected.add_node(
+        boss_node,
+        kind="boss",
+        basal_state=0,
+        logic_mode="weighted_or",
+        activation_threshold=simulation_config.activation_threshold,
+        inhibition_dominance=simulation_config.inhibition_dominance,
+    )
+    for target in tracked_targets:
+        if target not in projected:
+            continue
+        projected.add_edge(target, boss_node, sign=1, weight=1.0, confidence=1.0, provenance=["aggregate"])
+    return projected
+
+
+def build_projected_deg_graph(
+    full_graph: nx.DiGraph,
+    deg_genes: Iterable[str],
+    grn_config: GrnConfig,
+    simulation_config: SimulationConfig,
+) -> nx.DiGraph:
+    deg_set = {gene.upper() for gene in deg_genes}
+    projected = nx.DiGraph()
+    for gene in sorted(deg_set):
+        projected.add_node(
+            gene,
+            kind="deg",
+            basal_state=1,
+            logic_mode="source",
+            activation_threshold=1.0,
+            inhibition_dominance=simulation_config.inhibition_dominance,
+        )
+    for source in sorted(deg_set):
+        for target in sorted(deg_set):
+            if source == target:
+                continue
+            collapsed_edge = _best_projected_edge(
+                full_graph,
+                source=source,
+                target=target,
+                visible_nodes=set(deg_set),
+                max_path_length=grn_config.projection_max_path_length,
+            )
+            if collapsed_edge is None:
+                continue
+            projected.add_edge(source, target, **collapsed_edge)
+    return projected
+
+
 def compute_edge_weight(interaction) -> float:
     evidence = interaction.evidence_scores
     return min(
@@ -129,6 +222,74 @@ def compute_edge_weight(interaction) -> float:
         + 0.1 * evidence.prior_supported
         + 0.1 * evidence.benchmark_supported,
     )
+
+
+def _best_projected_edge(
+    graph: nx.DiGraph,
+    *,
+    source: str,
+    target: str,
+    visible_nodes: set[str],
+    max_path_length: int,
+) -> dict | None:
+    if source not in graph or target not in graph:
+        return None
+    candidates: list[dict] = []
+    try:
+        simple_paths = nx.all_simple_paths(graph, source=source, target=target, cutoff=max_path_length)
+        for path in simple_paths:
+            if len(path) < 2:
+                continue
+            internal_nodes = path[1:-1]
+            if any(node in visible_nodes for node in internal_nodes):
+                continue
+            edge_payload = _collapse_path(graph, path)
+            if edge_payload is not None:
+                candidates.append(edge_payload)
+    except nx.NetworkXNoPath:
+        return None
+    if not candidates:
+        return None
+    candidates.sort(key=lambda item: (-item["confidence"], item["path_length"], item["target"]))
+    return candidates[0]
+
+
+def _collapse_path(graph: nx.DiGraph, path: list[str]) -> dict | None:
+    edges = []
+    for source, target in zip(path[:-1], path[1:], strict=True):
+        if not graph.has_edge(source, target):
+            return None
+        edges.append(graph.edges[source, target])
+    sign = 1
+    provenance: list[str] = []
+    evidence_scores = defaultdict(float)
+    confidence_values: list[float] = []
+    benchmark_support_score = 0.0
+    for edge in edges:
+        edge_sign = int(edge.get("sign", 0))
+        if edge_sign == 0:
+            return None
+        sign *= edge_sign
+        confidence = float(edge.get("confidence", edge.get("weight", 0.0)))
+        confidence_values.append(confidence)
+        provenance.extend(edge.get("provenance", []))
+        benchmark_support_score = max(benchmark_support_score, float(edge.get("benchmark_support_score", 0.0)))
+        for key, value in (edge.get("evidence_scores") or {}).items():
+            evidence_scores[key] = max(evidence_scores[key], float(value))
+    collapsed_confidence = max(0.05, min(confidence_values) - 0.05 * (len(path) - 2))
+    return {
+        "sign": sign,
+        "weight": collapsed_confidence,
+        "confidence": collapsed_confidence,
+        "provenance": sorted(set(provenance)),
+        "evidence_scores": dict(evidence_scores),
+        "benchmark_support_score": benchmark_support_score,
+        "collapsed_path": path,
+        "collapsed_via": path[1:-1],
+        "path_length": len(path) - 1,
+        "source": path[0],
+        "target": path[-1],
+    }
 
 
 def simulate_boolean_network(

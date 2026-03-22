@@ -1,0 +1,47 @@
+[dataset]
+source_type = "geo"
+accession = "GSE242230"
+annotations_filename = "GSE242230_annotations.txt.gz"
+cache_subdir = "gse242230"
+
+[contrast]
+groupby_column = "cell_type_specific"
+case_labels = ["Malignant - Classical", "Malignant - Basal"]
+control_labels = ["Normal Epithelial"]
+filter_column = "filtered"
+exclude_filtered = true
+
+[qc]
+min_genes = 200
+max_mt_fraction = 0.2
+random_seed = 17
+
+[deg]
+top_n = 50
+adjusted_pvalue_cutoff = 0.05
+min_log2_fold_change = 0.1
+
+[grn]
+research_backend = "anthropic"
+context = "Pancreatic Ductal Adenocarcinoma"
+target_oncogene = "KRAS"
+model = "claude-sonnet-4-6"
+parser_model = "claude-opus-4-6"
+enable_verification = false
+concurrency = 20
+confidence_threshold = 0.35
+max_tool_calls = 6
+discovery_max_edges_per_gene = 25
+discovery_rounds = 5
+projection_max_path_length = 4
+immediate_downstream_effectors = ["RAF1", "BRAF", "MAP2K1", "MAP2K2", "MAPK1", "MAPK3", "PIK3CA", "AKT1"]
+
+[simulation]
+knockout_sizes = [1, 2, 3]
+max_iterations = 8
+
+[benchmark]
+release = "DepMap Public 25Q3"
+lineage_filters = ["Pancreas"]
+primary_disease_filters = ["Pancreatic"]
+effect_threshold = -0.5

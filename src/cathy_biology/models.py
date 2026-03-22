@@ -37,6 +37,7 @@ class GeneInteraction(BaseModel):
     target: str
     interaction_type: Literal[-1, 0, 1]
     pmid_citations: list[str] = Field(default_factory=list)
+    source_refs: list[str] = Field(default_factory=list)
     confidence_score: float = Field(default=0.0, ge=0.0, le=1.0)
     evidence_summary: str = ""
     source_type: NodeKind = "unknown"
@@ -49,9 +50,9 @@ class GeneInteraction(BaseModel):
 
 
 class GeneResearchResult(BaseModel):
-    source_gene: str
-    target_oncogene: str
-    context: str
+    source_gene: str = ""
+    target_oncogene: str = ""
+    context: str = ""
     interactions: list[GeneInteraction] = Field(default_factory=list)
     discovered_entities: list[ResolvedEntity] = Field(default_factory=list)
     alias_hints: dict[str, list[str]] = Field(default_factory=dict)

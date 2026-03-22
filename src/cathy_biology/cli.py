@@ -20,11 +20,17 @@ def run(
         None,
         help="Override the GRN backend: openai, anthropic, or pubmed.",
     ),
+    disable_verification: bool = typer.Option(
+        False,
+        help="Skip the verification pass and use discovery results directly.",
+    ),
 ) -> None:
     settings = Settings()
     pipeline_config = load_pipeline_config(config)
     if research_backend is not None:
         pipeline_config.grn.research_backend = research_backend
+    if disable_verification:
+        pipeline_config.grn.enable_verification = False
     summary = run_pipeline(pipeline_config, settings, output_dir)
     typer.echo(f"Completed run in {summary.output_dir}")
     typer.echo(f"Dataset cells: {summary.dataset_cells}, genes: {summary.dataset_genes}")

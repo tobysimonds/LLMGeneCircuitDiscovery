@@ -49,57 +49,104 @@ def build_candidate_universe(
     return sorted({*deg_universe, *core, *prior_nodes})
 
 
+def build_prompt_candidate_universe(
+    deg_universe: Sequence[str],
+    prior_knowledge: PriorKnowledgeSummary,
+    grn_config: GrnConfig,
+) -> tuple[list[str], list[str]]:
+    deg_nodes = sorted({gene.upper() for gene in deg_universe})
+    core_nodes = [grn_config.target_oncogene.upper(), *(node.upper() for node in grn_config.immediate_downstream_effectors)]
+    preferred_prior_order = [
+        "EGFR",
+        "ERBB2",
+        "ERBB3",
+        "FGFR1",
+        "FGFR2",
+        "FGFR3",
+        "MET",
+        "SOS1",
+        "SOS2",
+        "GRB2",
+        "SHC1",
+        "PTPN11",
+        "SRC",
+        "PRKCA",
+        "PRKCD",
+        "PLCG1",
+        "PIK3CA",
+        "AKT1",
+        "RAF1",
+        "BRAF",
+        "MAP2K1",
+        "MAP2K2",
+        "MAPK1",
+        "MAPK3",
+        "STAT3",
+        "YAP1",
+        "MYC",
+        "JUN",
+        "FOS",
+    ]
+    available_prior_nodes = {
+        node.canonical_symbol.upper()
+        for node in prior_knowledge.nodes
+        if node.canonical_symbol.upper() not in set(deg_nodes)
+    }
+    bridge_nodes = [node for node in preferred_prior_order if node in available_prior_nodes]
+    return deg_nodes, sorted({*core_nodes, *bridge_nodes[:20]})
+
+
 def build_discovery_system_prompt(
     gene: str,
     deg_universe: Sequence[str],
     prior_knowledge: PriorKnowledgeSummary,
     grn_config: GrnConfig,
 ) -> str:
-    candidate_universe = build_candidate_universe(deg_universe, prior_knowledge, grn_config)
-    candidate_degs = ", ".join(sorted(set(deg_universe)))
-    prior_nodes = ", ".join(node for node in candidate_universe if node not in set(deg_universe))
+    candidate_degs, bridge_nodes = build_prompt_candidate_universe(deg_universe, prior_knowledge, grn_config)
     return (
-        "You are a senior computational oncology research agent building a mechanistic PDAC signaling graph.\n\n"
-        "Pipeline context:\n"
-        "1. Upstream code already distilled a PDAC scRNA-seq dataset to the top 50 DEGs.\n"
-        f"2. The current seed DEG is {gene}.\n"
-        "3. This is the discovery phase. High recall is desired, but only for mechanistic signaling edges.\n"
-        "4. Your output feeds a later verification pass, curated pathway priors, and a weighted Boolean knockout simulator.\n\n"
+        "You are building a mechanistic PDAC signaling graph from top malignant-cell DEGs.\n"
+        f"Seed DEG: {gene}.\n"
+        "This is the discovery phase: prefer recall, but only for mechanistic gene-to-gene signaling edges.\n"
+        "The final optimization graph is DEG-centered, so use intermediates only when they explain how the seed DEG reaches another DEG or KRAS-core node.\n\n"
         f"Disease context: {grn_config.context}.\n"
         f"Boss oncogene: {grn_config.target_oncogene}.\n"
         f"Core pathway nodes: {', '.join([grn_config.target_oncogene, *grn_config.immediate_downstream_effectors])}.\n"
-        f"DEG universe: {candidate_degs}.\n"
-        f"Curated prior/intermediate node universe: {prior_nodes}.\n\n"
+        f"Projected DEG node set: {', '.join(candidate_degs)}.\n"
+        f"Preferred bridge genes if needed: {', '.join(bridge_nodes)}.\n\n"
         "Discovery task:\n"
         f"- Find up to {grn_config.discovery_max_edges_per_gene} plausible mechanistic edges involving {gene}.\n"
+        "- Return the strongest 2 to 4 candidate edges by default when evidence exists.\n"
+        "- Only return more than 4 edges when the additional edges are independently supported, non-redundant, and still among the strongest findings.\n"
+        "- If fewer than two supported edges truly exist, return fewer; do not fabricate edges to satisfy the target.\n"
         "- Allowed outputs include:\n"
         "  * seed DEG -> another DEG\n"
         "  * seed DEG -> intermediate signaling node\n"
         "  * intermediate signaling node -> downstream node, if needed to represent a mechanistic chain initiated by the seed DEG\n"
         "- Prefer edges that are experimentally supported in PDAC. If PDAC is unavailable, pancreas-relevant or closely related cancer evidence is acceptable but should reduce confidence.\n"
-        "- Prefer receptor/adaptor/signal-transduction/TF bridge nodes over vague pathway labels.\n"
+        "- Prefer receptor/adaptor/signal-transduction/TF bridge genes over vague pathway labels.\n"
         "- Use canonical HGNC gene symbols in `source_gene`, `target`, and `discovered_entities`.\n"
         "- Do not emit generic pathway names like MAPK pathway, PI3K pathway, EMT, stemness, or invasion as nodes. Emit only gene symbols.\n"
-        "- Do not emit more than two new intermediate genes outside the listed candidate universe unless the literature makes them essential.\n"
-        "- If the seed DEG only has broad pathway influence without a clear mechanistic edge, return no supported edges.\n\n"
+        "- If the mechanism uses an intermediate bridge, prefer one-step bridges and keep the chain compact.\n"
+        "- Do not emit more than two new intermediate genes outside the preferred bridge list unless the literature makes them essential.\n"
+        "- If the seed DEG only has broad pathway influence without a clear mechanistic edge, return no supported edges.\n"
+        "- Keep `evidence_summary` to one sentence and under 35 words.\n"
+        "- Include at most 2 PMIDs and at most 2 `source_refs` per edge.\n"
+        "- `mechanistic_depth` must be 1 for direct seed-gene edges and 2 when one bridge/intermediate step is required. Never output values above 2.\n\n"
         "Output contract:\n"
         "Return exactly one JSON object. The first character must be `{` and the last character must be `}`.\n"
         "No markdown, no prose, no code fences.\n"
+        "Keep the JSON compact. Discovery is for candidate generation only; do not repeat pipeline metadata.\n"
         "Use this schema:\n"
         "{\n"
-        '  "source_gene": "string",\n'
-        '  "target_oncogene": "string",\n'
-        '  "context": "string",\n'
         '  "interactions": [\n'
         "    {\n"
         '      "source_gene": "string",\n'
         '      "target": "string",\n'
         '      "interaction_type": -1 | 1,\n'
-        '      "pmid_citations": ["string"],\n'
         '      "confidence_score": 0.0,\n'
         '      "evidence_summary": "string",\n'
-        '      "source_type": "deg" | "intermediate" | "pathway" | "prior" | "unknown",\n'
-        '      "target_type": "deg" | "intermediate" | "pathway" | "prior" | "unknown",\n'
+        '      "pmid_citations": ["string"],\n'
+        '      "source_refs": ["PMID:12345678" | "https://..."],\n'
         '      "mechanistic_depth": 1 | 2\n'
         "    }\n"
         "  ],\n"
@@ -107,16 +154,11 @@ def build_discovery_system_prompt(
         "    {\n"
         '      "canonical_symbol": "string",\n'
         '      "aliases": ["string"],\n'
-        '      "entity_type": "deg" | "intermediate" | "pathway" | "prior" | "unknown",\n'
-        '      "sources": ["string"]\n'
+        '      "entity_type": "deg" | "intermediate" | "prior" | "unknown"\n'
         "    }\n"
         "  ],\n"
         '  "alias_hints": {"string": ["string"]},\n'
-        '  "no_direct_effect": false,\n'
-        '  "no_supported_edges": true,\n'
-        '  "queried_targets": ["string"],\n'
-        '  "raw_model": "string",\n'
-        '  "phase": "discovery"\n'
+        '  "no_supported_edges": true\n'
         "}\n"
     )
 
@@ -127,11 +169,12 @@ def build_discovery_user_prompt(
     prior_knowledge: PriorKnowledgeSummary,
     grn_config: GrnConfig,
 ) -> str:
-    candidate_universe = build_candidate_universe(deg_universe, prior_knowledge, grn_config)
+    candidate_degs, bridge_nodes = build_prompt_candidate_universe(deg_universe, prior_knowledge, grn_config)
     return (
         f"Research the seed DEG {gene} in PDAC.\n"
-        f"Candidate node universe: {', '.join(candidate_universe)}.\n"
-        "Find the most plausible mechanistic outgoing edges and bridge nodes for this DEG. Return JSON only."
+        f"Projected DEG nodes: {', '.join(candidate_degs)}.\n"
+        f"Preferred bridge genes: {', '.join(bridge_nodes)}.\n"
+        "Return the strongest non-redundant mechanistic edges initiated by this seed. Return JSON only."
     )
 
 
@@ -163,8 +206,9 @@ def build_verification_system_prompt(
         "Output contract:\n"
         "Return exactly one JSON object with the same schema as the discovery phase, but with `phase` set to `verification`.\n"
         "Only include verified edges in `interactions`.\n"
-        "Each kept edge must include `evidence_scores`, `pmid_citations`, and a concise evidence summary.\n"
+        "Each kept edge must include `evidence_scores`, `pmid_citations`, `source_refs`, and a concise evidence summary.\n"
         "No markdown or narrative outside the JSON.\n"
+        "Keep top-level metadata compact; the pipeline already knows the seed gene, context, and model.\n"
     )
 
 
@@ -178,6 +222,7 @@ def build_verification_user_prompt(discovery_result: GeneResearchResult) -> str:
             "target_type": edge.target_type,
             "mechanistic_depth": edge.mechanistic_depth,
             "evidence_summary": edge.evidence_summary,
+            "source_refs": edge.source_refs,
         }
         for edge in discovery_result.interactions
     ]
@@ -185,6 +230,26 @@ def build_verification_user_prompt(discovery_result: GeneResearchResult) -> str:
         "Independently verify the following candidate edges and reject unsupported ones.\n"
         f"Candidate edges: {json.dumps(candidate_edges, ensure_ascii=True)}\n"
         f"Discovered entities: {json.dumps([entity.model_dump() for entity in discovery_result.discovered_entities], ensure_ascii=True)}\n"
+        "Return JSON only."
+    )
+
+
+def build_discovery_follow_up_user_prompt(
+    gene: str,
+    prior_results: Sequence[GeneResearchResult],
+    grn_config: GrnConfig,
+) -> str:
+    prior_edges = [
+        f"{edge.source_gene}->{edge.target}"
+        for result in prior_results
+        for edge in result.interactions
+    ][:10]
+    return (
+        f"Continue the same PDAC literature search for {gene}.\n"
+        f"Already proposed edges: {', '.join(prior_edges) if prior_edges else 'none'}.\n"
+        "Generate additional non-redundant mechanistic pathways that are distinct from the edges above.\n"
+        "Prefer 2 to 4 new edges if evidence exists. If there are no credible new edges, return an empty `interactions` list.\n"
+        f"Never exceed {grn_config.discovery_max_edges_per_gene} total edges across all rounds.\n"
         "Return JSON only."
     )
 
@@ -197,6 +262,7 @@ class OpenAIResearchClient:
         self.cache_dir = ensure_directory(cache_dir)
         self.discovery_cache_dir = ensure_directory(self.cache_dir / "discovery")
         self.verification_cache_dir = ensure_directory(self.cache_dir / "verification")
+        self.raw_exchange_dir = ensure_directory(self.cache_dir / "raw")
         self.alias_resolver = GeneAliasResolver(self.cache_dir / "aliases")
         self.fallback_client = PubMedHeuristicResearchClient(settings, self.cache_dir / "pubmed_fallback")
         self.client = AsyncOpenAI(
@@ -234,15 +300,36 @@ class OpenAIResearchClient:
         discovery_cache_path = self.discovery_cache_dir / f"{gene}.json"
         verification_cache_path = self.verification_cache_dir / f"{gene}.json"
         if discovery_cache_path.exists() and verification_cache_path.exists():
-            discovery_result = GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8"))
-            verification_result = GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8"))
+            discovery_result = _normalize_research_result(
+                GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8")),
+                seed_gene=gene,
+                deg_universe=deg_universe,
+                prior_knowledge=prior_knowledge,
+                grn_config=grn_config,
+                model_name=grn_config.model,
+                phase="discovery",
+                alias_resolver=self.alias_resolver,
+            )
+            verification_result = _normalize_research_result(
+                GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8")),
+                seed_gene=gene,
+                deg_universe=deg_universe,
+                prior_knowledge=prior_knowledge,
+                grn_config=grn_config,
+                model_name=grn_config.parser_model if grn_config.enable_verification else grn_config.model,
+                phase="verification" if grn_config.enable_verification else "discovery",
+                alias_resolver=self.alias_resolver,
+            )
             return discovery_result, verification_result
 
         if self._openai_disabled_reason is None:
             discovery_result = await self._call_openai(
+                gene=gene,
+                phase="discovery",
                 model_name=grn_config.model,
                 instructions=build_discovery_system_prompt(gene, deg_universe, prior_knowledge, grn_config),
                 prompt=build_discovery_user_prompt(gene, deg_universe, prior_knowledge, grn_config),
+                grn_config=grn_config,
             )
             if discovery_result is not None:
                 discovery_result = _normalize_research_result(
@@ -256,11 +343,14 @@ class OpenAIResearchClient:
                     alias_resolver=self.alias_resolver,
                 )
                 verification_result = discovery_result
-                if discovery_result.interactions:
+                if grn_config.enable_verification and discovery_result.interactions:
                     verified = await self._call_openai(
+                        gene=gene,
+                        phase="verification",
                         model_name=grn_config.parser_model,
                         instructions=build_verification_system_prompt(gene, discovery_result, grn_config),
                         prompt=build_verification_user_prompt(discovery_result),
+                        grn_config=grn_config,
                     )
                     if verified is not None:
                         verification_result = _normalize_research_result(
@@ -284,23 +374,59 @@ class OpenAIResearchClient:
         write_json(verification_cache_path, verification_result.model_dump())
         return discovery_result, verification_result
 
-    async def _call_openai(self, model_name: str, instructions: str, prompt: str) -> GeneResearchResult | None:
+    async def _call_openai(
+        self,
+        *,
+        gene: str,
+        phase: str,
+        model_name: str,
+        instructions: str,
+        prompt: str,
+        grn_config: GrnConfig,
+    ) -> GeneResearchResult | None:
+        request_payload = {
+            "model": model_name,
+            "instructions": instructions,
+            "input": prompt,
+            "tools": [{"type": "web_search_preview"}],
+            "max_output_tokens": 2_000,
+        }
+        self._write_exchange_artifacts(gene=gene, phase=phase, kind="request", payload=request_payload)
         try:
-            response = await self.client.responses.create(
-                model=model_name,
-                instructions=instructions,
-                input=prompt,
-                tools=[{"type": "web_search_preview"}],
-                max_output_tokens=2_000,
-            )
+            response = await self.client.responses.create(**request_payload)
             text_payload = getattr(response, "output_text", "").strip()
             if not text_payload:
                 text_payload = _extract_openai_text(response)
+            self._write_exchange_artifacts(
+                gene=gene,
+                phase=phase,
+                kind="response",
+                payload={
+                    "model": getattr(response, "model", model_name),
+                    "id": getattr(response, "id", ""),
+                    "text": text_payload,
+                    "raw_response": _openai_response_to_dict(response),
+                },
+            )
             if not text_payload:
                 return None
             parsed = _parse_json_payload(text_payload)
-            return GeneResearchResult.model_validate(parsed)
+            self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=parsed)
+            return _coerce_research_result(
+                parsed,
+                seed_gene=gene,
+                target_oncogene=grn_config.target_oncogene,
+                context=grn_config.context,
+                phase=phase,
+                model_name=model_name,
+            )
         except Exception as exc:
+            self._write_exchange_artifacts(
+                gene=gene,
+                phase=phase,
+                kind="error",
+                payload={"model": model_name, "error": str(exc)},
+            )
             error_message = str(exc).lower()
             if any(
                 marker in error_message
@@ -317,6 +443,10 @@ class OpenAIResearchClient:
                 self._openai_disabled_reason = str(exc)
             return None
 
+    def _write_exchange_artifacts(self, *, gene: str, phase: str, kind: str, payload: object) -> None:
+        directory = ensure_directory(self.raw_exchange_dir / phase / gene)
+        write_json(directory / f"{kind}.json", payload)
+
 
 class AnthropicResearchClient:
     def __init__(self, settings: Settings, cache_dir: Path) -> None:
@@ -326,6 +456,7 @@ class AnthropicResearchClient:
         self.cache_dir = ensure_directory(cache_dir)
         self.discovery_cache_dir = ensure_directory(self.cache_dir / "discovery")
         self.verification_cache_dir = ensure_directory(self.cache_dir / "verification")
+        self.raw_exchange_dir = ensure_directory(self.cache_dir / "raw")
         self.alias_resolver = GeneAliasResolver(self.cache_dir / "aliases")
         self.fallback_client = PubMedHeuristicResearchClient(settings, self.cache_dir / "pubmed_fallback")
         self.client = AsyncAnthropic(
@@ -362,14 +493,35 @@ class AnthropicResearchClient:
         discovery_cache_path = self.discovery_cache_dir / f"{gene}.json"
         verification_cache_path = self.verification_cache_dir / f"{gene}.json"
         if discovery_cache_path.exists() and verification_cache_path.exists():
-            discovery_result = GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8"))
-            verification_result = GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8"))
+            discovery_result = _normalize_research_result(
+                GeneResearchResult.model_validate_json(discovery_cache_path.read_text(encoding="utf-8")),
+                seed_gene=gene,
+                deg_universe=deg_universe,
+                prior_knowledge=prior_knowledge,
+                grn_config=grn_config,
+                model_name=grn_config.model,
+                phase="discovery",
+                alias_resolver=self.alias_resolver,
+            )
+            verification_result = _normalize_research_result(
+                GeneResearchResult.model_validate_json(verification_cache_path.read_text(encoding="utf-8")),
+                seed_gene=gene,
+                deg_universe=deg_universe,
+                prior_knowledge=prior_knowledge,
+                grn_config=grn_config,
+                model_name=grn_config.parser_model if grn_config.enable_verification else grn_config.model,
+                phase="verification" if grn_config.enable_verification else "discovery",
+                alias_resolver=self.alias_resolver,
+            )
             return discovery_result, verification_result
 
         discovery_result = await self._call_model(
-            build_discovery_system_prompt(gene, deg_universe, prior_knowledge, grn_config),
-            build_discovery_user_prompt(gene, deg_universe, prior_knowledge, grn_config),
-            grn_config.model,
+            gene=gene,
+            phase="discovery",
+            system_prompt=build_discovery_system_prompt(gene, deg_universe, prior_knowledge, grn_config),
+            user_prompt=build_discovery_user_prompt(gene, deg_universe, prior_knowledge, grn_config),
+            model_name=grn_config.model,
+            grn_config=grn_config,
         )
         if discovery_result is None:
             fallback = await self.fallback_client.research_genes([gene], deg_universe, prior_knowledge, grn_config)
@@ -390,11 +542,14 @@ class AnthropicResearchClient:
             alias_resolver=self.alias_resolver,
         )
         verification_result = discovery_result
-        if discovery_result.interactions:
+        if grn_config.enable_verification and discovery_result.interactions:
             verified = await self._call_model(
-                build_verification_system_prompt(gene, discovery_result, grn_config),
-                build_verification_user_prompt(discovery_result),
-                grn_config.parser_model,
+                gene=gene,
+                phase="verification",
+                system_prompt=build_verification_system_prompt(gene, discovery_result, grn_config),
+                user_prompt=build_verification_user_prompt(discovery_result),
+                model_name=grn_config.parser_model,
+                grn_config=grn_config,
             )
             if verified is not None:
                 verification_result = _normalize_research_result(
@@ -412,30 +567,160 @@ class AnthropicResearchClient:
         write_json(verification_cache_path, verification_result.model_dump())
         return discovery_result, verification_result
 
-    async def _call_model(self, system_prompt: str, user_prompt: str, model_name: str) -> GeneResearchResult | None:
-        try:
-            message = await self.client.messages.create(
-                model=model_name,
-                max_tokens=2_000,
-                system=system_prompt,
-                messages=[{"role": "user", "content": user_prompt}],
-                temperature=0,
-                tools=[
+    async def _call_model(
+        self,
+        gene: str,
+        phase: str,
+        system_prompt: str,
+        user_prompt: str,
+        model_name: str,
+        grn_config: GrnConfig,
+    ) -> GeneResearchResult | None:
+        messages: list[dict[str, str]] = [{"role": "user", "content": user_prompt}]
+        round_results: list[GeneResearchResult] = []
+        max_rounds = grn_config.discovery_rounds if phase == "discovery" else 1
+
+        for round_index in range(1, max_rounds + 1):
+            request_payload = {
+                "model": model_name,
+                "max_tokens": 1_200,
+                "system": system_prompt,
+                "messages": messages,
+                "temperature": 0,
+                "tools": [
                     {
                         "type": "web_search_20250305",
                         "name": "web_search",
-                        "max_uses": 4,
+                        "max_uses": grn_config.max_tool_calls,
                         "allowed_callers": ["direct"],
                     }
                 ],
-            )
-            text_payload = _extract_anthropic_text(message.content)
-            if not text_payload:
-                return None
-            parsed = _parse_json_payload(text_payload)
-            return GeneResearchResult.model_validate(parsed)
-        except Exception:
+            }
+            suffix = f"_round{round_index:02d}"
+            self._write_exchange_artifacts(gene=gene, phase=phase, kind=f"request{suffix}", payload=request_payload)
+            for attempt in range(1, 4):
+                try:
+                    message = await self.client.messages.create(**request_payload)
+                    text_payload = _extract_anthropic_text(message.content)
+                    self._write_exchange_artifacts(
+                        gene=gene,
+                        phase=phase,
+                        kind=f"response{suffix}",
+                        payload={
+                            "model": getattr(message, "model", model_name),
+                            "id": getattr(message, "id", ""),
+                            "text": text_payload,
+                            "raw_response": _anthropic_message_to_dict(message),
+                        },
+                    )
+                    if not text_payload:
+                        break
+                    parsed = _parse_json_payload(text_payload)
+                    self._write_exchange_artifacts(gene=gene, phase=phase, kind=f"parsed{suffix}", payload=parsed)
+                    result = _coerce_research_result(
+                        parsed,
+                        seed_gene=gene,
+                        target_oncogene=grn_config.target_oncogene,
+                        context=grn_config.context,
+                        phase=phase,
+                        model_name=model_name,
+                    )
+                    prior_unique_edges = {
+                        (edge.source_gene, edge.target, edge.interaction_type)
+                        for previous in round_results
+                        for edge in previous.interactions
+                    }
+                    round_results.append(result)
+                    messages.append({"role": "assistant", "content": text_payload})
+                    if phase != "discovery" or round_index >= max_rounds:
+                        merged = _merge_research_rounds(
+                            round_results,
+                            seed_gene=gene,
+                            target_oncogene=grn_config.target_oncogene,
+                            context=grn_config.context,
+                            phase=phase,
+                            model_name=model_name,
+                        )
+                        self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=merged.model_dump())
+                        return merged
+                    current_unique_edges = {
+                        (edge.source_gene, edge.target, edge.interaction_type)
+                        for r in round_results
+                        for edge in r.interactions
+                    }
+                    if not result.interactions or current_unique_edges == prior_unique_edges:
+                        merged = _merge_research_rounds(
+                            round_results,
+                            seed_gene=gene,
+                            target_oncogene=grn_config.target_oncogene,
+                            context=grn_config.context,
+                            phase=phase,
+                            model_name=model_name,
+                        )
+                        self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=merged.model_dump())
+                        return merged
+                    if len(current_unique_edges) >= grn_config.discovery_max_edges_per_gene:
+                        merged = _merge_research_rounds(
+                            round_results,
+                            seed_gene=gene,
+                            target_oncogene=grn_config.target_oncogene,
+                            context=grn_config.context,
+                            phase=phase,
+                            model_name=model_name,
+                        )
+                        self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=merged.model_dump())
+                        return merged
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": build_discovery_follow_up_user_prompt(gene, round_results, grn_config),
+                        }
+                    )
+                    break
+                except Exception as exc:
+                    error_payload = {
+                        "model": model_name,
+                        "attempt": attempt,
+                        "error": str(exc),
+                    }
+                    self._write_exchange_artifacts(
+                        gene=gene,
+                        phase=phase,
+                        kind=f"error{suffix}",
+                        payload=error_payload,
+                    )
+                    if "rate limit" in str(exc).lower() and attempt < 3:
+                        await asyncio.sleep(10 * attempt)
+                        continue
+                    if not round_results:
+                        return None
+                    merged = _merge_research_rounds(
+                        round_results,
+                        seed_gene=gene,
+                        target_oncogene=grn_config.target_oncogene,
+                        context=grn_config.context,
+                        phase=phase,
+                        model_name=model_name,
+                    )
+                    self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=merged.model_dump())
+                    return merged
+
+        if not round_results:
             return None
+        merged = _merge_research_rounds(
+            round_results,
+            seed_gene=gene,
+            target_oncogene=grn_config.target_oncogene,
+            context=grn_config.context,
+            phase=phase,
+            model_name=model_name,
+        )
+        self._write_exchange_artifacts(gene=gene, phase=phase, kind="parsed", payload=merged.model_dump())
+        return merged
+
+    def _write_exchange_artifacts(self, *, gene: str, phase: str, kind: str, payload: object) -> None:
+        directory = ensure_directory(self.raw_exchange_dir / phase / gene)
+        write_json(directory / f"{kind}.json", payload)
 
 
 class MockResearchClient:
@@ -499,16 +784,155 @@ def _extract_anthropic_text(content_blocks: Sequence[object]) -> str:
 
 def _parse_json_payload(payload: str) -> dict:
     payload = payload.strip()
+    fenced_blocks = re.findall(r"```(?:json)?\s*(\{.*?\})\s*```", payload, flags=re.DOTALL)
+    if fenced_blocks:
+        return json.loads(fenced_blocks[-1])
     if payload.startswith("```"):
         payload = payload.strip("`")
         payload = payload.removeprefix("json").strip()
     try:
         return json.loads(payload)
     except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", payload, flags=re.DOTALL)
-        if match is None:
+        extracted = _extract_balanced_json_object(payload)
+        if extracted is None:
             raise
-        return json.loads(match.group(0))
+        return json.loads(extracted)
+
+
+def _extract_balanced_json_object(payload: str) -> str | None:
+    start = payload.find("{")
+    while start != -1:
+        depth = 0
+        in_string = False
+        escape = False
+        for index in range(start, len(payload)):
+            char = payload[index]
+            if in_string:
+                if escape:
+                    escape = False
+                elif char == "\\":
+                    escape = True
+                elif char == '"':
+                    in_string = False
+                continue
+            if char == '"':
+                in_string = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    candidate = payload[start : index + 1]
+                    try:
+                        json.loads(candidate)
+                        return candidate
+                    except json.JSONDecodeError:
+                        break
+        start = payload.find("{", start + 1)
+    return None
+
+
+def _coerce_research_result(
+    payload: dict,
+    *,
+    seed_gene: str,
+    target_oncogene: str,
+    context: str,
+    phase: str,
+    model_name: str,
+) -> GeneResearchResult:
+    normalized = dict(payload)
+    normalized = _sanitize_research_payload(normalized)
+    normalized.setdefault("source_gene", seed_gene)
+    normalized.setdefault("target_oncogene", target_oncogene)
+    normalized.setdefault("context", context)
+    normalized.setdefault("raw_model", model_name)
+    normalized.setdefault("phase", phase)
+    normalized.setdefault("discovered_entities", [])
+    normalized.setdefault("alias_hints", {})
+    normalized.setdefault("interactions", [])
+    normalized.setdefault("no_supported_edges", not normalized["interactions"])
+    normalized.setdefault("no_direct_effect", False)
+    normalized.setdefault("queried_targets", [])
+    for entity in normalized["discovered_entities"]:
+        entity.setdefault("sources", [])
+    return GeneResearchResult.model_validate(normalized)
+
+
+def _merge_research_rounds(
+    round_results: Sequence[GeneResearchResult],
+    *,
+    seed_gene: str,
+    target_oncogene: str,
+    context: str,
+    phase: str,
+    model_name: str,
+) -> GeneResearchResult:
+    merged_alias_hints: dict[str, list[str]] = {}
+    merged_entities: list[ResolvedEntity] = []
+    merged_interactions: list[GeneInteraction] = []
+    for result in round_results:
+        merged_interactions.extend(result.interactions)
+        merged_entities.extend(result.discovered_entities)
+        for key, values in result.alias_hints.items():
+            merged_alias_hints[key] = sorted({*merged_alias_hints.get(key, []), *values})
+    return GeneResearchResult(
+        source_gene=seed_gene,
+        target_oncogene=target_oncogene,
+        context=context,
+        interactions=merged_interactions,
+        discovered_entities=merged_entities,
+        alias_hints=merged_alias_hints,
+        no_direct_effect=not merged_interactions,
+        no_supported_edges=not merged_interactions,
+        queried_targets=[],
+        raw_model=model_name,
+        phase=phase,  # type: ignore[arg-type]
+    )
+
+
+def _sanitize_research_payload(payload: dict) -> dict:
+    sanitized = dict(payload)
+    alias_hints = sanitized.get("alias_hints", {})
+    if isinstance(alias_hints, dict):
+        sanitized["alias_hints"] = {
+            str(key): value if isinstance(value, list) else [str(value)]
+            for key, value in alias_hints.items()
+        }
+    interactions = []
+    for interaction in sanitized.get("interactions", []):
+        current = dict(interaction)
+        current["mechanistic_depth"] = max(1, min(int(current.get("mechanistic_depth", 1)), 2))
+        current["pmid_citations"] = [str(item) for item in current.get("pmid_citations", [])]
+        current["source_refs"] = [str(item) for item in current.get("source_refs", [])]
+        interactions.append(current)
+    sanitized["interactions"] = interactions
+    entities = []
+    for entity in sanitized.get("discovered_entities", []):
+        current = dict(entity)
+        aliases = current.get("aliases", [])
+        if isinstance(aliases, str):
+            current["aliases"] = [aliases]
+        current.setdefault("sources", [])
+        entities.append(current)
+    sanitized["discovered_entities"] = entities
+    return sanitized
+
+
+def _openai_response_to_dict(response: object) -> dict:
+    if hasattr(response, "model_dump"):
+        return response.model_dump(mode="json")
+    if hasattr(response, "to_dict"):
+        return response.to_dict()
+    return {"repr": repr(response)}
+
+
+def _anthropic_message_to_dict(message: object) -> dict:
+    if hasattr(message, "model_dump"):
+        return message.model_dump(mode="json")
+    if hasattr(message, "to_dict"):
+        return message.to_dict()
+    return {"repr": repr(message)}
 
 
 def _normalize_research_result(
@@ -607,7 +1031,7 @@ def _normalize_research_result(
     }
 
     normalized_interactions = sorted(
-        normalized_edges.values(),
+        _filter_seed_anchored_edges(result.source_gene, normalized_edges.values()),
         key=lambda edge: (-edge.confidence_score, edge.source_gene, edge.target, edge.interaction_type),
     )
     result.interactions = normalized_interactions
@@ -637,6 +1061,24 @@ def _node_type(
     if symbol_upper in {node.canonical_symbol.upper() for node in prior_knowledge.nodes}:
         return "prior"
     return "intermediate"
+
+
+def _filter_seed_anchored_edges(seed_gene: str, interactions: Sequence[GeneInteraction]) -> list[GeneInteraction]:
+    adjacency: dict[str, set[str]] = {}
+    for interaction in interactions:
+        adjacency.setdefault(interaction.source_gene, set()).add(interaction.target)
+
+    reachable = {seed_gene}
+    frontier = [seed_gene]
+    while frontier:
+        source = frontier.pop()
+        for target in adjacency.get(source, set()):
+            if target in reachable:
+                continue
+            reachable.add(target)
+            frontier.append(target)
+
+    return [interaction for interaction in interactions if interaction.source_gene in reachable]
 
 
 class PubMedHeuristicResearchClient:

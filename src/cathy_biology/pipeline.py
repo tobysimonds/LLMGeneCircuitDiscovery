@@ -9,6 +9,8 @@ import pandas as pd
 
 from cathy_biology.boolean_network import (
     build_regulatory_graph,
+    build_projected_deg_graph,
+    build_projected_graph,
     prune_genes_from_graph,
     search_knockout_combinations,
 )
@@ -25,6 +27,7 @@ from cathy_biology.models import (
     ResearchExecutionSummary,
 )
 from cathy_biology.priors import PriorKnowledgeBuilder
+from cathy_biology.render import render_circular_graph_png
 from cathy_biology.utils import ensure_directory, timestamped_output_dir, write_json
 
 
@@ -62,7 +65,9 @@ async def execute_pipeline(
     research_output = await research_client.research_genes(genes, genes, prior_knowledge, config.grn)
     write_json(run_output_dir / "discovery_interactions.json", [result.model_dump() for result in research_output.discovery_results])
     write_json(run_output_dir / "gene_interactions.json", [result.model_dump() for result in research_output.verification_results])
-    model_counts = Counter(result.raw_model or "unknown" for result in research_output.verification_results)
+    analysis_results = research_output.verification_results if config.grn.enable_verification else research_output.discovery_results
+    write_json(run_output_dir / "analysis_interactions.json", [result.model_dump() for result in analysis_results])
+    model_counts = Counter(result.raw_model or "unknown" for result in analysis_results)
     research_execution = ResearchExecutionSummary(
         requested_backend=config.grn.research_backend,
         configured_model=config.grn.model,
@@ -81,13 +86,39 @@ async def execute_pipeline(
 
     full_graph = build_regulatory_graph(
         genes,
-        research_output.verification_results,
+        analysis_results,
         prior_knowledge,
         config.grn,
         config.simulation,
         include_prior_edges=True,
     )
-    pre_simulation_genes = _benchmark_candidates_from_graph(full_graph)
+    projected_graph = build_projected_graph(full_graph, genes, config.grn, config.simulation)
+    prior_only_full_graph = build_regulatory_graph(
+        genes,
+        [],
+        prior_knowledge,
+        config.grn,
+        config.simulation,
+        include_prior_edges=True,
+    )
+    prior_only_deg_graph = build_projected_deg_graph(prior_only_full_graph, genes, config.grn, config.simulation)
+    llm_deg_graph = build_projected_deg_graph(full_graph, genes, config.grn, config.simulation)
+    write_json(run_output_dir / "regulatory_graph_full.json", nx.node_link_data(full_graph))
+    write_json(run_output_dir / "regulatory_graph_projected.json", nx.node_link_data(projected_graph))
+    write_json(run_output_dir / "deg_graph_prior_only.json", nx.node_link_data(prior_only_deg_graph))
+    write_json(run_output_dir / "deg_graph_with_llm.json", nx.node_link_data(llm_deg_graph))
+    render_circular_graph_png(
+        prior_only_deg_graph,
+        run_output_dir / "deg_graph_without_llm.png",
+        title="Projected 50-node DEG Graph Without LLM Suggestions",
+    )
+    render_circular_graph_png(
+        llm_deg_graph,
+        run_output_dir / "deg_graph_with_llm.png",
+        title="Projected 50-node DEG Graph With LLM Suggestions",
+    )
+
+    pre_simulation_genes = _benchmark_candidates_from_graph(projected_graph)
     pre_simulation_benchmark = benchmark_client.benchmark_genes(
         pre_simulation_genes,
         config.benchmark,
@@ -101,7 +132,7 @@ async def execute_pipeline(
 
     experiments = _run_experiments(
         genes=genes,
-        research_results=research_output.verification_results,
+        research_results=analysis_results,
         prior_knowledge=prior_knowledge,
         config=config,
         benchmark_client=benchmark_client,
@@ -115,7 +146,7 @@ async def execute_pipeline(
     graph, _ = _graph_for_variant(
         selected.name,
         genes,
-        research_output.verification_results,
+        analysis_results,
         prior_knowledge,
         config,
         prunable_genes,
@@ -200,7 +231,7 @@ def _graph_for_variant(
     prunable_genes: list[str],
 ) -> tuple[nx.DiGraph, list[str]]:
     include_prior_edges = "priors" in variant
-    graph = build_regulatory_graph(
+    full_graph = build_regulatory_graph(
         genes,
         research_results,
         prior_knowledge,
@@ -208,6 +239,7 @@ def _graph_for_variant(
         config.simulation,
         include_prior_edges=include_prior_edges,
     )
+    graph = build_projected_graph(full_graph, genes, config.grn, config.simulation)
     removed_genes: list[str] = []
     if "pruned" in variant:
         removable = [gene for gene in prunable_genes if gene not in _protected_pruning_genes(config)]

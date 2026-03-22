@@ -99,11 +99,14 @@ class GrnConfig(BaseModel):
     target_oncogene: str = "KRAS"
     model: str = "o4-mini-deep-research"
     parser_model: str = "gpt-5-mini"
+    enable_verification: bool = True
     concurrency: int = 4
     confidence_threshold: float = 0.35
     verification_confidence_threshold: float = 0.45
     max_tool_calls: int = 4
-    discovery_max_edges_per_gene: int = 8
+    discovery_max_edges_per_gene: int = 25
+    discovery_rounds: int = 1
+    projection_max_path_length: int = 4
     allow_deg_to_deg_edges: bool = True
     allow_intermediate_nodes: bool = True
     immediate_downstream_effectors: list[str] = Field(
@@ -158,7 +161,7 @@ class Settings(BaseSettings):
     anthropic_api_key: SecretStr | None = None
     data_dir: Path = Path("data")
     artifacts_dir: Path = Path("artifacts")
-    request_timeout_seconds: int = 900
+    request_timeout_seconds: int = 120
 
 
 def load_pipeline_config(config_path: Path | None = None) -> PipelineConfig:

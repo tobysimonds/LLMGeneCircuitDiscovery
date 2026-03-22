@@ -96,6 +96,7 @@ source = { editable = "." }
 dependencies = [
     { name = "anthropic" },
     { name = "httpx" },
+    { name = "matplotlib" },
     { name = "networkx" },
     { name = "openai" },
     { name = "pandas" },
@@ -115,6 +116,7 @@ dev = [
 requires-dist = [
     { name = "anthropic", specifier = ">=0.86.0" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "networkx", specifier = ">=3.6.1" },
     { name = "openai", specifier = ">=2.29.0" },
     { name = "pandas", specifier = ">=3.0.1" },
