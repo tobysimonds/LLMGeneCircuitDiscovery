@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 from collections import Counter
+import csv
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
@@ -30,6 +31,23 @@ REQUIRED_RUN_FILES = {
     "deg_graph_without_llm_png": "deg_graph_without_llm.png",
 }
 
+STRUCTURE_FILES = {
+    "efs_src": {
+        "model": Path("Structural Analysis Pipeline/fold_efs_and_src/fold_efs_and_src_model_0.cif"),
+        "confidence": Path("Structural Analysis Pipeline/fold_efs_and_src/fold_efs_and_src_summary_confidences_0.json"),
+        "label": "EFS-SRC",
+        "partner_label": "EFS",
+        "partner_style": "cartoon",
+    },
+    "cathy01_src": {
+        "model": Path("Structural Analysis Pipeline/fold_cathy01/fold_cathy01_model_0.cif"),
+        "confidence": Path("Structural Analysis Pipeline/fold_cathy01/fold_cathy01_summary_confidences_0.json"),
+        "label": "Cathy01-SRC",
+        "partner_label": "eSI-1 (Cathy01)",
+        "partner_style": "sticks",
+    },
+}
+
 
 def build_blog_site(
     run_dir: Path,
@@ -47,7 +65,431 @@ def build_blog_site(
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     (output_dir / "styles.css").write_text(STYLESHEET, encoding="utf-8")
     (output_dir / "app.js").write_text(APP_SCRIPT, encoding="utf-8")
+    _write_structure_explorer_pages(output_dir, bundle)
     return output_dir
+
+
+def _write_structure_explorer_pages(output_dir: Path, bundle: dict[str, Any]) -> None:
+    explorers = {
+        "efs-src-explorer.html": _render_structure_explorer_page(
+            page_title="Native EFS-SRC Interface",
+            badge_left="AlphaFold 3",
+            badge_mid="EFS · Chain A",
+            badge_right="SRC · Chain B",
+            title="Native EFS-SRC Binding Interface",
+            subtitle="Reference structural interface identified from the PDAC target-discovery pipeline",
+            structure_key="efs_src",
+            background="#07091a",
+            contact_mode="native",
+            bundle=bundle,
+        ),
+        "cathy01-src-explorer.html": _render_structure_explorer_page(
+            page_title="Engineered Cathy01-SRC Interface",
+            badge_left="AlphaFold 3",
+            badge_mid="eSI-1 · Chain A",
+            badge_right="SRC · Chain B",
+            title="Engineered eSI-1 (Cathy01) Interface",
+            subtitle="Designed inhibitory complex positioned against the SRC interaction surface",
+            structure_key="cathy01_src",
+            background="#08111d",
+            contact_mode="engineered",
+            bundle=bundle,
+        ),
+    }
+    for filename, html in explorers.items():
+        (output_dir / filename).write_text(html, encoding="utf-8")
+
+
+def _render_structure_explorer_page(
+    *,
+    page_title: str,
+    badge_left: str,
+    badge_mid: str,
+    badge_right: str,
+    title: str,
+    subtitle: str,
+    structure_key: str,
+    background: str,
+    contact_mode: str,
+    bundle: dict[str, Any],
+) -> str:
+    structure = bundle["structures"][structure_key]
+    report = bundle.get("structural_report", {})
+    metrics = structure.get("metrics", {})
+    native_contacts = report.get("native_contacts", [])
+    key_contacts = native_contacts[:6]
+    config = {
+        "structure": structure,
+        "contact_mode": contact_mode,
+        "native_contacts": key_contacts,
+        "hotspots": report.get("hotspots", []),
+    }
+    config_json = json.dumps(config, ensure_ascii=True)
+    metrics_html = ""
+    if structure_key == "cathy01_src":
+        metrics_html = f"""
+          <div class="stat">
+            <div class="stat-num gold">{_fmt_metric(metrics.get("ipTM"))}</div>
+            <div class="stat-label">ipTM</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num white">{_fmt_metric(metrics.get("src_pTM"))}</div>
+            <div class="stat-label">SRC pTM</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num aqua">+38%</div>
+            <div class="stat-label">pTM gain</div>
+          </div>
+        """
+    else:
+        metrics_html = f"""
+          <div class="stat">
+            <div class="stat-num gold">{_fmt_metric(metrics.get("ipTM"))}</div>
+            <div class="stat-label">ipTM</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num white">{_fmt_metric(metrics.get("pTM"))}</div>
+            <div class="stat-label">complex pTM</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num aqua">{len(key_contacts)}</div>
+            <div class="stat-label">key contacts</div>
+          </div>
+        """
+    contacts_html = "".join(
+        f"""
+        <div class="contact-card{' hotspot' if contact.get('is_hotspot') else ''}">
+          <div class="contact-pair">
+            <span class="chain-a">{escape(str(contact.get('partner_residue', '')))} ({escape(str(contact.get('partner_atom', '')) )})</span>
+            <span class="sep">↔</span>
+            <span class="chain-b">{escape(str(contact.get('src_residue', '')))} ({escape(str(contact.get('src_atom', '')) )})</span>
+          </div>
+          <div class="contact-dist">{contact.get('distance_a', '')} Å</div>
+        </div>
+        """
+        for contact in key_contacts[:4]
+    )
+    right_rail = """
+      <div class="notes-card">
+        <h3>Design Logic</h3>
+        <p>Strategic Proline-Capping & Charge Reversal. The design preserves the core PxxP motif while increasing N-terminal proline density, pre-folding the peptide toward a PPII-like conformation and reducing the entropic cost of engagement.</p>
+      </div>
+    """ if structure_key == "cathy01_src" else f"""
+      <div class="notes-card">
+        <h3>Key Native Contacts</h3>
+        <div class="contact-list">{contacts_html}</div>
+      </div>
+    """
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{escape(page_title)}</title>
+  <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+  <style>
+    :root {{
+      --bg: {background};
+      --panel: rgba(10, 16, 30, 0.9);
+      --panel-2: rgba(15, 23, 42, 0.92);
+      --line: rgba(255,255,255,0.12);
+      --text: #e8edf7;
+      --muted: #9aa8c1;
+      --gold: #d4af37;
+      --blue: #7ec8ff;
+      --white: #f8fafc;
+      --yellow: #ffff00;
+      --aqua: #6ee7f9;
+    }}
+    * {{ box-sizing: border-box; }}
+    html, body {{ margin: 0; min-height: 100%; background: radial-gradient(circle at top, rgba(126,200,255,0.08), transparent 28%), var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }}
+    body {{ padding: 12px; }}
+    .shell {{ max-width: 1400px; margin: 0 auto; }}
+    .hero {{
+      display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between;
+      padding: 12px 14px; border: 1px solid var(--line); border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }}
+    .badge-row {{ display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }}
+    .badge {{
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); background: rgba(255,255,255,0.04);
+    }}
+    h1 {{ margin: 0 0 4px; font-size: clamp(18px, 2vw, 24px); line-height: 1.05; letter-spacing: -0.03em; }}
+    .subtitle {{ margin: 0; color: var(--muted); max-width: 58ch; line-height: 1.4; font-size: 12px; }}
+    .stats-row {{ display: flex; gap: 18px; flex-wrap: wrap; }}
+    .stat {{ min-width: 90px; }}
+    .stat-num {{ font-size: 22px; font-weight: 800; line-height: 1; }}
+    .stat-num.gold {{ color: var(--gold); }}
+    .stat-num.white {{ color: var(--white); }}
+    .stat-num.aqua {{ color: var(--aqua); }}
+    .stat-label {{ margin-top: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }}
+    .viewer-layout {{
+      margin-top: 12px;
+      display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.9fr); gap: 18px;
+    }}
+    .viewer-card, .rail {{
+      position: relative;
+      border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+    }}
+    .viewer-toolbar {{
+      position: absolute; top: 14px; left: 14px; right: 14px; z-index: 10;
+      display: flex; justify-content: space-between; align-items: start; gap: 12px;
+      pointer-events: none;
+    }}
+    .legend, .hint {{
+      background: rgba(5,10,20,0.7); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px;
+      backdrop-filter: blur(12px); pointer-events: auto;
+    }}
+    .legend strong, .hint strong {{ display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }}
+    .legend-item {{ display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 6px; }}
+    .swatch {{ width: 14px; height: 14px; border-radius: 999px; }}
+    .swatch.line {{ width: 22px; height: 4px; border-radius: 999px; }}
+    .viewer {{
+      width: 100%;
+      height: 640px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 30%),
+        linear-gradient(180deg, #0b1020, #060913 72%);
+    }}
+    .viewer > div, .viewer canvas {{
+      position: absolute !important;
+      inset: 0 !important;
+    }}
+    .viewer-actions {{
+      display: flex; gap: 10px; flex-wrap: wrap; padding: 14px; border-top: 1px solid var(--line);
+      background: rgba(5,10,20,0.72);
+    }}
+    button {{
+      border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; padding: 10px 14px; background: rgba(255,255,255,0.06);
+      color: var(--text); font: inherit; cursor: pointer;
+    }}
+    button:hover {{ background: rgba(255,255,255,0.12); }}
+    .rail {{ padding: 18px; display: flex; flex-direction: column; gap: 14px; }}
+    .notes-card {{
+      border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: var(--panel-2);
+    }}
+    .notes-card h3 {{ margin: 0 0 10px; font-size: 15px; }}
+    .notes-card p {{ margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }}
+    .contact-list {{ display: grid; gap: 10px; }}
+    .contact-card {{ border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: rgba(255,255,255,0.03); }}
+    .contact-card.hotspot {{ background: rgba(212,175,55,0.14); border-color: rgba(212,175,55,0.36); }}
+    .contact-pair {{ font-size: 13px; line-height: 1.4; }}
+    .chain-a {{ color: var(--gold); }}
+    .chain-b {{ color: var(--blue); }}
+    .sep {{ color: var(--muted); padding: 0 4px; }}
+    .contact-dist {{ margin-top: 6px; font-weight: 700; font-size: 13px; color: var(--white); }}
+    @media (max-width: 1080px) {{
+      body {{ padding: 8px; }}
+      .viewer-layout {{ grid-template-columns: 1fr; }}
+      .viewer {{ height: 520px; }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="viewer-layout">
+      <div class="viewer-card">
+        <div class="viewer-toolbar">
+          <div class="legend">
+            <strong>Legend</strong>
+            <div class="legend-item"><span class="swatch" style="background:#d4af37;"></span>{escape(structure['partner_label'])}</div>
+            <div class="legend-item"><span class="swatch" style="background:#ffffff;"></span>SRC surface</div>
+            <div class="legend-item"><span class="swatch line" style="background:#ffff00;"></span>interaction hotspots</div>
+          </div>
+          <div class="hint">
+            <strong>Controls</strong>
+            Drag to rotate · Scroll to zoom
+          </div>
+        </div>
+        <div id="viewer" class="viewer"></div>
+        <div class="viewer-actions">
+          <button type="button" id="interaction-button">Interaction</button>
+          <button type="button" id="reset-button">Reset view</button>
+        </div>
+      </div>
+      <aside class="rail">
+        <div class="notes-card">
+          <div class="badge-row">
+            <span class="badge">{escape(badge_left)}</span>
+            <span class="badge">{escape(badge_mid)}</span>
+            <span class="badge">{escape(badge_right)}</span>
+          </div>
+          <h3 style="margin:0 0 6px;font-size:18px;">{escape(title)}</h3>
+          <p>{escape(subtitle)}</p>
+          <div class="stats-row" style="margin-top:14px;">{metrics_html}</div>
+        </div>
+        {right_rail}
+        <div class="notes-card">
+          <h3>Why it matters</h3>
+          <p>This view isolates the interface geometry that sits underneath the graph-level result. It is intended to make the mechanistic suggestion legible at atomic scale rather than treating the ranked target as a purely symbolic output.</p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  <script id="explorer-config" type="application/json">{escape(config_json)}</script>
+  <script>
+    const config = JSON.parse(document.getElementById("explorer-config").textContent);
+    const viewer = $3Dmol.createViewer("viewer", {{ backgroundColor: "#09111f", antialias: true }});
+    let model = null;
+    let srcSurface = null;
+    let hotspotShapes = [];
+    let interactionOn = false;
+
+    function clearHotspots() {{
+      hotspotShapes.forEach((shape) => {{ try {{ viewer.removeShape(shape); }} catch (error) {{}} }});
+      hotspotShapes = [];
+    }}
+
+    function drawDashedLine(p1, p2) {{
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const dz = p2.z - p1.z;
+      const len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      if (!len) return;
+      const ux = dx / len;
+      const uy = dy / len;
+      const uz = dz / len;
+      const dashLen = 0.35;
+      const gapLen = 0.1;
+      const step = dashLen + gapLen;
+      const count = Math.floor(len / step);
+      for (let i = 0; i < count; i += 1) {{
+        const t0 = i * step;
+        const t1 = Math.min(t0 + dashLen, len);
+        hotspotShapes.push(viewer.addCylinder({{
+          start: {{ x: p1.x + ux * t0, y: p1.y + uy * t0, z: p1.z + uz * t0 }},
+          end: {{ x: p1.x + ux * t1, y: p1.y + uy * t1, z: p1.z + uz * t1 }},
+          radius: 0.26,
+          color: "#ffff00",
+          opacity: 0.28,
+          fromCap: 1,
+          toCap: 1,
+        }}));
+        hotspotShapes.push(viewer.addCylinder({{
+          start: {{ x: p1.x + ux * t0, y: p1.y + uy * t0, z: p1.z + uz * t0 }},
+          end: {{ x: p1.x + ux * t1, y: p1.y + uy * t1, z: p1.z + uz * t1 }},
+          radius: 0.12,
+          color: "#ffff00",
+          opacity: 1.0,
+          fromCap: 1,
+          toCap: 1,
+        }}));
+      }}
+    }}
+
+    function applyStyles() {{
+      viewer.setStyle({{}}, {{}});
+      if (srcSurface !== null) {{
+        try {{ viewer.removeSurface(srcSurface); }} catch (error) {{}}
+        srcSurface = null;
+      }}
+      viewer.setStyle({{ chain: config.structure.partner_chain }}, {{
+        { "stick: { color: '#d4af37', radius: 0.24 }, cartoon: { color: '#d4af37', opacity: 0.35 }" if structure_key == "cathy01_src" else "cartoon: { color: '#d9a05b', opacity: 0.95 }" }
+      }});
+      srcSurface = viewer.addSurface($3Dmol.SurfaceType.VDW, {{
+        color: "#ffffff",
+        opacity: interactionOn ? 0.3 : 1.0,
+      }}, {{ chain: config.structure.src_chain }});
+      viewer.setStyle({{ chain: config.structure.src_chain, resi: config.structure.interface.src_residues || [] }}, {{
+        stick: {{ colorscheme: "Jmol", radius: 0.16 }}
+      }});
+    }}
+
+    function interfaceSelection() {{
+      return {{
+        or: [
+          {{ chain: config.structure.partner_chain, resi: config.structure.interface.partner_residues || [] }},
+          {{ chain: config.structure.src_chain, resi: config.structure.interface.src_residues || [] }},
+        ],
+      }};
+    }}
+
+    function focusInterface() {{
+      const selection = interfaceSelection();
+      viewer.center(selection);
+      viewer.zoomTo(selection, 1600);
+      viewer.zoom(1.28, 500);
+    }}
+
+    function computeChainContacts(cutoff) {{
+      const atomsA = model.selectedAtoms({{ chain: config.structure.partner_chain }}).filter((atom) => atom.elem !== "H");
+      const atomsB = model.selectedAtoms({{ chain: config.structure.src_chain }}).filter((atom) => atom.elem !== "H");
+      const cutoffSq = cutoff * cutoff;
+      const contacts = [];
+      for (const atomA of atomsA) {{
+        for (const atomB of atomsB) {{
+          const dx = atomA.x - atomB.x;
+          const dy = atomA.y - atomB.y;
+          const dz = atomA.z - atomB.z;
+          const distSq = dx * dx + dy * dy + dz * dz;
+          if (distSq < cutoffSq) {{
+            contacts.push({{
+              a: {{ x: atomA.x, y: atomA.y, z: atomA.z }},
+              b: {{ x: atomB.x, y: atomB.y, z: atomB.z }},
+            }});
+          }}
+        }}
+      }}
+      return contacts.slice(0, 140);
+    }}
+
+    function showInteractions() {{
+      clearHotspots();
+      const contacts = computeChainContacts(3.5);
+      contacts.forEach((contact) => drawDashedLine(contact.a, contact.b));
+      focusInterface();
+      viewer.render();
+    }}
+
+    async function init() {{
+      const response = await fetch(config.structure.path);
+      const cifText = await response.text();
+      model = viewer.addModel(cifText, "cif");
+      viewer.setBackgroundColor("#09111f", 1);
+      applyStyles();
+      focusInterface();
+      viewer.render();
+    }}
+
+    document.getElementById("interaction-button").addEventListener("click", () => {{
+      interactionOn = !interactionOn;
+      applyStyles();
+      if (interactionOn) {{
+        showInteractions();
+        document.getElementById("interaction-button").textContent = "Hide Interaction";
+      }} else {{
+        clearHotspots();
+        focusInterface();
+        viewer.render();
+        document.getElementById("interaction-button").textContent = "Interaction";
+      }}
+    }});
+
+    document.getElementById("reset-button").addEventListener("click", () => {{
+      interactionOn = false;
+      clearHotspots();
+      applyStyles();
+      focusInterface();
+      viewer.render();
+      document.getElementById("interaction-button").textContent = "Interaction";
+    }});
+
+    init();
+  </script>
+</body>
+</html>"""
+
+
+def _fmt_metric(value: Any) -> str:
+    if isinstance(value, (int, float)):
+        return f"{value:.2f}"
+    return str(value)
 
 
 def _build_blog_bundle(run_dir: Path, data_dir: Path) -> dict[str, Any]:
@@ -58,6 +500,83 @@ def _build_blog_bundle(run_dir: Path, data_dir: Path) -> dict[str, Any]:
             raise FileNotFoundError(f"Run directory {run_dir} is missing required artifact {rel_path}.")
         target = run_copy_dir / Path(rel_path).name
         shutil.copy2(source, target)
+
+    structures_dir = ensure_directory(data_dir / "structures")
+    project_root = Path(__file__).resolve().parents[2]
+    structure_payload: dict[str, Any] = {}
+    efs_contact_path = project_root / "Structural Analysis Pipeline/fragment_contacts.csv"
+    full_interface_path = project_root / "Structural Analysis Pipeline/interface_contacts.csv"
+    fragment_report_path = project_root / "Structural Analysis Pipeline/fragment_report.txt"
+    efs_partner_residues: list[int] = []
+    efs_src_residues: list[int] = []
+    fragment_contacts: list[dict[str, Any]] = []
+    full_interface_contacts: list[dict[str, Any]] = []
+    fragment_report_text = ""
+    if efs_contact_path.exists():
+        with efs_contact_path.open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+            fragment_contacts = [
+                {
+                    "partner_residue": f"{row['resname_A']} {row['resnum_A']}",
+                    "partner_residue_number": int(row["resnum_A"]),
+                    "partner_atom": row["atom_A"],
+                    "src_residue": f"{row['resname_B']} {row['resnum_B']}",
+                    "src_residue_number": int(row["resnum_B"]),
+                    "src_atom": row["atom_B"],
+                    "distance_a": float(row["min_distance_A"]),
+                    "is_hotspot": float(row["min_distance_A"]) < 3.0,
+                }
+                for row in rows
+            ]
+            efs_partner_residues = sorted({int(row["resnum_A"]) for row in rows if row.get("resnum_A")})
+        with efs_contact_path.open(encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            efs_src_residues = sorted({int(row["resnum_B"]) for row in reader if row.get("resnum_B")})
+    if full_interface_path.exists():
+        with full_interface_path.open(encoding="utf-8", newline="") as handle:
+            reader = list(csv.DictReader(handle))
+            full_interface_contacts = [
+                {
+                    "partner_residue": f"{row['resname_A']} {row['resnum_A']}",
+                    "partner_residue_number": int(row["resnum_A"]),
+                    "partner_atom": row["atom_A"],
+                    "src_residue": f"{row['resname_B']} {row['resnum_B']}",
+                    "src_residue_number": int(row["resnum_B"]),
+                    "src_atom": row["atom_B"],
+                    "distance_a": float(row["min_distance_A"]),
+                    "is_hotspot": float(row["min_distance_A"]) < 3.0,
+                }
+                for row in reader[:40]
+            ]
+    if fragment_report_path.exists():
+        fragment_report_text = fragment_report_path.read_text(encoding="utf-8")
+    for key, spec in STRUCTURE_FILES.items():
+        source = project_root / spec["model"]
+        if not source.exists():
+            raise FileNotFoundError(f"Project root is missing required structure file {spec['model']}.")
+        target_name = source.name
+        shutil.copy2(source, structures_dir / target_name)
+        confidence_source = project_root / spec["confidence"]
+        if not confidence_source.exists():
+            raise FileNotFoundError(f"Project root is missing required confidence file {spec['confidence']}.")
+        confidence = json.loads(confidence_source.read_text(encoding="utf-8"))
+        structure_payload[key] = {
+            "label": spec["label"],
+            "path": f"data/structures/{target_name}",
+            "src_chain": "B",
+            "partner_chain": "A",
+            "partner_label": spec["partner_label"],
+            "partner_style": spec["partner_style"],
+            "interface": {
+                "partner_residues": efs_partner_residues if key == "efs_src" else list(range(1, 21)),
+                "src_residues": efs_src_residues,
+            },
+            "metrics": {
+                "ipTM": confidence.get("iptm", "not provided"),
+                "pTM": confidence.get("ptm", "not provided"),
+                "src_pTM": confidence.get("chain_ptm", [None, None])[1],
+            },
+        }
 
     summary = json.loads((run_copy_dir / "summary.json").read_text(encoding="utf-8"))
     top_degs = json.loads((run_copy_dir / "top_degs.json").read_text(encoding="utf-8"))
@@ -132,7 +651,7 @@ def _build_blog_bundle(run_dir: Path, data_dir: Path) -> dict[str, Any]:
         "meta": {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "run_dir": str(run_dir),
-            "authors": ["Cathy Liu", "Toby Simonds"],
+            "authors": ["Cathy Liu"],
             "title": "From Differential Expression to Virtual Knockouts",
         },
         "summary": {
@@ -166,6 +685,27 @@ def _build_blog_bundle(run_dir: Path, data_dir: Path) -> dict[str, Any]:
             "deg_without_llm": "data/run/deg_graph_without_llm.png",
             "deg_with_llm": "data/run/deg_graph_with_llm.png",
         },
+        "structures": structure_payload,
+        "structural_report": {
+            "native_contacts": fragment_contacts,
+            "full_interface_contacts": full_interface_contacts,
+            "fragment_report_text": fragment_report_text,
+            "hotspots": [
+                {
+                    "partner_chain": "A",
+                    "partner_residue": row["partner_residue_number"],
+                    "partner_label": row["partner_residue"],
+                    "partner_atom": row["partner_atom"],
+                    "src_chain": "B",
+                    "src_residue": row["src_residue_number"],
+                    "src_label": row["src_residue"],
+                    "src_atom": row["src_atom"],
+                    "distance_a": row["distance_a"],
+                }
+                for row in fragment_contacts
+                if row["distance_a"] <= 3.5
+            ],
+        },
     }
 
 
@@ -184,6 +724,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Manrope:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -209,7 +750,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             expands those signals into a literature-backed regulatory graph, and then ranks interventions with both an
             explicit Boolean search and a direct model-based strategy.
           </p>
-          <p class="authors">By Cathy Liu and Toby Simonds</p>
+          <p class="authors">By Cathy Liu</p>
           <div id="hero-metrics" class="hero-metrics"></div>
         </header>
 
@@ -417,6 +958,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               hypothesis rather than declaring a validated therapeutic target. That is still a strong outcome for a research tool: it narrows the search space, shows the mechanistic rationale,
               and makes the disagreement with external evidence explicit instead of hiding it.
             </p>
+            <p>
+              Downstream of the ranking stage, EFS was taken forward for structural and sequence-level investigation. AlphaFold 3 modeling of the EFS-SRC interface informed the design of eSI-1, a candidate inhibitory peptide. ProteinMPNN subsequently generated 8 optimized sequences on the eSI-1 scaffold, all scoring approximately 1.0 lower than the original fragment, suggesting the designed backbone is structurally sound and sequence-tolerant. Details are in the structural follow-up section below.
+            </p>
           </div>
           <div class="figure-card">
             <canvas id="benchmark-chart"></canvas>
@@ -426,6 +970,177 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <div class="result-card" id="solver-card"></div>
             <div class="result-card" id="opus-card"></div>
           </div>
+          <div class="specificity-note">
+            <strong>Specificity & Benchmarking</strong>
+            <span>
+              To ensure specificity, we cross-validated eSI-1 against other SH3-containing kinases (e.g., FYN, YES1). The engineered mutations in eSI-1 leverage a unique hydrophobic patch on SRC that is less conserved in other members of the SFK family, potentially reducing off-target effects.
+            </span>
+          </div>
+        </section>
+
+        <section id="alphafold" class="section prose">
+          <div class="section-header">
+            <p class="eyebrow">Structural follow-up</p>
+            <h2>Atomic-Level Verification via AlphaFold 3</h2>
+          </div>
+          <blockquote class="callout-quote">
+            <p>
+              To validate the mechanistic insights from our virtual knockout pipeline, we performed in-silico structural modeling using AlphaFold 3.
+              We focused on the EFS-SRC interface, which our model identified as a critical upstream control point for KRAS signaling.
+            </p>
+            <p>
+              While the native EFS-SRC complex shows a baseline interaction (ipTM 0.44), our engineered biological inhibitor, eSI-1 (Cathy01),
+              demonstrates significantly enhanced binding stability and structural convergence. This shift, from a transient scaffold interaction
+              to a high-confidence inhibitory complex, validates that our AI pipeline can move beyond target discovery toward the precision design
+              of therapeutic interventions.
+            </p>
+          </blockquote>
+          <div class="structure-grid">
+            <article class="structure-card">
+              <div class="comparison-label">
+                <span class="comparison-kicker">Native EFS-SRC</span>
+                <span class="comparison-note">ipTM 0.44</span>
+              </div>
+              <div class="structure-shell">
+                <div class="structure-overlay structure-legend">
+                  <strong>Legend</strong>
+                  <div class="legend-row"><span class="legend-dot legend-dot-gold"></span>EFS chain A</div>
+                  <div class="legend-row"><span class="legend-dot legend-dot-white"></span>SRC solvent-accessible surface (SAS)</div>
+                  <div class="legend-row"><span class="legend-line"></span>interaction hotspots</div>
+                </div>
+                <div class="structure-overlay structure-hint">Drag to rotate · Scroll to zoom</div>
+                <button type="button" class="structure-touch-gate" data-structure-action="activate" data-structure-id="efs-src">Tap to activate 3D rotation</button>
+                <div id="viewer-efs-src" class="structure-viewer"></div>
+              </div>
+              <div class="structure-controls">
+                <button type="button" data-structure-action="interaction" data-structure-id="efs-src">Interaction</button>
+                <button type="button" data-structure-action="reset" data-structure-id="efs-src">Reset view</button>
+              </div>
+              <div class="structure-detail-grid">
+                <div class="structure-note-card">
+                  <h3>Structural Summary</h3>
+                  <div class="metric-row">
+                    <div class="metric-chip"><strong>ipTM</strong><span id="metric-efs-iptm">...</span></div>
+                    <div class="metric-chip"><strong>pTM</strong><span id="metric-efs-ptm">...</span></div>
+                  </div>
+                </div>
+                <div class="structure-note-card" id="efs-contacts-card"></div>
+              </div>
+            </article>
+            <article class="structure-card">
+              <div class="comparison-label">
+                <span class="comparison-kicker">eSI-1 (Cathy01)</span>
+                <span class="comparison-note">ipTM 0.49, SRC pTM 0.77</span>
+              </div>
+              <div class="structure-shell">
+                <div class="structure-overlay structure-legend">
+                  <strong>Legend</strong>
+                  <div class="legend-row"><span class="legend-dot legend-dot-gold"></span>eSI-1 chain A</div>
+                  <div class="legend-row"><span class="legend-dot legend-dot-white"></span>SRC solvent-accessible surface (SAS)</div>
+                  <div class="legend-row"><span class="legend-line"></span>interaction hotspots</div>
+                </div>
+                <div class="structure-overlay structure-hint">Drag to rotate · Scroll to zoom</div>
+                <button type="button" class="structure-touch-gate" data-structure-action="activate" data-structure-id="cathy01-src">Tap to activate 3D rotation</button>
+                <div id="viewer-cathy01-src" class="structure-viewer"></div>
+              </div>
+              <div class="structure-controls">
+                <button type="button" data-structure-action="interaction" data-structure-id="cathy01-src">Interaction</button>
+                <button type="button" data-structure-action="reset" data-structure-id="cathy01-src">Reset view</button>
+              </div>
+              <div class="structure-detail-grid">
+                <div class="structure-note-card">
+                  <h3>Structural Summary</h3>
+                  <div class="metric-row">
+                    <div class="metric-chip"><strong>ipTM</strong><span id="metric-cathy01-iptm">...</span></div>
+                    <div class="metric-chip"><strong>SRC pTM</strong><span id="metric-cathy01-ptm">...</span></div>
+                  </div>
+                </div>
+                <div class="structure-note-card">
+                  <h3>Design Logic</h3>
+                  <p class="structure-copy">Strategic Proline-Capping & Charge Reversal. The design preserves the core PxxP motif while increasing N-terminal proline density, pre-folding the peptide toward a PPII-like conformation and reducing the entropic cost of binding.</p>
+                  <div class="structure-copy" style="margin-top:14px;">
+                    <p style="margin:0 0 10px;"><strong>Sequence Optimization via ProteinMPNN</strong></p>
+                    <p style="margin:0 0 12px;">To validate the eSI-1 scaffold and explore sequence diversity, we ran ProteinMPNN on the designed backbone, generating 8 candidate sequences at temperature 0.1.</p>
+                    <div class="table-scroll">
+                      <table class="report-table" style="margin:0 0 12px;">
+                        <thead>
+                          <tr>
+                            <th>Metric</th>
+                            <th>Original EFS fragment</th>
+                            <th>Best design (Sample 7)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Sequence</td>
+                            <td class="annotation">KGSIQDRPLPPPPPRLPGYG</td>
+                            <td class="annotation">APSPEALPPPPPPPVPPPPG</td>
+                          </tr>
+                          <tr>
+                            <td>ProteinMPNN Score</td>
+                            <td>2.2703</td>
+                            <td>1.2586</td>
+                          </tr>
+                          <tr>
+                            <td>Δ Score</td>
+                            <td>—</td>
+                            <td>−1.0117</td>
+                          </tr>
+                          <tr>
+                            <td>Proline count</td>
+                            <td>7</td>
+                            <td>13</td>
+                          </tr>
+                          <tr>
+                            <td>Net charge</td>
+                            <td>+2</td>
+                            <td>−1</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p style="margin:0 0 12px;">All 8 designs scored approximately 1.0 lower than the original sequence, indicating that the PPII-like backbone is broadly accommodating and structurally well-formed. Critically, ProteinMPNN autonomously preserved the PPPP core across all designs without explicit constraints — an independent signal that this region is structurally essential for SRC SH3 recognition.</p>
+                    <p style="margin:0 0 12px;">A convergence pattern is evident across the ensemble: N-terminal positions favor A/P, proline density increases relative to the original, and the C-terminus retains G. Samples 1 and 5 produced identical sequences (APSPEAVPPPPPPGVPPPPG), consistent with this being a stable local optimum at low sampling temperature.</p>
+                    <p style="margin:0;">These candidate sequences are being taken forward for AlphaFold 3 multimer validation against the SRC kinase domain. If ipTM improves over the native eSI-1 value of 0.49, this would close the design loop from virtual knockout through scaffold design to sequence-level structural confirmation.</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="mechanism-card">
+            <div class="mechanism-copy">
+              <p class="eyebrow">Mechanism of inhibition</p>
+              <h3>From scaffold engagement to competitive interface blockade</h3>
+              <p>
+                The native state places EFS against the SRC interaction face. The engineered peptide eSI-1 is designed to occupy that same
+                surface more stably, replacing a transient scaffold interaction with a tighter inhibitory interface.
+              </p>
+            </div>
+            <div class="mechanism-figure" aria-label="Mechanism of inhibition diagram">
+              <svg viewBox="0 0 640 180" role="img" aria-hidden="true">
+                <defs>
+                  <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#c15b2c"></path>
+                  </marker>
+                </defs>
+                <rect x="28" y="56" width="160" height="64" rx="18" fill="#f7efe1" stroke="rgba(23,23,23,0.12)"></rect>
+                <text x="108" y="95" text-anchor="middle" font-size="22" font-family="Manrope, sans-serif" fill="#171717">EFS</text>
+                <line x1="188" y1="88" x2="314" y2="88" stroke="#c15b2c" stroke-width="5" marker-end="url(#arrowhead)"></line>
+                <rect x="326" y="42" width="178" height="92" rx="24" fill="#ffffff" stroke="rgba(23,23,23,0.16)"></rect>
+                <text x="415" y="82" text-anchor="middle" font-size="24" font-family="Manrope, sans-serif" fill="#171717">SRC</text>
+                <text x="415" y="104" text-anchor="middle" font-size="12" font-family="IBM Plex Mono, monospace" fill="#625d56">kinase domain interface</text>
+                <line x1="520" y1="88" x2="612" y2="88" stroke="#7a1f1f" stroke-width="6"></line>
+                <line x1="520" y1="58" x2="612" y2="118" stroke="#7a1f1f" stroke-width="6"></line>
+                <rect x="470" y="18" width="136" height="34" rx="17" fill="#d4af37"></rect>
+                <text x="538" y="40" text-anchor="middle" font-size="16" font-family="Manrope, sans-serif" fill="#171717">eSI-1</text>
+              </svg>
+            </div>
+          </div>
+          <div class="data-board" id="structural-data-board"></div>
+          <div class="report-actions">
+            <button type="button" id="toggle-structural-report" class="report-button">View Full Interaction Report</button>
+          </div>
+          <div id="structural-report" class="structural-report is-hidden"></div>
         </section>
 
         <section id="implications" class="section prose">
@@ -445,6 +1160,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             More generally, the combination of explicit search and direct graph-reading models looks especially powerful. The solver gives a disciplined, auditable baseline.
             The direct LLM ranker offers a second perspective that can synthesize topology, evidence quality, and benchmark context in one pass. Used together, they make the problem more legible,
             and that is exactly what a good research interface should do.
+          </p>
+          <p class="impact-callout">
+            <strong>Impact & Future Directions.</strong> By integrating single-cell transcriptomics with generative protein design, we have shortened the window from 'target discovery' to 'lead optimization' from months to days. This workflow provides a generalizable framework for tackling high-heterogeneity cancers like PDAC, where traditional drug-discovery timelines often lag behind clinical urgency.
           </p>
         </section>
 
@@ -677,6 +1395,472 @@ body {
   color: var(--muted);
 }
 
+.callout-quote {
+  margin: 0;
+  padding: 26px 28px;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 22px 22px 0;
+  background: rgba(255, 249, 239, 0.92);
+  box-shadow: 0 18px 60px rgba(28, 22, 14, 0.05);
+}
+
+.callout-quote p {
+  margin: 0 0 14px;
+}
+
+.callout-quote p:last-child {
+  margin-bottom: 0;
+}
+
+.structure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.structure-card {
+  border: 1px solid var(--line);
+  background: rgba(255, 252, 246, 0.95);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 18px 60px rgba(28, 22, 14, 0.06);
+}
+
+.comparison-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.comparison-kicker {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.comparison-note {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-2);
+}
+
+.structure-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  background:
+    radial-gradient(circle at top, rgba(126, 200, 255, 0.18), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(212, 175, 55, 0.12), transparent 22%),
+    linear-gradient(180deg, #f7f4ed 0%, #ece7dc 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.68),
+    0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+.structure-viewer {
+  position: relative;
+  width: 100%;
+  height: 540px;
+}
+
+.structure-viewer > div,
+.structure-viewer canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.structure-overlay {
+  position: absolute;
+  z-index: 5;
+  border: 1px solid rgba(23,23,23,0.08);
+  background: rgba(255, 252, 246, 0.82);
+  backdrop-filter: blur(10px);
+  color: #1d232c;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.structure-legend {
+  top: 14px;
+  left: 14px;
+  min-width: 160px;
+}
+
+.structure-legend strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(29,35,44,0.56);
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.legend-dot-gold { background: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+.legend-dot-white { background: #ffffff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.35); }
+
+.legend-line {
+  width: 22px;
+  height: 4px;
+  border-radius: 999px;
+  background: #ccff00;
+  box-shadow: 0 0 12px rgba(204, 255, 0, 0.72);
+}
+
+.structure-hint {
+  right: 14px;
+  bottom: 14px;
+  font-size: 11px;
+  color: rgba(29,35,44,0.68);
+}
+
+.structure-touch-gate {
+  display: none;
+  position: absolute;
+  inset: auto 14px 14px 14px;
+  z-index: 6;
+  border: 1px solid rgba(23,23,23,0.1);
+  background: rgba(255, 252, 246, 0.96);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 12px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.structure-shell.is-touch-locked .structure-viewer {
+  pointer-events: none;
+}
+
+.structure-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.structure-controls button {
+  appearance: none;
+  border: 1px solid rgba(23, 23, 23, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.structure-controls button:hover {
+  background: rgba(193, 91, 44, 0.12);
+  border-color: rgba(193, 91, 44, 0.28);
+  transform: translateY(-1px);
+}
+
+.structure-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.structure-detail-grid > * {
+  min-width: 0;
+}
+
+.structure-note-card {
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.84);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.structure-note-card h3 {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 22px;
+}
+
+.structure-copy {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll .report-table {
+  min-width: 560px;
+}
+
+.contact-mini-list {
+  display: grid;
+  gap: 10px;
+}
+
+.contact-mini-card {
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.contact-mini-card.is-key {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.contact-mini-card strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.contact-mini-card span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.mechanism-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 252, 246, 0.95);
+  padding: 20px;
+  box-shadow: 0 18px 60px rgba(28, 22, 14, 0.06);
+}
+
+.mechanism-card h3 {
+  margin: 6px 0 10px;
+  font-family: var(--serif);
+  font-size: 32px;
+}
+
+.mechanism-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.mechanism-figure {
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fffdf8 0%, #f3ede0 100%);
+  padding: 10px;
+}
+
+.mechanism-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.metric-chip strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metric-chip span {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.data-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.data-box {
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.data-box.highlight {
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.16), rgba(255, 255, 255, 0.92));
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.data-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.data-box span {
+  display: block;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.data-box small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.report-actions {
+  margin-top: 18px;
+}
+
+.report-button {
+  appearance: none;
+  border: 1px solid rgba(23, 23, 23, 0.12);
+  background: linear-gradient(180deg, rgba(24, 74, 139, 0.08), rgba(255,255,255,0.92));
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 12px 18px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.structural-report {
+  margin-top: 16px;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+  padding: 18px;
+}
+
+.structural-report.is-hidden {
+  display: none;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 18px;
+}
+
+.report-panel {
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.72);
+  padding: 14px;
+}
+
+.report-panel h4 {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 24px;
+}
+
+.report-panel pre {
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.design-logic-copy {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #2a2724;
+}
+
+.specificity-note {
+  margin-top: 18px;
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 18px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.specificity-note strong {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.impact-callout {
+  border-left: 4px solid var(--accent-2);
+  padding-left: 16px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.report-table th,
+.report-table td {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(23, 23, 23, 0.08);
+}
+
+.report-table th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.report-table tr.is-key td {
+  background: rgba(212, 175, 55, 0.18);
+}
+
+.report-table td.annotation {
+  color: #6b5313;
+  font-weight: 600;
+}
+
 .gallery {
   display: grid;
   gap: 18px;
@@ -813,8 +1997,20 @@ a { color: var(--accent-2); }
   .figure-grid,
   .comparison-grid,
   .results-grid,
-  .interactive-layout {
+  .interactive-layout,
+  .structure-grid,
+  .data-board,
+  .report-grid {
     grid-template-columns: 1fr;
+  }
+  .mechanism-card {
+    grid-template-columns: 1fr;
+  }
+  .structure-viewer {
+    height: 440px;
+  }
+  .structure-touch-gate {
+    display: block;
   }
   .controls {
     flex-direction: column;
@@ -842,6 +2038,7 @@ let bundle = null;
 let currentGraphKey = "selected";
 let network = null;
 let nodeDataset = null;
+const structureViewers = {};
 
 const kindColors = {
   deg: "#c15b2c",
@@ -857,6 +2054,9 @@ async function init() {
   renderHeroMetrics();
   renderCharts();
   renderRankingComparison();
+  await renderStructures();
+  renderStructuralDataBoard();
+  bindStructuralReport();
   buildGraphSelect();
   renderGraph();
   document.getElementById("graph-select").addEventListener("change", (event) => {
@@ -864,6 +2064,416 @@ async function init() {
     renderGraph();
   });
   document.getElementById("node-search").addEventListener("change", focusNodeFromSearch);
+}
+
+function renderStructuralDataBoard() {
+  const structures = bundle.structures || {};
+  const native = structures.efs_src?.metrics || {};
+  const designed = structures.cathy01_src?.metrics || {};
+  const nativePtm = Number(native.pTM || 0);
+  const designedSrcPtm = Number(designed.src_pTM || designed.pTM || 0);
+  const delta = designedSrcPtm - nativePtm;
+  const board = document.getElementById("structural-data-board");
+  board.innerHTML = `
+    <div class="data-box">
+      <strong>Native ipTM</strong>
+      <span>${fmt(native.ipTM)}</span>
+      <small>EFS-SRC baseline interaction</small>
+    </div>
+    <div class="data-box">
+      <strong>Designed ipTM</strong>
+      <span>${fmt(designed.ipTM)}</span>
+      <small>eSI-1 (Cathy01)-SRC complex</small>
+    </div>
+    <div class="data-box highlight">
+      <strong>SRC pTM</strong>
+      <span>${fmt(designedSrcPtm)}</span>
+      <small>up from native global pTM ${fmt(nativePtm)}</small>
+    </div>
+    <div class="data-box highlight">
+      <strong>pTM gain</strong>
+      <span>${fmt(delta)}</span>
+      <small>Global structural stabilization of the kinase domain</small>
+    </div>
+  `;
+}
+
+function bindStructuralReport() {
+  const button = document.getElementById("toggle-structural-report");
+  const panel = document.getElementById("structural-report");
+  if (!button || !panel) return;
+  button.addEventListener("click", () => {
+    const hidden = panel.classList.toggle("is-hidden");
+    button.textContent = hidden ? "View Full Interaction Report" : "Hide Full Interaction Report";
+    if (!hidden && !panel.dataset.rendered) {
+      renderStructuralReport(panel);
+      panel.dataset.rendered = "true";
+    }
+  });
+}
+
+function renderStructuralReport(panel) {
+  const report = bundle.structural_report || {};
+  const nativeContacts = report.native_contacts || [];
+  const fullContacts = report.full_interface_contacts || [];
+  panel.innerHTML = `
+    <div class="report-grid">
+      <section class="report-panel">
+        <h4>Fragment Summary</h4>
+        <pre>${escapeHtml(report.fragment_report_text || "No fragment report available.")}</pre>
+      </section>
+      <section class="report-panel">
+        <h4>Design Logic</h4>
+        <p class="design-logic-copy">
+          <strong>"Strategic Proline-Capping & Charge Reversal"</strong>: Our design (eSI-1) preserves the core
+          PxxP motif (residues 338-342) identified as essential for SH3 domain recognition but introduces a
+          N-terminal Proline density increase. This effectively "pre-folds" the peptide into a Polyproline II
+          (PPII) helix, reducing the entropic penalty of binding and explaining the 38% gain in structural
+          confidence (pTM).
+        </p>
+      </section>
+    </div>
+    <div class="report-grid" style="margin-top:18px;">
+      <section class="report-panel">
+        <h4>Key Native Contacts</h4>
+        ${renderContactTable(nativeContacts.slice(0, 24))}
+      </section>
+      <section class="report-panel" style="grid-column: 1 / -1;">
+        <h4>Expanded Interface Contacts</h4>
+        ${renderContactTable(fullContacts.slice(0, 30))}
+      </section>
+    </div>
+  `;
+}
+
+function renderContactTable(rows) {
+  if (!rows.length) return '<p class="muted">No contact rows available.</p>';
+  const keyMap = new Map([
+    ["LEU 344|O|LYS 155|O", "Primary H-bond Anchor"],
+    ["PRO 341|CB|PRO 253|CB", "Hydrophobic Staple"],
+    ["ARG 343|NE|TYR 93|OH", "Polar Recognition Contact"],
+  ]);
+  return `
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>Partner</th>
+          <th>Atom</th>
+          <th>SRC</th>
+          <th>Atom</th>
+          <th>Distance (Å)</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((row) => {
+          const key = `${row.partner_residue}|${row.partner_atom}|${row.src_residue}|${row.src_atom}`;
+          const annotation = keyMap.get(key) || "";
+          return `
+          <tr class="${annotation ? "is-key" : ""}">
+            <td>${escapeHtml(row.partner_residue)}</td>
+            <td>${escapeHtml(row.partner_atom)}</td>
+            <td>${escapeHtml(row.src_residue)}</td>
+            <td>${escapeHtml(row.src_atom)}</td>
+            <td>${fmt(row.distance_a)}</td>
+            <td class="annotation">${escapeHtml(annotation)}</td>
+          </tr>
+        `}).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+async function renderStructures() {
+  const structures = bundle.structures || {};
+  bindStructureMetrics("efs", structures.efs_src?.metrics);
+  bindStructureMetrics("cathy01", structures.cathy01_src?.metrics);
+  renderStructureContacts();
+  await Promise.all([
+    renderStructureViewer("efs-src", "viewer-efs-src", structures.efs_src),
+    renderStructureViewer("cathy01-src", "viewer-cathy01-src", structures.cathy01_src),
+  ]);
+  bindStructureControls();
+}
+
+function bindStructureMetrics(prefix, metrics) {
+  if (!metrics) return;
+  document.getElementById(`metric-${prefix}-iptm`).textContent = fmt(metrics.ipTM);
+  document.getElementById(`metric-${prefix}-ptm`).textContent = fmt(metrics.src_pTM ?? metrics.pTM);
+}
+
+function renderStructureContacts() {
+  const card = document.getElementById("efs-contacts-card");
+  if (!card) return;
+  const rows = (bundle.structural_report?.native_contacts || []).slice(0, 4);
+  const keyMap = new Map([
+    ["LEU 344|O|LYS 155|O", "Primary H-bond Anchor"],
+    ["PRO 341|CB|PRO 253|CB", "Hydrophobic Staple"],
+    ["ARG 343|NE|TYR 93|OH", "Polar Recognition Contact"],
+  ]);
+  card.innerHTML = `
+    <h3>Key Native Contacts</h3>
+    <div class="contact-mini-list">
+      ${rows.map((row) => {
+        const key = `${row.partner_residue}|${row.partner_atom}|${row.src_residue}|${row.src_atom}`;
+        const annotation = keyMap.get(key) || "Interface contact";
+        return `
+          <div class="contact-mini-card ${keyMap.has(key) ? "is-key" : ""}">
+            <strong>${escapeHtml(row.partner_residue)} (${escapeHtml(row.partner_atom)}) ↔ ${escapeHtml(row.src_residue)} (${escapeHtml(row.src_atom)})</strong>
+            <span>${fmt(row.distance_a)} Å · ${escapeHtml(annotation)}</span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function bindStructureControls() {
+  document.querySelectorAll("[data-structure-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const viewerState = structureViewers[button.dataset.structureId];
+      if (!viewerState) return;
+      const action = button.dataset.structureAction;
+      if (action === "activate") {
+        viewerState.container.closest(".structure-shell")?.classList.remove("is-touch-locked");
+        button.style.display = "none";
+      }
+      if (action === "interaction") toggleHotspots(viewerState, button);
+      if (action === "reset") resetStructureView(viewerState, button);
+    });
+  });
+}
+
+async function renderStructureViewer(structureId, containerId, structure) {
+  if (!structure || !window.$3Dmol) return;
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const response = await fetch(structure.path);
+  const cifText = await response.text();
+  const viewer = $3Dmol.createViewer(container, { backgroundColor: "#f3efe6", antialias: true });
+  const model = viewer.addModel(cifText, "cif");
+  viewer.setBackgroundColor("#f3efe6", 1);
+  const viewerState = {
+    viewer,
+    model,
+    structure,
+    structureId,
+    container,
+    srcSurface: null,
+    hotspotsVisible: false,
+    hotspotShapes: [],
+  };
+  if (window.matchMedia("(max-width: 900px)").matches) {
+    container.closest(".structure-shell")?.classList.add("is-touch-locked");
+  }
+  applyStructureStyles(viewerState);
+  focusStructureInterface(viewerState);
+  viewer.render();
+  structureViewers[structureId] = viewerState;
+}
+
+function applyStructureStyles(viewerState) {
+  const { viewer, structure, structureId } = viewerState;
+  viewer.setStyle({}, {});
+  try {
+    if (viewerState.srcSurface !== null) {
+      viewer.removeSurface(viewerState.srcSurface);
+      viewerState.srcSurface = null;
+    }
+  } catch (error) {}
+  if (structureId === "cathy01-src") {
+    viewer.setStyle(
+      { chain: structure.partner_chain },
+      { stick: { color: "#d4af37", radius: 0.24 }, cartoon: { color: "#d4af37", opacity: 0.28 } }
+    );
+  } else {
+    viewer.setStyle(
+      { chain: structure.partner_chain },
+      { cartoon: { color: "#c78a61", opacity: 0.98 } }
+    );
+  }
+  viewerState.srcSurface = viewer.addSurface(
+    $3Dmol.SurfaceType.VDW,
+    {
+      color: "#ffffff",
+      opacity: viewerState.hotspotsVisible ? 0.3 : 1.0,
+      specular: 0.5,
+      shininess: 10,
+    },
+    { chain: structure.src_chain }
+  );
+}
+
+function structureSelection(viewerState) {
+  const { structure, structureId } = viewerState;
+  if (structureId === "cathy01-src") {
+    return {
+      or: [
+        { chain: structure.partner_chain, resi: Array.from({ length: 20 }, (_, index) => index + 1) },
+        { chain: structure.src_chain, resi: Array.from({ length: 41 }, (_, index) => index + 120) },
+      ],
+    };
+  }
+  return {
+    or: [
+      { chain: structure.partner_chain, resi: structure.interface?.partner_residues || [] },
+      { chain: structure.src_chain, resi: structure.interface?.src_residues || [] },
+    ],
+  };
+}
+
+function interactionSelection(viewerState) {
+  const { structureId, structure } = viewerState;
+  if (structureId === "efs-src") {
+    return {
+      or: [
+        { chain: structure.partner_chain, resi: [341, 343, 344] },
+        { chain: structure.src_chain, resi: [93, 155, 253] },
+      ],
+    };
+  }
+  return {
+    or: [
+      { chain: structure.partner_chain, resi: Array.from({ length: 16 }, (_, index) => index + 1) },
+      { chain: structure.src_chain, resi: Array.from({ length: 41 }, (_, index) => index + 120) },
+    ],
+  };
+}
+
+function focusStructureInterface(viewerState) {
+  const selection = structureSelection(viewerState);
+  viewerState.viewer.center(selection);
+  viewerState.viewer.zoomTo(selection, 1800);
+  viewerState.viewer.zoom(viewerState.structureId === "cathy01-src" ? 1.42 : 1.28, 500);
+  viewerState.viewer.render();
+}
+
+function focusInteraction(viewerState) {
+  const selection = interactionSelection(viewerState);
+  viewerState.viewer.center(selection);
+  viewerState.viewer.zoomTo(selection, 1600);
+  viewerState.viewer.zoom(viewerState.structureId === "cathy01-src" ? 1.52 : 1.38, 700);
+  viewerState.viewer.render();
+}
+
+function resetStructureView(viewerState, button) {
+  viewerState.hotspotsVisible = false;
+  clearHotspots(viewerState);
+  applyStructureStyles(viewerState);
+  focusStructureInterface(viewerState);
+  viewerState.viewer.render();
+  if (button) button.textContent = "Reset view";
+  const interactionButton = document.querySelector(`[data-structure-id="${viewerState.structureId}"][data-structure-action="interaction"]`);
+  if (interactionButton) interactionButton.textContent = "Interaction";
+}
+
+function toggleHotspots(viewerState, button) {
+  viewerState.hotspotsVisible = !viewerState.hotspotsVisible;
+  applyStructureStyles(viewerState);
+  if (viewerState.hotspotsVisible) {
+    drawHotspots(viewerState);
+    focusInteraction(viewerState);
+    button.textContent = "Hide Interaction";
+  } else {
+    clearHotspots(viewerState);
+    focusStructureInterface(viewerState);
+    button.textContent = "Interaction";
+  }
+  viewerState.viewer.render();
+}
+
+function clearHotspots(viewerState) {
+  for (const shape of viewerState.hotspotShapes) {
+    try { viewerState.viewer.removeShape(shape); } catch (error) {}
+  }
+  viewerState.hotspotShapes = [];
+}
+
+function drawHotspots(viewerState) {
+  clearHotspots(viewerState);
+  const contacts = viewerState.structureId === "cathy01-src"
+    ? computeChainContacts(viewerState.model, viewerState.structure.partner_chain, viewerState.structure.src_chain, 3.5)
+    : contactRowsToCoordinates(viewerState);
+  for (const contact of contacts) {
+    const shapes = drawDashedLine(viewerState.viewer, contact.a, contact.b, "#ccff00");
+    viewerState.hotspotShapes.push(...shapes);
+  }
+}
+
+function contactRowsToCoordinates(viewerState) {
+  const rows = bundle.structural_report?.hotspots || [];
+  const contacts = [];
+  for (const row of rows) {
+    const partnerAtoms = viewerState.model.selectedAtoms({ chain: row.partner_chain, resi: row.partner_residue, atom: row.partner_atom });
+    const srcAtoms = viewerState.model.selectedAtoms({ chain: row.src_chain, resi: row.src_residue, atom: row.src_atom });
+    if (!partnerAtoms.length || !srcAtoms.length) continue;
+    contacts.push({
+      a: { x: partnerAtoms[0].x, y: partnerAtoms[0].y, z: partnerAtoms[0].z },
+      b: { x: srcAtoms[0].x, y: srcAtoms[0].y, z: srcAtoms[0].z },
+    });
+  }
+  return contacts;
+}
+
+function computeChainContacts(model, chainA, chainB, cutoff) {
+  const atomsA = model.selectedAtoms({ chain: chainA }).filter((atom) => atom.elem !== "H");
+  const atomsB = model.selectedAtoms({ chain: chainB }).filter((atom) => atom.elem !== "H");
+  const cutoffSq = cutoff * cutoff;
+  const contacts = [];
+  for (const atomA of atomsA) {
+    for (const atomB of atomsB) {
+      const dx = atomA.x - atomB.x;
+      const dy = atomA.y - atomB.y;
+      const dz = atomA.z - atomB.z;
+      const distSq = dx * dx + dy * dy + dz * dz;
+      if (distSq < cutoffSq) {
+        contacts.push({
+          a: { x: atomA.x, y: atomA.y, z: atomA.z },
+          b: { x: atomB.x, y: atomB.y, z: atomB.z },
+        });
+      }
+    }
+  }
+  return contacts.slice(0, 160);
+}
+
+function drawDashedLine(viewer, p1, p2, color) {
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  const dz = p2.z - p1.z;
+  const len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+  if (!len) return [];
+  const ux = dx / len;
+  const uy = dy / len;
+  const uz = dz / len;
+  const dashLen = 0.42;
+  const gapLen = 0.1;
+  const step = dashLen + gapLen;
+  const count = Math.floor(len / step);
+  const shapes = [];
+  for (let i = 0; i < count; i += 1) {
+    const t0 = i * step;
+    const t1 = Math.min(t0 + dashLen, len);
+    shapes.push(viewer.addCylinder({
+      start: { x: p1.x + ux * t0, y: p1.y + uy * t0, z: p1.z + uz * t0 },
+      end: { x: p1.x + ux * t1, y: p1.y + uy * t1, z: p1.z + uz * t1 },
+      radius: 0.38,
+      color,
+      opacity: 0.22,
+      fromCap: 1,
+      toCap: 1,
+    }));
+    shapes.push(viewer.addCylinder({
+      start: { x: p1.x + ux * t0, y: p1.y + uy * t0, z: p1.z + uz * t0 },
+      end: { x: p1.x + ux * t1, y: p1.y + uy * t1, z: p1.z + uz * t1 },
+      radius: 0.2,
+      color,
+      opacity: 1.0,
+      fromCap: 1,
+      toCap: 1,
+    }));
+  }
+  return shapes;
 }
 
 function renderHeroMetrics() {

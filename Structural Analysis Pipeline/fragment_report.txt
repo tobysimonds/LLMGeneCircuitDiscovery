@@ -1,0 +1,52 @@
+============================================================
+  EFS BINDING FRAGMENT — ProteinMPNN Input Summary
+============================================================
+  Original residues : 329 – 348 (EFS Chain A)
+  Length            : 20 amino acids
+  Binding score     : 5.8875  (Σ 1/d²)
+  Total contacts    : 79  (with SRC, < 5.0 Å)
+  Sequence (1-letter): KGSIQDRPLPPPPPRLPGYG
+
+  Residue breakdown:
+     329  LYS  score= 0.0000  contacts=0
+     330  GLY  score= 0.0469  contacts=1
+     331  SER  score= 0.0000  contacts=0
+     332  ILE  score= 0.3730  contacts=5 ◀ KEY
+     333  GLN  score= 0.4683  contacts=5 ◀ KEY
+     334  ASP  score= 0.0000  contacts=0
+     335  ARG  score= 0.5691  contacts=7 ◀ KEY
+     336  PRO  score= 0.2837  contacts=5 ◀ KEY
+     337  LEU  score= 0.4491  contacts=6 ◀ KEY
+     338  PRO  score= 0.6523  contacts=8 ◀ KEY
+     339  PRO  score= 0.4953  contacts=7 ◀ KEY
+     340  PRO  score= 0.2822  contacts=4 ◀ KEY
+     341  PRO  score= 0.4160  contacts=5 ◀ KEY
+     342  PRO  score= 0.3050  contacts=5 ◀ KEY
+     343  ARG  score= 0.6340  contacts=8 ◀ KEY
+     344  LEU  score= 0.6493  contacts=8 ◀ KEY
+     345  PRO  score= 0.1006  contacts=2 ◀ KEY
+     346  GLY  score= 0.0543  contacts=1 ◀ KEY
+     347  TYR  score= 0.0589  contacts=1 ◀ KEY
+     348  GLY  score= 0.0496  contacts=1
+
+  Top 10 closest contacts in fragment:
+   ResA  AA_A AtomA   ResB  AA_B AtomB   Dist(Å)
+  --------------------------------------------------
+    344   LEU     O    155   LYS     O     2.432
+    341   PRO    CB    253   PRO    CB     2.579
+    343   ARG    NE     93   TYR    OH     2.738
+    338   PRO     O    138   ASN   ND2     2.785
+    335   ARG   NH2     99   THR   CG2     2.804
+    333   GLN   NE2    121   TRP     O     2.867
+    339   PRO    CD    256   GLN     O     2.914
+    344   LEU   CD1    157   THR   OG1     2.966
+    344   LEU     N    323   GLU   OE2     3.014
+    335   ARG     O    121   TRP   NE1     3.017
+
+  ProteinMPNN command (example):
+    python protein_mpnn_run.py \
+      --pdb_path efs_binding_fragment.pdb \
+      --out_folder ./mpnn_output \
+      --num_seq_per_target 8 \
+      --sampling_temp 0.1
+============================================================

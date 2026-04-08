@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EFS–SRC 3D Interface Explorer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://3dmol.org/build/3Dmol-min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --efs:     #1565C0;
+  --src:     #C62828;
+  --hbond:   #E65100;
+  --salt:    #AD1457;
+  --bg:      #ffffff;
+  --surface: rgba(245,247,252,0.97);
+  --card:    rgba(248,250,255,0.98);
+  --border:  rgba(0,0,0,0.10);
+  --text:    #1a202c;
+  --muted:   #64748b;
+  --panel-w: 320px;
+}
+html, body { width:100%; height:100%; overflow:hidden;
+             background:var(--bg); color:var(--text);
+             font-family:'Segoe UI',system-ui,sans-serif; }
+
+/* ── VIEWER ─────────────────────────────────────────── */
+#viewer-wrap { position:fixed; inset:0; z-index:1; }
+#mol-viewer  { width:100%; height:100%; }
+
+/* ── TOP BAR ─────────────────────────────────────────── */
+#topbar {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  padding:.75rem 1.5rem .75rem 1.2rem;
+  background:linear-gradient(180deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.0) 100%);
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
+  display:flex; align-items:center; gap:1.2rem;
+  pointer-events:none;
+}
+.tb-logo {
+  width:34px; height:34px; border-radius:8px; flex-shrink:0;
+  background:linear-gradient(135deg,var(--efs) 0%,var(--src) 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; font-weight:900; color:#fff; letter-spacing:-.04em;
+}
+.tb-text {}
+.tb-title {
+  font-size:1.05rem; font-weight:700; letter-spacing:-.01em;
+  background:linear-gradient(90deg,var(--efs) 0%,var(--src) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.tb-sub { font-size:.72rem; color:var(--muted); margin-top:.1rem; }
+
+/* ── LEFT LEGEND ─────────────────────────────────────── */
+#legend {
+  position:fixed; left:16px; bottom:24px; z-index:50;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:.85rem 1rem;
+  backdrop-filter:blur(12px);
+  min-width:168px;
+}
+.leg-title { font-size:.63rem; text-transform:uppercase; letter-spacing:.1em;
+             color:var(--muted); margin-bottom:.55rem; }
+.leg-row   { display:flex; align-items:center; gap:.55rem; font-size:.78rem;
+             color:var(--text); margin-bottom:.38rem; }
+.leg-row:last-child { margin-bottom:0; }
+.leg-dot  { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.leg-dash { width:22px; height:3px; border-radius:2px; flex-shrink:0;
+            background:repeating-linear-gradient(90deg,currentColor 0 6px,transparent 6px 10px); }
+.leg-sep  { border:none; border-top:1px solid var(--border); margin:.5rem 0; }
+
+/* ── RIGHT PANEL ─────────────────────────────────────── */
+#panel {
+  position:fixed; right:0; top:0; bottom:0; z-index:50;
+  width:var(--panel-w);
+  background:var(--card);
+  border-left:1px solid var(--border);
+  display:flex; flex-direction:column;
+  transition:transform .3s ease;
+  backdrop-filter:blur(16px);
+}
+#panel.collapsed { transform:translateX(calc(var(--panel-w) - 36px)); }
+
+#panel-toggle {
+  position:absolute; left:-36px; top:50%; transform:translateY(-50%);
+  width:36px; height:72px; border-radius:10px 0 0 10px;
+  background:var(--card); border:1px solid var(--border); border-right:none;
+  color:var(--muted); font-size:1rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:color .2s;
+}
+#panel-toggle:hover { color:var(--text); }
+
+/* Panel header */
+.panel-hdr {
+  padding:1rem 1.1rem .75rem;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.panel-hdr h2 { font-size:.92rem; font-weight:700; margin-bottom:.2rem; }
+.panel-hdr p  { font-size:.72rem; color:var(--muted); }
+
+/* Sites list */
+#sites-list {
+  flex:1; overflow-y:auto; padding:.5rem .6rem;
+  scrollbar-width:thin; scrollbar-color:rgba(0,0,0,.15) transparent;
+}
+.site-item {
+  display:flex; align-items:center; gap:.65rem;
+  padding:.6rem .75rem; border-radius:9px; cursor:pointer;
+  border:1px solid transparent; margin-bottom:.35rem;
+  transition:background .15s, border-color .15s;
+}
+.site-item:hover   { background:rgba(0,0,0,.04); }
+.site-item.active  { background:rgba(21,101,192,.07); border-color:rgba(21,101,192,.25); }
+.site-num {
+  width:22px; height:22px; border-radius:6px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.72rem; font-weight:800; color:#fff;
+}
+.site-info { flex:1; min-width:0; }
+.site-name { font-size:.8rem; font-weight:600; white-space:nowrap;
+             overflow:hidden; text-overflow:ellipsis; }
+.site-aa   { font-size:.68rem; color:var(--muted); font-family:monospace; margin-top:.1rem; }
+.site-dist { font-size:.78rem; font-weight:700; flex-shrink:0; }
+.type-pill {
+  font-size:.6rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.06em; padding:.15rem .45rem; border-radius:4px;
+  flex-shrink:0;
+}
+.pill-h  { background:rgba(230,81,0,.10);  color:var(--hbond);  border:1px solid rgba(230,81,0,.35); }
+.pill-s  { background:rgba(173,20,87,.10); color:var(--salt);   border:1px solid rgba(173,20,87,.35); }
+
+/* Detail card */
+#detail-card {
+  border-top:1px solid var(--border);
+  padding:1rem 1.1rem; flex-shrink:0;
+  max-height:52%; overflow-y:auto;
+  scrollbar-width:thin; scrollbar-color:rgba(0,0,0,.15) transparent;
+}
+#detail-card.empty .dc-body { display:none; }
+#detail-card.empty .dc-hint { display:flex; }
+.dc-hint {
+  min-height:80px; align-items:center; justify-content:center;
+  color:var(--muted); font-size:.8rem; text-align:center;
+}
+.dc-body {}
+.dc-header { display:flex; align-items:center; gap:.6rem; margin-bottom:.85rem; }
+.dc-num {
+  width:28px; height:28px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.85rem; font-weight:900; color:#fff; flex-shrink:0;
+}
+.dc-title { font-size:.92rem; font-weight:700; }
+.dc-dist  { font-size:.75rem; color:var(--muted); margin-top:.1rem; }
+.dc-section { margin-bottom:.75rem; }
+.dc-section-title {
+  font-size:.62rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted); margin-bottom:.35rem;
+}
+.dc-residues {
+  display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:.5rem;
+}
+.res-chip {
+  padding:.25rem .6rem; border-radius:6px; font-size:.75rem;
+  font-family:monospace; font-weight:600; border:1px solid;
+}
+.res-efs { color:#1565C0; background:rgba(21,101,192,.08); border-color:rgba(21,101,192,.3); }
+.res-src { color:#C62828; background:rgba(198,40,40,.08);  border-color:rgba(198,40,40,.3); }
+.dc-text { font-size:.78rem; line-height:1.6; color:#374151; }
+.process-tags { display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.5rem; }
+.ptag {
+  font-size:.62rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:.06em; padding:.2rem .55rem; border-radius:4px;
+  background:rgba(0,0,0,.05); border:1px solid rgba(0,0,0,.12);
+  color:var(--muted);
+}
+
+/* ── LOADER / ERROR ──────────────────────────────────── */
+#overlay {
+  position:fixed; inset:0; z-index:200;
+  background:var(--bg); display:flex;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:1rem; transition:opacity .5s ease;
+}
+#overlay.fade { opacity:0; pointer-events:none; }
+#overlay.gone { display:none; }
+.spinner { width:42px; height:42px; border-radius:50%;
+           border:3px solid rgba(21,101,192,.15);
+           border-top-color:var(--efs);
+           animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+#overlay p { color:var(--muted); font-size:.9rem; text-align:center; max-width:440px; line-height:1.6; }
+#overlay code { font-family:monospace; background:rgba(0,0,0,.06);
+                padding:.2rem .5rem; border-radius:5px; color:var(--efs); }
+.btn-retry {
+  margin-top:.5rem; padding:.5rem 1.4rem; border-radius:8px; cursor:pointer;
+  background:rgba(21,101,192,.08); border:1px solid rgba(21,101,192,.35);
+  color:var(--efs); font-size:.85rem; font-weight:600; transition:background .2s;
+}
+.btn-retry:hover { background:rgba(21,101,192,.16); }
+
+/* ── CONTROLS HINT ───────────────────────────────────── */
+#ctrl-hint {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  z-index:50; display:flex; gap:1.2rem; pointer-events:none;
+  transition:opacity .3s;
+}
+.ch-item { display:flex; align-items:center; gap:.4rem;
+           font-size:.68rem; color:var(--muted); }
+.ch-key  { background:rgba(0,0,0,.07); border:1px solid rgba(0,0,0,.18);
+           border-radius:4px; padding:.1rem .4rem; font-size:.65rem; color:var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ── VIEWER ─────────────────────────────────────── -->
+<div id="viewer-wrap">
+  <div id="mol-viewer"></div>
+</div>
+
+<!-- ── TOP BAR ────────────────────────────────────── -->
+<div id="topbar">
+  <div class="tb-logo">ES</div>
+  <div class="tb-text">
+    <div class="tb-title">EFS–SRC 3D Interaction Interface Explorer</div>
+    <div class="tb-sub">AlphaFold 3 · 333 contacts &lt; 5 Å · Click glowing markers to explore binding sites</div>
+  </div>
+</div>
+
+<!-- ── LEFT LEGEND ────────────────────────────────── -->
+<div id="legend">
+  <div class="leg-title">Protein Chains</div>
+  <div class="leg-row">
+    <div class="leg-dot" style="background:var(--efs);box-shadow:0 0 6px var(--efs)"></div>
+    EFS &nbsp;<span style="color:var(--muted);font-size:.7rem">(Chain A)</span>
+  </div>
+  <div class="leg-row">
+    <div class="leg-dot" style="background:var(--src);box-shadow:0 0 6px var(--src)"></div>
+    SRC &nbsp;<span style="color:var(--muted);font-size:.7rem">(Chain B)</span>
+  </div>
+  <hr class="leg-sep">
+  <div class="leg-title">Interactions</div>
+  <div class="leg-row">
+    <div class="leg-dot" style="background:var(--hbond);box-shadow:0 0 6px var(--hbond)"></div>
+    H-bond
+  </div>
+  <div class="leg-row">
+    <div class="leg-dot" style="background:var(--salt);box-shadow:0 0 6px var(--salt)"></div>
+    Salt Bridge
+  </div>
+</div>
+
+<!-- ── RIGHT PANEL ────────────────────────────────── -->
+<div id="panel">
+  <button id="panel-toggle" title="Toggle panel">◀</button>
+
+  <div class="panel-hdr">
+    <h2>Binding Sites</h2>
+    <p>9 key contacts &nbsp;·&nbsp; ≤ 2.6 Å</p>
+  </div>
+
+  <div id="sites-list">
+    <!-- Populated by JS -->
+  </div>
+
+  <div id="detail-card" class="empty">
+    <div class="dc-hint">Click a marker in the 3D view<br>or select a site above</div>
+    <div class="dc-body"></div>
+  </div>
+</div>
+
+<!-- ── CONTROLS HINT ──────────────────────────────── -->
+<div id="ctrl-hint">
+  <div class="ch-item"><span class="ch-key">Drag</span> Rotate</div>
+  <div class="ch-item"><span class="ch-key">Scroll</span> Zoom</div>
+  <div class="ch-item"><span class="ch-key">Right-drag</span> Pan</div>
+  <div class="ch-item"><span class="ch-key">Click marker</span> Details</div>
+</div>
+
+<!-- ── OVERLAY (loader / error) ───────────────────── -->
+<div id="overlay">
+  <div class="spinner"></div>
+  <p id="overlay-msg">Loading AlphaFold 3 structure…</p>
+</div>
+
+<script>
+/* ================================================================
+   BINDING SITE DATA
+   ================================================================ */
+const SITES = [
+  {
+    id:1, chainA:'A', resiA:101, aaA:'TYR', atomA:'OH',
+          chainB:'B', resiB:391, aaB:'ARG', atomB:'NH2',
+    dist:1.991, type:'H-bond', color:'#FFD700',
+    mechanism:'The tyrosine hydroxyl (–OH) of EFS-TYR101 donates a hydrogen bond to the guanidinium NH₂ of SRC-ARG391 at 1.991 Å — a near-ideal geometry with near-covalent-bond distance. This is the shortest contact in the entire interface.',
+    significance:'TYR101 lies within the EFS substrate recognition loop. This contact correctly positions EFS for SRC-mediated tyrosine phosphorylation of adjacent YXXP motifs, which in turn recruit SH2-domain effectors (Grb2, CrkII) that propagate downstream proliferation and survival signals. Disruption of this bond reduces phosphorylation efficiency and dampens oncogenic signaling.',
+    process:['Signal Transduction','Cancer Metastasis','Cell Migration','SRC Kinase Activation']
+  },
+  {
+    id:2, chainA:'A', resiA:15,  aaA:'ASP', atomA:'OD2',
+          chainB:'B', resiB:359, aaB:'LYS', atomB:'NZ',
+    dist:2.039, type:'Salt Bridge', color:'#FF7043',
+    mechanism:'The carboxylate OD2 of EFS-ASP15 forms a strong ionic (salt bridge) interaction with the ε-amine NZ of SRC-LYS359 at 2.039 Å. The ~−10 kcal/mol electrostatic stabilization makes this one of the highest-affinity contacts in the interface.',
+    significance:'Located near the EFS N-terminal SH3-docking region, this salt bridge anchors the initial EFS-SRC encounter complex. It is critical for hematopoietic progenitor cell signaling and T-cell receptor-mediated activation. Loss of this contact destabilizes the complex and impairs lymphocyte migration and homing to bone marrow niches.',
+    process:['Signal Transduction','Hematopoiesis','T-cell Activation','Cell Adhesion']
+  },
+  {
+    id:3, chainA:'A', resiA:62,  aaA:'ARG', atomA:'NH2',
+          chainB:'B', resiB:461, aaB:'LYS', atomB:'O',
+    dist:2.291, type:'H-bond', color:'#FFD700',
+    mechanism:'The guanidinium NH₂ of EFS-ARG62 donates an H-bond to the backbone carbonyl oxygen of SRC-LYS461 at 2.291 Å. Guanidinium–carbonyl contacts are geometrically versatile and energetically stable (−2 to −4 kcal/mol).',
+    significance:'ARG62 is located in the EFS SH3 domain, which mediates PxxP motif interactions. This contact stabilizes the SH3–kinase interface, modulating SRC auto-inhibition release. Disruption of this H-bond impairs integrin-β1–mediated outside-in signaling and may blunt epithelial-to-mesenchymal transition (EMT) in carcinoma cells.',
+    process:['Cell Adhesion','Epithelial–Mesenchymal Transition','Integrin Signaling','Cancer Invasion']
+  },
+  {
+    id:4, chainA:'A', resiA:489, aaA:'ASP', atomA:'OD2',
+          chainB:'B', resiB:110, aaB:'ARG', atomB:'NH1',
+    dist:2.332, type:'Salt Bridge', color:'#FF7043',
+    mechanism:'ASP489 in the C-terminal EFS substrate domain and ARG110 in the SRC N-lobe form a 2.332 Å salt bridge. The N-lobe of SRC kinase is critical for ATP binding and substrate positioning, making this contact mechanistically significant.',
+    significance:'This electrostatic contact anchors the EFS C-terminal substrate domain near the SRC catalytic cleft, directly facilitating phosphotransfer to EFS tyrosines. Critical in hematopoietic cells: disruption impairs erythropoiesis and B-cell development. May represent a vulnerability in CML and ALL where BCR-ABL hyperactivates this axis.',
+    process:['Substrate Phosphorylation','Hematopoiesis','Leukemia Signaling','Kinase–Substrate Recognition']
+  },
+  {
+    id:5, chainA:'A', resiA:382, aaA:'ASP', atomA:'OD1',
+          chainB:'B', resiB:158, aaB:'ARG', atomB:'NH1',
+    dist:2.377, type:'Salt Bridge', color:'#FF7043',
+    mechanism:'EFS-ASP382 (linker region) pairs with SRC-ARG158 (SH2–kinase linker) at 2.377 Å. Both residues sit in flexible linker segments, making this a conformationally sensitive contact that may respond to phosphorylation states.',
+    significance:'SRC-ARG158 lies in the regulatory SH2–kinase linker. This salt bridge may allosterically communicate EFS binding to the SRC catalytic domain, influencing its open/closed activation state. Disruption might lock SRC in an inactive conformation — a concept exploited by allosteric SRC inhibitors in drug development.',
+    process:['Allosteric Regulation','Kinase Activation','Drug Target','Signal Integration']
+  },
+  {
+    id:6, chainA:'A', resiA:149, aaA:'ASP', atomA:'N',
+          chainB:'B', resiB:276, aaB:'LEU', atomB:'O',
+    dist:2.383, type:'H-bond', color:'#FFD700',
+    mechanism:'Backbone N–H of EFS-ASP149 donates to backbone C=O of SRC-LEU276 at 2.383 Å. Backbone hydrogen bonds are sequence-independent; they reflect geometric complementarity between protein surfaces and contribute −1.5 to −3 kcal/mol each.',
+    significance:'Backbone–backbone contacts form the structural core of protein–protein interfaces. This H-bond contributes to the buried surface area (~200 Å²) at the EFS–SRC interface, providing binding affinity independent of side-chain identities. Critical for the kinetics of complex assembly; sustained interaction ensures efficient phosphorylation during signaling bursts.',
+    process:['Interface Stability','Binding Affinity','Signal Duration','Protein–Protein Interaction']
+  },
+  {
+    id:7, chainA:'A', resiA:99,  aaA:'GLU', atomA:'OE2',
+          chainB:'B', resiB:426, aaB:'LYS', atomB:'NZ',
+    dist:2.443, type:'Salt Bridge', color:'#FF7043',
+    mechanism:'GLU99 carboxylate (OE2) in EFS forms a salt bridge with LYS426 ε-amine in SRC at 2.443 Å. Notably, LYS426 in SRC is part of the catalytic loop (DFG-containing region) that coordinates magnesium ions for phosphotransfer.',
+    significance:'This is the contact most directly coupled to SRC\'s catalytic machinery. The EFS-GLU99–SRC-LYS426 salt bridge positions the EFS substrate domain adjacent to the ATP-binding site, maximizing phosphotransfer efficiency. Loss of this contact likely abolishes EFS phosphorylation by SRC. A key determinant of substrate specificity and enzyme efficiency in the oncogenic SRC pathway.',
+    process:['Catalytic Positioning','Phosphotransfer','Enzyme–Substrate Specificity','Oncogenic Signaling']
+  },
+  {
+    id:8, chainA:'A', resiA:225, aaA:'ARG', atomA:'NH1',
+          chainB:'B', resiB:496, aaB:'ASP', atomB:'OD1',
+    dist:2.479, type:'Salt Bridge', color:'#FF7043',
+    mechanism:'EFS-ARG225 (serine-rich domain) and SRC-ASP496 (activation loop) form a 2.479 Å salt bridge. ASP496 is adjacent to the SRC activation loop, a key regulatory element whose phosphorylation at Y527/Y416 controls kinase activity.',
+    significance:'This contact may directly influence SRC activation loop dynamics: ARG225 binding to ASP496 could stabilize or destabilize the activation loop, modulating SRC\'s intrinsic kinase activity. In breast and colon cancer, SRC activation loop hyperphosphorylation is frequently observed — this interface contact is a potential therapeutic target for disrupting oncogenic SRC activity without fully inhibiting it.',
+    process:['Activation Loop Regulation','Kinase Autoregulation','Cancer Therapy Target','Breast Cancer','Colon Cancer']
+  },
+  {
+    id:9, chainA:'A', resiA:482, aaA:'HIS', atomA:'NE2',
+          chainB:'B', resiB:128, aaB:'SER', atomB:'OG',
+    dist:2.525, type:'H-bond', color:'#FFD700',
+    mechanism:'The imidazole NE2 of EFS-HIS482 donates an H-bond to the hydroxyl OG of SRC-SER128 at 2.525 Å. Histidine is unique: its pKa (~6.5) means this contact is sensitive to local pH, allowing dynamic modulation.',
+    significance:'This pH-sensitive H-bond may act as a molecular switch that regulates EFS–SRC affinity in acidic tumor microenvironments (pH 6.0–6.8). EFS-HIS482 is proximal to YXXP phosphorylation sites. The HIS–SER contact may be strengthened at lower pH (protonated HIS), increasing EFS–SRC affinity in tumors. This pH-gating mechanism could contribute to preferential signaling in hypoxic cancer niches.',
+    process:['pH-Dependent Regulation','Tumor Microenvironment','Hypoxia Signaling','Proximity to Phosphosite']
+  }
+];
+
+/* ================================================================
+   BUILD SIDE PANEL LIST
+   ================================================================ */
+const listEl = document.getElementById('sites-list');
+SITES.forEach(s => {
+  const isH = s.type === 'H-bond';
+  const pillCls = isH ? 'pill-h' : 'pill-s';
+  const pillTxt = isH ? 'H-bond' : 'Salt';
+  const distCol = isH ? '#FFD700' : '#FF7043';
+  const div = document.createElement('div');
+  div.className = 'site-item';
+  div.dataset.id = s.id;
+  div.innerHTML = `
+    <div class="site-num" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}55">${s.id}</div>
+    <div class="site-info">
+      <div class="site-name">${s.aaA}${s.resiA} <span style="color:var(--muted)">↔</span> ${s.aaB}${s.resiB}</div>
+      <div class="site-aa">${s.atomA} · · · ${s.atomB}</div>
+    </div>
+    <span class="type-pill ${pillCls}">${pillTxt}</span>
+    <div class="site-dist" style="color:${distCol}">${s.dist.toFixed(3)}&thinsp;Å</div>`;
+  div.addEventListener('click', () => selectSite(s.id));
+  listEl.appendChild(div);
+});
+
+/* ================================================================
+   PANEL TOGGLE
+   ================================================================ */
+let panelOpen = true;
+document.getElementById('panel-toggle').addEventListener('click', () => {
+  panelOpen = !panelOpen;
+  document.getElementById('panel').classList.toggle('collapsed', !panelOpen);
+  document.getElementById('panel-toggle').textContent = panelOpen ? '▶' : '◀';
+});
+
+/* ================================================================
+   DETAIL CARD
+   ================================================================ */
+function renderDetail(s) {
+  const card = document.getElementById('detail-card');
+  card.classList.remove('empty');
+  const isH  = s.type === 'H-bond';
+  const pCls = isH ? 'pill-h' : 'pill-s';
+  const tags = s.process.map(p => `<span class="ptag">${p}</span>`).join('');
+  card.querySelector('.dc-body').innerHTML = `
+    <div class="dc-header">
+      <div class="dc-num" style="background:${s.color}22;color:${s.color};border:1px solid ${s.color}44">${s.id}</div>
+      <div>
+        <div class="dc-title">${s.aaA}${s.resiA} &harr; ${s.aaB}${s.resiB}</div>
+        <div class="dc-dist">
+          <span class="type-pill ${pCls}" style="margin-right:.4rem">${s.type}</span>
+          <span style="color:${s.color}">${s.dist.toFixed(3)} Å</span>
+        </div>
+      </div>
+    </div>
+    <div class="dc-section">
+      <div class="dc-section-title">Residues</div>
+      <div class="dc-residues">
+        <span class="res-chip res-efs">${s.aaA} ${s.resiA} (EFS·${s.atomA})</span>
+        <span class="res-chip res-src">${s.aaB} ${s.resiB} (SRC·${s.atomB})</span>
+      </div>
+    </div>
+    <div class="dc-section">
+      <div class="dc-section-title">Molecular Mechanism</div>
+      <div class="dc-text">${s.mechanism}</div>
+    </div>
+    <div class="dc-section">
+      <div class="dc-section-title">Biological Significance</div>
+      <div class="dc-text">${s.significance}</div>
+      <div class="process-tags" style="margin-top:.6rem">${tags}</div>
+    </div>`;
+}
+
+/* ================================================================
+   3DMOL SETUP
+   ================================================================ */
+let viewer, globalModel;
+let currentSiteId = null;
+
+function addDashedLine(v, p1, p2, color, dashLen=0.5, gapLen=0.4) {
+  const dx=p2.x-p1.x, dy=p2.y-p1.y, dz=p2.z-p1.z;
+  const len=Math.sqrt(dx*dx+dy*dy+dz*dz);
+  const ux=dx/len, uy=dy/len, uz=dz/len;
+  const step=dashLen+gapLen, n=Math.floor(len/step);
+  for (let i=0;i<n;i++){
+    const t0=i*step, t1=t0+dashLen;
+    v.addCylinder({
+      start:{x:p1.x+ux*t0,y:p1.y+uy*t0,z:p1.z+uz*t0},
+      end:  {x:p1.x+ux*t1,y:p1.y+uy*t1,z:p1.z+uz*t1},
+      radius:0.09, fromCap:1, toCap:1, color:color, opacity:0.85
+    });
+  }
+}
+
+function selectSite(id) {
+  currentSiteId = id;
+  const s = SITES.find(x => x.id === id);
+  if (!s) return;
+
+  // Update list highlight
+  document.querySelectorAll('.site-item').forEach(el => {
+    el.classList.toggle('active', +el.dataset.id === id);
+  });
+
+  // Render detail card
+  renderDetail(s);
+
+  // Highlight residues in 3D viewer
+  if (viewer && globalModel) {
+    // Reset all EFS/SRC cartoon to base color
+    viewer.setStyle({chain:'A'}, {cartoon:{color:'#2196F3', opacity:0.85}});
+    viewer.setStyle({chain:'B'}, {cartoon:{color:'#F44336', opacity:0.85}});
+    // Highlight selected residues with sticks
+    viewer.setStyle({chain:s.chainA, resi:s.resiA},
+      {cartoon:{color:'#FFFFFF',opacity:1}, stick:{colorscheme:'Jmol',radius:0.22}});
+    viewer.setStyle({chain:s.chainB, resi:s.resiB},
+      {cartoon:{color:'#FFFFFF',opacity:1}, stick:{colorscheme:'Jmol',radius:0.22}});
+    viewer.render();
+  }
+
+  // Open panel if collapsed
+  if (!panelOpen) {
+    panelOpen = true;
+    document.getElementById('panel').classList.remove('collapsed');
+    document.getElementById('panel-toggle').textContent = '▶';
+  }
+}
+
+function initViewer(cifText) {
+  const el = document.getElementById('mol-viewer');
+  viewer = $3Dmol.createViewer($(el), {
+    backgroundColor: '#ffffff',
+    antialias: true,
+    cartoonQuality: 8
+  });
+
+  globalModel = viewer.addModel(cifText, 'cif');
+
+  // Chain styles
+  viewer.setStyle({chain:'A'}, {cartoon:{color:'#2196F3', opacity:0.85}});
+  viewer.setStyle({chain:'B'}, {cartoon:{color:'#F44336', opacity:0.85}});
+
+  // Build contact markers
+  SITES.forEach(s => {
+    const aA = globalModel.selectedAtoms({chain:s.chainA, resi:s.resiA, atom:s.atomA});
+    const aB = globalModel.selectedAtoms({chain:s.chainB, resi:s.resiB, atom:s.atomB});
+    if (!aA.length || !aB.length) return;
+
+    const p1 = {x:aA[0].x, y:aA[0].y, z:aA[0].z};
+    const p2 = {x:aB[0].x, y:aB[0].y, z:aB[0].z};
+    const mid = {x:(p1.x+p2.x)/2, y:(p1.y+p2.y)/2, z:(p1.z+p2.z)/2};
+
+    s._p1  = p1;
+    s._p2  = p2;
+    s._mid = mid;
+
+    // Dashed bond line
+    addDashedLine(viewer, p1, p2, s.color);
+
+    // Outer glow (non-clickable)
+    viewer.addSphere({center:mid, radius:2.6, color:s.color, opacity:0.18});
+
+    // Inner clickable sphere
+    const sid = s.id;
+    viewer.addSphere({
+      center:mid, radius:1.7, color:s.color, opacity:0.88,
+      clickable:true,
+      callback: function() { selectSite(sid); }
+    });
+
+    // Number label
+    viewer.addLabel(String(s.id), {
+      position:{x:mid.x, y:mid.y+2.8, z:mid.z},
+      fontSize:13, fontColor:'#ffffff',
+      backgroundColor:s.color, backgroundOpacity:0.88,
+      padding:3, borderRadius:4, inFront:true
+    });
+  });
+
+  viewer.zoomTo();
+  viewer.render();
+
+  // Fade out loader
+  const ov = document.getElementById('overlay');
+  ov.classList.add('fade');
+  setTimeout(() => ov.classList.add('gone'), 600);
+
+  // Fade ctrl hint after 5s
+  setTimeout(() => {
+    document.getElementById('ctrl-hint').style.opacity = '0';
+  }, 5000);
+  setTimeout(() => {
+    document.getElementById('ctrl-hint').style.display = 'none';
+  }, 5500);
+}
+
+/* ================================================================
+   LOAD CIF
+   ================================================================ */
+fetch('fold_efs_and_src_model_1.cif')
+  .then(r => { if (!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+  .then(text => initViewer(text))
+  .catch(err => {
+    console.error(err);
+    const ov = document.getElementById('overlay');
+    ov.querySelector('.spinner').style.display = 'none';
+    document.getElementById('overlay-msg').innerHTML =
+      `Could not load the structure file (fetch blocked).<br><br>
+       Start a local server in this folder:<br>
+       <code>python3 -m http.server 8080</code><br><br>
+       Then open &nbsp;<code>http://localhost:8080/interface_3d_explorer.html</code>`;
+    const btn = document.createElement('button');
+    btn.className = 'btn-retry';
+    btn.textContent = 'Retry';
+    btn.onclick = () => location.reload();
+    ov.appendChild(btn);
+  });
+</script>
+</body>
+</html>

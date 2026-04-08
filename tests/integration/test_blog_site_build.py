@@ -173,8 +173,10 @@ def test_build_blog_site_writes_post_bundle(tmp_path: Path) -> None:
     assert (site_dir / "index.html").exists()
     assert (site_dir / "styles.css").exists()
     assert (site_dir / "app.js").exists()
+    assert (site_dir / "efs-src-explorer.html").exists()
+    assert (site_dir / "cathy01-src-explorer.html").exists()
     bundle = json.loads((site_dir / "data" / "post_bundle.json").read_text(encoding="utf-8"))
-    assert bundle["meta"]["authors"] == ["Cathy Liu", "Toby Simonds"]
+    assert bundle["meta"]["authors"] == ["Cathy Liu"]
     assert bundle["summary"]["solver_top_hit"] == ["EFS"]
     assert bundle["summary"]["opus_top_hit"] == ["EFS"]
     assert bundle["graphs"]["selected"]["edges"][0]["step_evidence"][0]["source"] == "EFS"

@@ -1,0 +1,18 @@
+>efs_binding_fragment, score=2.2703, global_score=2.2703, fixed_chains=[], designed_chains=['A'], model_name=v_48_020, git_hash=unknown, seed=704
+KGSIQDRPLPPPPPRLPGYG
+>T=0.1, sample=1, score=1.2601, global_score=1.2601, seq_recovery=0.4000
+APSPEAVPPPPPPGVPPPPG
+>T=0.1, sample=2, score=1.3062, global_score=1.3062, seq_recovery=0.3500
+APPASALPPPPPPGVPPAPG
+>T=0.1, sample=3, score=1.2894, global_score=1.2894, seq_recovery=0.4500
+APSPAARPPPPPPGVPPPPG
+>T=0.1, sample=4, score=1.3373, global_score=1.3373, seq_recovery=0.4500
+APSPADIPPPPPPGIPPPPG
+>T=0.1, sample=5, score=1.2970, global_score=1.2970, seq_recovery=0.4000
+APSPEAVPPPPPPGVPPPPG
+>T=0.1, sample=6, score=1.3204, global_score=1.3204, seq_recovery=0.4000
+APPASAIPPPPPPPIPPPPG
+>T=0.1, sample=7, score=1.2586, global_score=1.2586, seq_recovery=0.4500
+APSPEALPPPPPPPVPPPPG
+>T=0.1, sample=8, score=1.2730, global_score=1.2730, seq_recovery=0.4000
+VPSPAALPPPPPPGVTPAPG
