@@ -1,0 +1,151 @@
+{
+  "candidates": [
+    {
+      "benchmark_assessment": "Weak: mean effect \u22120.056, no DepMap hit.",
+      "confidence_score": 0.55,
+      "evidence_refs": [
+        "PMID:26119091",
+        "PMID:8570184",
+        "OmniPath",
+        "solver-hit"
+      ],
+      "knocked_out_genes": [
+        "EFS"
+      ],
+      "pathway_nodes_expected_off": [
+        "KRAS",
+        "RAF1",
+        "BRAF",
+        "MAP2K1",
+        "PIK3CA",
+        "AKT1"
+      ],
+      "rank": 1,
+      "rationale": "EFS activates SRC\u2192KRAS/RAF1/BRAF/PIK3CA/AKT1 via scaffold signaling. Solver confirms all 9 pathway nodes turn off. Highly upregulated DEG (log2FC 26.4). Weak DepMap support tempers confidence.",
+      "supporting_edges": [
+        "EFS -> KRAS",
+        "EFS -> AKT1",
+        "EFS -> RAF1"
+      ],
+      "toxicity_risk": "low"
+    },
+    {
+      "benchmark_assessment": "No SOX2 benchmark row; EFS weak.",
+      "confidence_score": 0.52,
+      "evidence_refs": [
+        "PMID:31543463",
+        "PMID:23985577",
+        "solver-hit",
+        "OmniPath"
+      ],
+      "knocked_out_genes": [
+        "EFS",
+        "SOX2"
+      ],
+      "pathway_nodes_expected_off": [
+        "KRAS",
+        "RAF1",
+        "BRAF",
+        "PIK3CA",
+        "AKT1",
+        "MAP2K1"
+      ],
+      "rank": 2,
+      "rationale": "Adds SOX2 KO to block MYC activation and relieve CDKN1A/CDKN1B repression, reinforcing cell-cycle arrest beyond EFS-mediated pathway shutdown. SOX2 is top-3 DEG (log2FC 28.7).",
+      "supporting_edges": [
+        "EFS -> KRAS",
+        "SOX2 -> MYC",
+        "SOX2 -| CDKN1B"
+      ],
+      "toxicity_risk": "medium"
+    },
+    {
+      "benchmark_assessment": "No TP63 benchmark row; EFS weak.",
+      "confidence_score": 0.48,
+      "evidence_refs": [
+        "PMID:30428345",
+        "OmniPath",
+        "solver-hit"
+      ],
+      "knocked_out_genes": [
+        "EFS",
+        "TP63"
+      ],
+      "pathway_nodes_expected_off": [
+        "KRAS",
+        "RAF1",
+        "BRAF",
+        "PIK3CA",
+        "AKT1",
+        "MAP2K1"
+      ],
+      "rank": 3,
+      "rationale": "TP63 drives squamous-subtype program (KRT6A) and activates SOX2. Combined with EFS KO, disrupts both KRAS effector cascade and squamous differentiation axis sustaining PDAC.",
+      "supporting_edges": [
+        "EFS -> KRAS",
+        "TP63 -> SOX2",
+        "TP63 -> KRT6A"
+      ],
+      "toxicity_risk": "medium"
+    },
+    {
+      "benchmark_assessment": "No benchmark data available for SOX2.",
+      "confidence_score": 0.4,
+      "evidence_refs": [
+        "PMID:31543463",
+        "PMID:23985577"
+      ],
+      "knocked_out_genes": [
+        "SOX2"
+      ],
+      "pathway_nodes_expected_off": [],
+      "rank": 4,
+      "rationale": "SOX2 directly activates MYC and represses CDKN1A/CDKN1B in PDAC. Knockout restores cell-cycle inhibitors. However, no direct graph edges to core KRAS pathway nodes limit pathway shutdown breadth.",
+      "supporting_edges": [
+        "SOX2 -> MYC",
+        "SOX2 -| CDKN1A",
+        "SOX2 -| CDKN1B"
+      ],
+      "toxicity_risk": "medium"
+    },
+    {
+      "benchmark_assessment": "No benchmark for SOX2/TP63; EFS weak.",
+      "confidence_score": 0.45,
+      "evidence_refs": [
+        "PMID:26119091",
+        "PMID:31543463",
+        "PMID:30428345",
+        "solver-hit"
+      ],
+      "knocked_out_genes": [
+        "EFS",
+        "SOX2",
+        "TP63"
+      ],
+      "pathway_nodes_expected_off": [
+        "KRAS",
+        "RAF1",
+        "BRAF",
+        "PIK3CA",
+        "AKT1",
+        "MAP2K1"
+      ],
+      "rank": 5,
+      "rationale": "Triple KO maximizes coverage: EFS shuts KRAS cascade, SOX2 blocks MYC/cell-cycle, TP63 collapses squamous program. Three-gene cost and no benchmark support reduce practical confidence.",
+      "supporting_edges": [
+        "EFS -> KRAS",
+        "SOX2 -> MYC",
+        "TP63 -> SOX2"
+      ],
+      "toxicity_risk": "medium"
+    }
+  ],
+  "final_recommendation": [
+    "EFS"
+  ],
+  "graph_variant": "llm_plus_priors_pruned",
+  "model": "claude-opus-4-6",
+  "recommendation_summary": "EFS knockout is the top mechanistic choice: it feeds KRAS, RAF1, BRAF, MAP2K1, PIK3CA, and AKT1 via SRC scaffolding, shutting down the full KRAS signaling cascade in one intervention. However, DepMap benchmark support is weak (mean gene effect \u22120.056, no hit), so experimental validation is essential. Two-gene combinations with SOX2 or TP63 offer marginal added coverage.",
+  "run_dir": "artifacts/pdac-anthropic-discovery-only-projected-20260321-v4",
+  "target_oncogene": "KRAS"
+}

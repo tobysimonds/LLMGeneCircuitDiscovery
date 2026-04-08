@@ -1,0 +1,11 @@
+{
+  "configured_model": "claude-sonnet-4-6",
+  "fallback_gene_count": 7,
+  "parser_model": "claude-opus-4-6",
+  "requested_backend": "anthropic",
+  "result_model_counts": {
+    "claude-sonnet-4-6": 43,
+    "pubmed-heuristic": 7
+  },
+  "total_genes": 50
+}

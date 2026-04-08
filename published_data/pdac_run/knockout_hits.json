@@ -1,0 +1,24 @@
+[
+  {
+    "benchmark_score": 0.055747473421111325,
+    "boss_node": "KRAS_SIGNALING",
+    "boss_state": 0,
+    "convergence_steps": 1,
+    "knocked_out_genes": [
+      "EFS"
+    ],
+    "pathway_nodes_off": [
+      "KRAS",
+      "RAF1",
+      "BRAF",
+      "MAP2K1",
+      "MAP2K2",
+      "MAPK1",
+      "MAPK3",
+      "PIK3CA",
+      "AKT1"
+    ],
+    "score": 97.06574747342111,
+    "support_score": 8.01
+  }
+]

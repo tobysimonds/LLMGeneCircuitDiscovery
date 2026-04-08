@@ -1,0 +1,964 @@
+{
+  "lineage_filter": [
+    "Pancreas"
+  ],
+  "model_count": 68,
+  "primary_disease_filter": [
+    "Pancreatic"
+  ],
+  "release": "DepMap Public 25Q3",
+  "results": [
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "A2ML1 (144568)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "A2ML1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.07441469454177217,
+      "median_gene_effect": 0.08503852595365095,
+      "min_gene_effect": -0.1647947940006099,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "A2ML1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "AC006206.2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "AC006206.2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "AC007325.2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "AC007325.2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "AC009271.1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "AC009271.1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "AC107419.1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "AC107419.1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "AC144450.1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "AC144450.1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.08243127425433293,
+      "depmap_column": "APOD (347)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "APOD",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.08243127425433293,
+      "median_gene_effect": -0.0641922174227869,
+      "min_gene_effect": -0.2918826940107821,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "APOD"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.1153601442816063,
+      "depmap_column": "ATP12A (479)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "ATP12A",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.1153601442816063,
+      "median_gene_effect": -0.1073519186461935,
+      "min_gene_effect": -0.42140619106438,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "ATP12A"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "BBOX1-AS1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "BBOX1-AS1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "CALML3 (810)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CALML3",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.058043217503910206,
+      "median_gene_effect": 0.06665594276874615,
+      "min_gene_effect": -0.187241333852213,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CALML3"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "CAPNS2 (84290)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CAPNS2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.16087417966839498,
+      "median_gene_effect": 0.1461467135863668,
+      "min_gene_effect": -0.100346096164384,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CAPNS2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "CD163L1 (283316)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CD163L1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.16079029741105696,
+      "median_gene_effect": 0.17727598975148465,
+      "min_gene_effect": -0.1864253834556383,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CD163L1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "CDH19 (28513)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CDH19",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.10767053739714709,
+      "median_gene_effect": 0.0868163506660306,
+      "min_gene_effect": -0.1912194578948062,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CDH19"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.088053063651214,
+      "depmap_column": "CHP2 (63928)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CHP2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.088053063651214,
+      "median_gene_effect": -0.08189713515054275,
+      "min_gene_effect": -0.3109626355059832,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CHP2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.06572845841419538,
+      "depmap_column": "CSTA (1475)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CSTA",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.06572845841419538,
+      "median_gene_effect": -0.0946507631621598,
+      "min_gene_effect": -0.464789380637759,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CSTA"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "CT83 (203413)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CT83",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.055569586497426625,
+      "median_gene_effect": 0.03976296797644835,
+      "min_gene_effect": -0.1861614048708391,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CT83"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.08011289970567113,
+      "depmap_column": "CXCL14 (9547)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CXCL14",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.08011289970567113,
+      "median_gene_effect": -0.0676078812418551,
+      "min_gene_effect": -0.3339946861258944,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CXCL14"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.08261389852888362,
+      "depmap_column": "CYP2F1 (1572)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CYP2F1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.08261389852888362,
+      "median_gene_effect": -0.09821352832364261,
+      "min_gene_effect": -0.3099853346310686,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CYP2F1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.06891439036581846,
+      "depmap_column": "CYP4B1 (1580)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "CYP4B1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.06891439036581846,
+      "median_gene_effect": -0.0892864559233382,
+      "min_gene_effect": -0.2310592310669489,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "CYP4B1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "DEFB126 (81623)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "DEFB126",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.0797131485769775,
+      "median_gene_effect": 0.0702184816319554,
+      "min_gene_effect": -0.1415241581466381,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "DEFB126"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.055747473421111325,
+      "depmap_column": "EFS (10278)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "EFS",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.055747473421111325,
+      "median_gene_effect": -0.05337199396280695,
+      "min_gene_effect": -0.2695588188416026,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "EFS"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "FABP6 (2172)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "FABP6",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.10529660068882192,
+      "median_gene_effect": 0.10923200975397165,
+      "min_gene_effect": -0.0989143733364714,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "FABP6"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "FAT2 (2196)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "FAT2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.025525496118580817,
+      "median_gene_effect": 0.02320319297936685,
+      "min_gene_effect": -0.1870676019270455,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "FAT2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "FER1L6 (654463)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "FER1L6",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.04978807106213076,
+      "median_gene_effect": 0.07134724271392764,
+      "min_gene_effect": -0.3196366426805028,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "FER1L6"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "FOXD1 (2297)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "FOXD1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.25261422699653363,
+      "median_gene_effect": 0.25261422699653363,
+      "min_gene_effect": 0.1232855925666854,
+      "n_cell_lines": 2,
+      "prior_pathway_hits": [
+        "FOXD1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "GJB7 (375519)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "GJB7",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.07821684837845073,
+      "median_gene_effect": 0.09839950233984425,
+      "min_gene_effect": -0.1007117839269549,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "GJB7"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "GNGT1 (2792)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "GNGT1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.1422686869060978,
+      "median_gene_effect": 0.1387513423392676,
+      "min_gene_effect": -0.1041441793542523,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "GNGT1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.1443392625250458,
+      "depmap_column": "HOXB7 (3217)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "HOXB7",
+      "hit_rate": 0.020833333333333332,
+      "mean_gene_effect": -0.1443392625250458,
+      "median_gene_effect": -0.14362121798603028,
+      "min_gene_effect": -0.5028115410676522,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "HOXB7"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "KCNMB2-AS1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "KCNMB2-AS1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.06922580128784246,
+      "depmap_column": "KRT13 (3860)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "KRT13",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.06922580128784246,
+      "median_gene_effect": -0.0602445441345683,
+      "min_gene_effect": -0.346386625442639,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "KRT13"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.23961510123145405,
+      "depmap_column": "KRT6A (3853)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "KRT6A",
+      "hit_rate": 0.125,
+      "mean_gene_effect": -0.23961510123145405,
+      "median_gene_effect": -0.20419876421611585,
+      "min_gene_effect": -0.6593334953235314,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "KRT6A"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "LINC01980",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "LINC01980"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "LINC02253",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "LINC02253"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": null,
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "LINC02300",
+      "hit_rate": 0.0,
+      "mean_gene_effect": null,
+      "median_gene_effect": null,
+      "min_gene_effect": null,
+      "n_cell_lines": 0,
+      "prior_pathway_hits": [
+        "LINC02300"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "MMP2 (4313)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "MMP2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.013164109912538352,
+      "median_gene_effect": 0.02220323467913015,
+      "min_gene_effect": -0.1931553831486397,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "MMP2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.05083350849739623,
+      "depmap_column": "NMU (10874)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "NMU",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.05083350849739623,
+      "median_gene_effect": -0.0245200179952718,
+      "min_gene_effect": -0.4551403708245623,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "NMU"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "NTS (4922)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "NTS",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.0254255184327626,
+      "median_gene_effect": 0.02375552943140425,
+      "min_gene_effect": -0.2647421531170474,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "NTS"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "PRDM8 (56978)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "PRDM8",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.01639038971852079,
+      "median_gene_effect": 0.0168245491728958,
+      "min_gene_effect": -0.2572771668798273,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "PRDM8"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.2904980147844291,
+      "depmap_column": "PSAT1 (29968)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "PSAT1",
+      "hit_rate": 0.08333333333333333,
+      "mean_gene_effect": -0.2904980147844291,
+      "median_gene_effect": -0.2795483564944292,
+      "min_gene_effect": -0.5778497905045376,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "PSAT1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.06646495739812809,
+      "depmap_column": "RHCG (51458)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "RHCG",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.06646495739812809,
+      "median_gene_effect": -0.06417854924315836,
+      "min_gene_effect": -0.2428226336325825,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "RHCG"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "SCNN1B (6338)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SCNN1B",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.03083135651726805,
+      "median_gene_effect": 0.0277494060813633,
+      "min_gene_effect": -0.216470668740752,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SCNN1B"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0075993884015258945,
+      "depmap_column": "SEMA3A (10371)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SEMA3A",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.0075993884015258945,
+      "median_gene_effect": -0.0090574980701605,
+      "min_gene_effect": -0.2403857387974776,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SEMA3A"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "SHOX2 (6474)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SHOX2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.0165583559771577,
+      "median_gene_effect": 0.0253592794419742,
+      "min_gene_effect": -0.2549993111459802,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SHOX2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.1508052346968075,
+      "depmap_column": "SIX1 (6495)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SIX1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.1508052346968075,
+      "median_gene_effect": -0.1386467052353019,
+      "min_gene_effect": -0.3870922113441267,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SIX1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "SIX2 (10736)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SIX2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.0977387931186301,
+      "median_gene_effect": 0.1073777578029961,
+      "min_gene_effect": -0.1444430124351657,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SIX2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "SLCO1A2 (6579)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SLCO1A2",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.03875435866854598,
+      "median_gene_effect": 0.03791950666170965,
+      "min_gene_effect": -0.1709454749313706,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SLCO1A2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.1047030682813398,
+      "depmap_column": "SOX2 (6657)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SOX2",
+      "hit_rate": 0.041666666666666664,
+      "mean_gene_effect": -0.1047030682813398,
+      "median_gene_effect": -0.11459643223074464,
+      "min_gene_effect": -0.5942032413870281,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SOX2"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.0,
+      "depmap_column": "SOX21 (11166)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SOX21",
+      "hit_rate": 0.0,
+      "mean_gene_effect": 0.07441930670166495,
+      "median_gene_effect": 0.07747953190598694,
+      "min_gene_effect": -0.2591369155603721,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SOX21"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.00999544830904489,
+      "depmap_column": "SYT1 (6857)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "SYT1",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.00999544830904489,
+      "median_gene_effect": -0.011019877829940499,
+      "min_gene_effect": -0.3188451165736375,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "SYT1"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    },
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.04648081917044044,
+      "depmap_column": "TP63 (8626)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "TP63",
+      "hit_rate": 0.0625,
+      "mean_gene_effect": -0.04648081917044044,
+      "median_gene_effect": 0.0418502002767923,
+      "min_gene_effect": -1.0357948488486448,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "TP63"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    }
+  ],
+  "rnai_release": "DEMETER2 Data v6",
+  "stage": "pre_simulation"
+}

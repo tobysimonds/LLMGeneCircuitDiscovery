@@ -1,0 +1,8125 @@
+{
+  "directed": true,
+  "edges": [
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CDH19",
+      "target": "CTNNB1",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.88,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "SRC",
+      "weight": 0.88
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.85,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "PTK2",
+      "weight": 0.85
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.82,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "CRK",
+      "weight": 0.82
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.78,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "PTPN11",
+      "weight": 0.78
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "AKT1",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "GRB2",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.7,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "SOS1",
+      "weight": 0.7
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.65,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "EGFR",
+      "weight": 0.65
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.62,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "PRKCA",
+      "weight": 0.62
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.6,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "KRAS",
+      "weight": 0.6
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.52,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "EFS",
+      "target": "TP63",
+      "weight": 0.52
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.48,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "EFS",
+      "target": "SEMA3A",
+      "weight": 0.48
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.75,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "FAT2",
+      "target": "YAP1",
+      "weight": 0.75
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "FAT2",
+      "target": "PIK3CA",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GNGT1",
+      "target": "PIK3CA",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GNGT1",
+      "target": "PLCG1",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.78,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "KRT13",
+      "target": "MYC",
+      "weight": 0.78
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "KRT13",
+      "target": "CASP3",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.82,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "LINC02253",
+      "target": "METTL3",
+      "weight": 0.82
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "LINC02253",
+      "target": "KRT13",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MMP2",
+      "target": "EGFR",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "RHCG",
+      "target": "IKBKG",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.7,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "RHCG",
+      "target": "MMP2",
+      "weight": 0.7
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.68,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "RHCG",
+      "target": "CASP3",
+      "weight": 0.68
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "SLCO1A2",
+      "target": "PRKCA",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.38,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "SLCO1A2",
+      "target": "MMP2",
+      "weight": 0.38
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.87,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "SOX2",
+      "target": "MYC",
+      "weight": 0.87
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.84,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "SOX2",
+      "target": "CDKN1B",
+      "weight": 0.84
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.82,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": -1,
+      "source": "SOX2",
+      "target": "CDKN1A",
+      "weight": 0.82
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.92,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "TP63",
+      "target": "KRT6A",
+      "weight": 0.92
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.78,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "TP63",
+      "target": "SOX2",
+      "weight": 0.78
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "BAD",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "AKT1",
+      "target": "BRAF",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CDKN1A",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CDKN1B",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CHUK",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CREB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "CTNNB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "FOXO3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "FOXO4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "AKT1",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "MAPK1",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "SOX2",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AKT1",
+      "target": "SRC",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "AKT1",
+      "target": "YAP1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AREG",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "AREG",
+      "target": "ERBB2",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ATF2",
+      "target": "JUN",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ATF2",
+      "target": "MMP2",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BCAR1",
+      "target": "PIK3R1",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BCAR1",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "BRAF",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BRAF",
+      "target": "MAP2K1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BRAF",
+      "target": "MAP2K2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BRAF",
+      "target": "MAPK1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BRAF",
+      "target": "MAPK3",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BTC",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "BTC",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CASP3",
+      "target": "AKT1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "BAD",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "BCAR1",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "CDKN1A",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "CTNNB1",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP3",
+      "target": "TP63",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CASP9",
+      "target": "CASP3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CBL",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CBL",
+      "target": "ERBB2",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CBL",
+      "target": "MET",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CBL",
+      "target": "PIK3CA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CBL",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CBL",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CBL",
+      "target": "PRKCA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CBL",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CBL",
+      "target": "ZAP70",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CHUK",
+      "target": "CDKN1B",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "CHUK",
+      "target": "FOXO3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CREB1",
+      "target": "CTNNB1",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CREB1",
+      "target": "FOXO4",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CREB1",
+      "target": "MYC",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "FOXO3",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "FOXO4",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CTNNB1",
+      "target": "SOX2",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "DUSP3",
+      "target": "EGFR",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "DUSP3",
+      "target": "ERBB2",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "DUSP3",
+      "target": "MAPK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "DUSP3",
+      "target": "MAPK3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "DUSP3",
+      "target": "STAT3",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGF",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGF",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "EGFR",
+      "target": "BCAR1",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "CBL",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "CTNNB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "ERBB3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "MAP2K1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "PTPN11",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "SOX2",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EGFR",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "CTNNB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "ERBB3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "PIK3CA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB2",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB3",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB3",
+      "target": "PIK3CA",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB3",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB4",
+      "target": "CBL",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB4",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ERBB4",
+      "target": "PIK3CA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EREG",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EREG",
+      "target": "ERBB3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "EREG",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGF19",
+      "target": "FGFR1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGF19",
+      "target": "FGFR2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGF19",
+      "target": "FGFR3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGF19",
+      "target": "FGFR4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR1",
+      "target": "BCAR1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR1",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR2",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR2",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR3",
+      "target": "PLCG1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR3",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR4",
+      "target": "PLCG1",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FGFR4",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FOS",
+      "target": "JUN",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FOXO3",
+      "target": "CDKN1A",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FOXO3",
+      "target": "CDKN1B",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "FOXO3",
+      "target": "PIK3CA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB1",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB1",
+      "target": "PIK3CA",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB1",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB1",
+      "target": "PTPN11",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB2",
+      "target": "PIK3CA",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GAB2",
+      "target": "PTPN11",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "CBL",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "SOS2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GRB2",
+      "target": "SRC",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HBEGF",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HBEGF",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "BRAF",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "JUN",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "PIK3CA",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "SHC1",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HRAS",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HSP90AA1",
+      "target": "AKT1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HSP90AA1",
+      "target": "RAF1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "HSP90AA1",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "IKBKG",
+      "target": "CHUK",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.65,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "IKBKG",
+      "target": "MMP2",
+      "weight": 0.65
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "JUN",
+      "target": "CREB1",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "JUN",
+      "target": "CTNNB1",
+      "weight": 0.66
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "KRAS",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "KRAS",
+      "target": "BRAF",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "KRAS",
+      "target": "PIK3CA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "KRAS",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAP2K1",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "MAPK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "MAPK3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAP2K1",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "MAP2K2",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAP2K2",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAP2K2",
+      "target": "MAPK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAP2K2",
+      "target": "MAPK3",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "ATF2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "BAD",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "BRAF",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "CDKN1A",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "CDKN1B",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "ELK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "FGFR1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "FOS",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "FOXO3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "JUN",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "MAP2K1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "MYC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK1",
+      "target": "SCNN1B",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK1",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "ATF2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "BAD",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "BRAF",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "CASP9",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "CDKN1B",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "ELK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "ERBB4",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "FGFR1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "FGFR2",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "FOS",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "FOXO3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "JUN",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "MYC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "PTPN11",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "RHOA",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "SCNN1B",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "SHC1",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MAPK3",
+      "target": "SOX2",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MAPK3",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MET",
+      "target": "ERBB3",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MET",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MET",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MET",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MYC",
+      "target": "CDKN1A",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "NRG1",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "NRG1",
+      "target": "ERBB3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "NRG1",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "NRG2",
+      "target": "ERBB3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "NRG2",
+      "target": "ERBB4",
+      "weight": 0.95
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PIK3CA",
+      "target": "CBL",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "GAB1",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "HRAS",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "PTPN11",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3CA",
+      "target": "SRC",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3R1",
+      "target": "AKT1",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PIK3R1",
+      "target": "PIK3CA",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PLCG1",
+      "target": "CDKN1A",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PLCG1",
+      "target": "PRKCA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PLCG1",
+      "target": "RHOA",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PLCG1",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PLCG1",
+      "target": "SRC",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "ATF2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "CBL",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "CDKN1A",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCA",
+      "target": "CTNNB1",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCA",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCA",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "FOS",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.65,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "KRAS",
+      "weight": 0.65
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "MAPK1",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "MAPK3",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCA",
+      "target": "MET",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "PTPN11",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "RHOA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "STAT3",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCA",
+      "target": "YWHAB",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCD",
+      "target": "CTNNB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCD",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCD",
+      "target": "MET",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCD",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCD",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PRKCD",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PRKCD",
+      "target": "YWHAB",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "CDKN1B",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PTPN11",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PTPN11",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.49999999999999994,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "PTPN11",
+      "target": "FGFR2",
+      "weight": 0.49999999999999994
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "HRAS",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "KRAS",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "PIK3CA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "PIK3R1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "PRKCA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.75,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "PTPN11",
+      "target": "RAF1",
+      "weight": 0.75
+    },
+    {
+      "confidence": 1.0,
+      "provenance": [
+        "aggregate"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "KRAS_SIGNALING",
+      "weight": 1.0
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "BAD",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "MAP2K1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "MAP2K2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "MAPK1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RAF1",
+      "target": "MAPK3",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RHOA",
+      "target": "PLCG1",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "RHOA",
+      "target": "PRKCA",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "RHOA",
+      "target": "SRC",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "SHC1",
+      "target": "FOXO3",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SHC1",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SHC1",
+      "target": "PIK3CA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SHC1",
+      "target": "SOS1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SHC1",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS1",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS1",
+      "target": "HRAS",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS1",
+      "target": "KRAS",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS1",
+      "target": "MAPK1",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS1",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.74,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS2",
+      "target": "HRAS",
+      "weight": 0.74
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.5800000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SOS2",
+      "target": "KRAS",
+      "weight": 0.5800000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "AKT1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "AREG",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "BCAR1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "CASP9",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "CBL",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "CDC42",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "SRC",
+      "target": "CDKN1B",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "CHUK",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "CTNNB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "EGFR",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "ERBB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "FOS",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "GAB1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "GRB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "HRAS",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "SRC",
+      "target": "IKBKG",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "KRAS",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "SRC",
+      "target": "MET",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "PIK3CA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "PLCG1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "PRKCA",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "PRKCD",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "RAF1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "RHOA",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "STAT3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "YAP1",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "ZAP70",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.82,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "SRC",
+      "target": "MMP2",
+      "weight": 0.82
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8200000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "STAT3",
+      "target": "HSP90AA1",
+      "weight": 0.8200000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.42,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "STAT3",
+      "target": "PRKCA",
+      "weight": 0.42
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9000000000000001,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "STAT3",
+      "target": "PTPN11",
+      "weight": 0.9000000000000001
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "STAT3",
+      "target": "SRC",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.66,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "YAP1",
+      "target": "CTNNB1",
+      "weight": 0.66
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.9,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "YAP1",
+      "target": "TEAD1",
+      "weight": 0.9
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ZAP70",
+      "target": "DUSP3",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ZAP70",
+      "target": "GAB2",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.95,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "ZAP70",
+      "target": "SHC1",
+      "weight": 0.95
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.8,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "PTK2",
+      "target": "PIK3CA",
+      "weight": 0.8
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "CRK",
+      "target": "MAPK1",
+      "weight": 0.72
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.78,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "METTL3",
+      "target": "PIK3CA",
+      "weight": 0.78
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.75,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "METTL3",
+      "target": "MAPK1",
+      "weight": 0.75
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.75,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "METTL3",
+      "target": "MAPK3",
+      "weight": 0.75
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "confidence": 0.72,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 0.0,
+        "review_supported": 0.0
+      },
+      "provenance": [
+        "claude-sonnet-4-6",
+        "discovery"
+      ],
+      "sign": 1,
+      "source": "METTL3",
+      "target": "SOX2",
+      "weight": 0.72
+    }
+  ],
+  "graph": {},
+  "multigraph": false,
+  "nodes": [
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "A2ML1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC006206.2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC007325.2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC009271.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC107419.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC144450.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "APOD",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "ATP12A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "BBOX1-AS1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CALML3",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CAPNS2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CD163L1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CDH19",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CHP2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CSTA",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CT83",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CXCL14",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CYP2F1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CYP4B1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "DEFB126",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "EFS",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FABP6",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FAT2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FER1L6",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FOXD1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "GJB7",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "GNGT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "HOXB7",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KCNMB2-AS1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KRT13",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KRT6A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC01980",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC02253",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC02300",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "MMP2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "NMU",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "NTS",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "PRDM8",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "PSAT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "RHCG",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SCNN1B",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SEMA3A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SHOX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SIX1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SIX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SLCO1A2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SOX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SOX21",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SYT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "TP63",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "AKT1",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "AREG",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ATF2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "BAD",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "BCAR1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "BDNF",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "BRAF",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "BRAP",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "BTC",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CASP3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CASP9",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CBL",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CDC37",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CDC42",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CDKN1A",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CDKN1B",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CHUK",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CREB1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CTNNB1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "DUSP3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "EGF",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "EGFR",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ELK1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ERBB2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ERBB3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ERBB4",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ERBIN",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "EREG",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FGF19",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FGFR1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FGFR2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FGFR3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FGFR4",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FOS",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FOXO3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "FOXO4",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "GAB1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "GAB2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "GRB2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "HBEGF",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "HRAS",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "HSP90AA1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "IKBKG",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "JUN",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "KRAS",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "MAP2K1",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "MAP2K2",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "MAPK1",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "MAPK3",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "MET",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "MYC",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "NRG1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "NRG2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "PIK3CA",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PIK3R1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PLCG1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PRKCA",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PRKCD",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PTPN11",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "RAF1",
+      "inhibition_dominance": 0.9,
+      "kind": "pathway",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "RHOA",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "SHC1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "SOS1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "SOS2",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "SRC",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "STAT3",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "TEAD1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "PathwayCommons",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "YAP1",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "PathwayCommons",
+        "seed"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "YWHAB",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "ZAP70",
+      "inhibition_dominance": 0.9,
+      "kind": "prior",
+      "logic_mode": "weighted_or",
+      "sources": [
+        "KEGG",
+        "PathwayCommons",
+        "Reactome"
+      ]
+    },
+    {
+      "activation_threshold": 0.55,
+      "basal_state": 0,
+      "id": "KRAS_SIGNALING",
+      "inhibition_dominance": 0.9,
+      "kind": "boss",
+      "logic_mode": "weighted_or"
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "PTK2",
+      "inhibition_dominance": 0.9,
+      "kind": "intermediate",
+      "logic_mode": "weighted_or"
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "CRK",
+      "inhibition_dominance": 0.9,
+      "kind": "intermediate",
+      "logic_mode": "weighted_or"
+    },
+    {
+      "activation_threshold": 0.5,
+      "basal_state": 0,
+      "id": "METTL3",
+      "inhibition_dominance": 0.9,
+      "kind": "intermediate",
+      "logic_mode": "weighted_or"
+    }
+  ]
+}

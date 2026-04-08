@@ -1,0 +1,593 @@
+{
+  "directed": true,
+  "edges": [
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "CDH19",
+        "CTNNB1",
+        "SOX2"
+      ],
+      "collapsed_via": [
+        "CTNNB1"
+      ],
+      "confidence": 0.37,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 2,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "CDH19",
+      "target": "SOX2",
+      "weight": 0.37
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "GNGT1",
+        "PLCG1",
+        "PRKCA",
+        "ATF2",
+        "MMP2"
+      ],
+      "collapsed_via": [
+        "PLCG1",
+        "PRKCA",
+        "ATF2"
+      ],
+      "confidence": 0.43000000000000005,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 4,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "GNGT1",
+      "target": "MMP2",
+      "weight": 0.43000000000000005
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "GNGT1",
+        "PLCG1",
+        "PRKCA",
+        "MAPK1",
+        "SCNN1B"
+      ],
+      "collapsed_via": [
+        "PLCG1",
+        "PRKCA",
+        "MAPK1"
+      ],
+      "confidence": 0.43000000000000005,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 4,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "GNGT1",
+      "target": "SCNN1B",
+      "weight": 0.43000000000000005
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "GNGT1",
+        "PLCG1",
+        "PRKCA",
+        "EGFR",
+        "SOX2"
+      ],
+      "collapsed_via": [
+        "PLCG1",
+        "PRKCA",
+        "EGFR"
+      ],
+      "confidence": 0.43000000000000005,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 4,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "GNGT1",
+      "target": "SOX2",
+      "weight": 0.43000000000000005
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "MMP2",
+        "EGFR",
+        "MAP2K1",
+        "MAPK1",
+        "SCNN1B"
+      ],
+      "collapsed_via": [
+        "EGFR",
+        "MAP2K1",
+        "MAPK1"
+      ],
+      "confidence": 0.3499999999999999,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 4,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": -1,
+      "source": "MMP2",
+      "target": "SCNN1B",
+      "weight": 0.3499999999999999
+    },
+    {
+      "benchmark_support_score": 0.0,
+      "collapsed_path": [
+        "MMP2",
+        "EGFR",
+        "SOX2"
+      ],
+      "collapsed_via": [
+        "EGFR"
+      ],
+      "confidence": 0.44999999999999996,
+      "evidence_scores": {
+        "benchmark_supported": 0.0,
+        "direct_mechanistic": 0.0,
+        "pancreas_relevant": 0.0,
+        "pdac_specific": 0.0,
+        "prior_supported": 1.0,
+        "review_supported": 0.0
+      },
+      "path_length": 2,
+      "provenance": [
+        "OmniPath"
+      ],
+      "sign": 1,
+      "source": "MMP2",
+      "target": "SOX2",
+      "weight": 0.44999999999999996
+    }
+  ],
+  "graph": {},
+  "multigraph": false,
+  "nodes": [
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "A2ML1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC006206.2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC007325.2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC009271.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC107419.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "AC144450.1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "APOD",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "ATP12A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "BBOX1-AS1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CALML3",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CAPNS2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CD163L1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CDH19",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CHP2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CSTA",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CT83",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CXCL14",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CYP2F1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "CYP4B1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "DEFB126",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "EFS",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FABP6",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FAT2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FER1L6",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "FOXD1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "GJB7",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "GNGT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "HOXB7",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KCNMB2-AS1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KRT13",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "KRT6A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC01980",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC02253",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "LINC02300",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "MMP2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "NMU",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "NTS",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "PRDM8",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "PSAT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "RHCG",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SCNN1B",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SEMA3A",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SHOX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SIX1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SIX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SLCO1A2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SOX2",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SOX21",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "SYT1",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    },
+    {
+      "activation_threshold": 1.0,
+      "basal_state": 1,
+      "id": "TP63",
+      "inhibition_dominance": 0.9,
+      "kind": "deg",
+      "logic_mode": "source"
+    }
+  ]
+}

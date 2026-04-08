@@ -1,0 +1,352 @@
+[
+  {
+    "adjusted_pvalue": 2.0157013198006635e-16,
+    "gene": "KRT13",
+    "log2_fold_change": 29.727657318115234,
+    "ranking": 1,
+    "score": 8.663198471069336
+  },
+  {
+    "adjusted_pvalue": 4.6781505979741627e-14,
+    "gene": "CALML3",
+    "log2_fold_change": 29.131702423095703,
+    "ranking": 2,
+    "score": 7.996323108673096
+  },
+  {
+    "adjusted_pvalue": 7.626840702908202e-21,
+    "gene": "SOX2",
+    "log2_fold_change": 28.66246795654297,
+    "ranking": 3,
+    "score": 9.787005424499512
+  },
+  {
+    "adjusted_pvalue": 1.489902176373909e-12,
+    "gene": "FAT2",
+    "log2_fold_change": 28.525745391845703,
+    "ranking": 4,
+    "score": 7.542478084564209
+  },
+  {
+    "adjusted_pvalue": 1.7373062095852295e-07,
+    "gene": "RHCG",
+    "log2_fold_change": 28.326759338378906,
+    "ranking": 5,
+    "score": 5.7456207275390625
+  },
+  {
+    "adjusted_pvalue": 1.688834010003219e-15,
+    "gene": "CD163L1",
+    "log2_fold_change": 28.12030792236328,
+    "ranking": 6,
+    "score": 8.410032272338867
+  },
+  {
+    "adjusted_pvalue": 6.691594078410613e-05,
+    "gene": "ATP12A",
+    "log2_fold_change": 27.94424057006836,
+    "ranking": 7,
+    "score": 4.560065269470215
+  },
+  {
+    "adjusted_pvalue": 0.00021946088051210132,
+    "gene": "NTS",
+    "log2_fold_change": 27.756690979003906,
+    "ranking": 8,
+    "score": 4.285288333892822
+  },
+  {
+    "adjusted_pvalue": 1.7672918089395596e-07,
+    "gene": "A2ML1",
+    "log2_fold_change": 27.543996810913086,
+    "ranking": 9,
+    "score": 5.742533206939697
+  },
+  {
+    "adjusted_pvalue": 1.0382627852079264e-13,
+    "gene": "GNGT1",
+    "log2_fold_change": 27.5078067779541,
+    "ranking": 10,
+    "score": 7.894439697265625
+  },
+  {
+    "adjusted_pvalue": 1.2680125463363547e-05,
+    "gene": "CYP4B1",
+    "log2_fold_change": 27.388750076293945,
+    "ranking": 11,
+    "score": 4.921289443969727
+  },
+  {
+    "adjusted_pvalue": 0.006535021316399874,
+    "gene": "CXCL14",
+    "log2_fold_change": 27.289657592773438,
+    "ranking": 12,
+    "score": 3.3745102882385254
+  },
+  {
+    "adjusted_pvalue": 2.2810701264694035e-09,
+    "gene": "LINC01980",
+    "log2_fold_change": 27.210445404052734,
+    "ranking": 13,
+    "score": 6.4742431640625
+  },
+  {
+    "adjusted_pvalue": 7.143755424633587e-08,
+    "gene": "SIX2",
+    "log2_fold_change": 27.14191436767578,
+    "ranking": 14,
+    "score": 5.903077125549316
+  },
+  {
+    "adjusted_pvalue": 1.8266989282630493e-08,
+    "gene": "FABP6",
+    "log2_fold_change": 27.09098243713379,
+    "ranking": 15,
+    "score": 6.137718200683594
+  },
+  {
+    "adjusted_pvalue": 4.2967471395065076e-07,
+    "gene": "CDH19",
+    "log2_fold_change": 27.05405616760254,
+    "ranking": 16,
+    "score": 5.581989288330078
+  },
+  {
+    "adjusted_pvalue": 7.457675679459157e-05,
+    "gene": "CHP2",
+    "log2_fold_change": 26.994760513305664,
+    "ranking": 17,
+    "score": 4.535366535186768
+  },
+  {
+    "adjusted_pvalue": 0.0006094089935477362,
+    "gene": "CYP2F1",
+    "log2_fold_change": 26.972362518310547,
+    "ranking": 18,
+    "score": 4.03212308883667
+  },
+  {
+    "adjusted_pvalue": 6.510275678412064e-05,
+    "gene": "CAPNS2",
+    "log2_fold_change": 26.932174682617188,
+    "ranking": 19,
+    "score": 4.566240310668945
+  },
+  {
+    "adjusted_pvalue": 0.00015198515691788517,
+    "gene": "NMU",
+    "log2_fold_change": 26.903913497924805,
+    "ranking": 20,
+    "score": 4.371735095977783
+  },
+  {
+    "adjusted_pvalue": 1.574466909491828e-05,
+    "gene": "SIX1",
+    "log2_fold_change": 26.58502960205078,
+    "ranking": 21,
+    "score": 4.874978542327881
+  },
+  {
+    "adjusted_pvalue": 9.00151341469263e-06,
+    "gene": "SYT1",
+    "log2_fold_change": 26.580846786499023,
+    "ranking": 22,
+    "score": 4.9922990798950195
+  },
+  {
+    "adjusted_pvalue": 0.0016317876187435254,
+    "gene": "FER1L6",
+    "log2_fold_change": 26.490196228027344,
+    "ranking": 23,
+    "score": 3.772782564163208
+  },
+  {
+    "adjusted_pvalue": 0.0001277699952463209,
+    "gene": "EFS",
+    "log2_fold_change": 26.41122055053711,
+    "ranking": 24,
+    "score": 4.411870956420898
+  },
+  {
+    "adjusted_pvalue": 8.090453737035822e-05,
+    "gene": "KCNMB2-AS1",
+    "log2_fold_change": 26.378131866455078,
+    "ranking": 25,
+    "score": 4.516841888427734
+  },
+  {
+    "adjusted_pvalue": 0.0002648830777796061,
+    "gene": "SEMA3A",
+    "log2_fold_change": 26.339426040649414,
+    "ranking": 26,
+    "score": 4.238977432250977
+  },
+  {
+    "adjusted_pvalue": 0.0008422660295956146,
+    "gene": "PRDM8",
+    "log2_fold_change": 26.201528549194336,
+    "ranking": 27,
+    "score": 3.948763608932495
+  },
+  {
+    "adjusted_pvalue": 0.0005539001002953216,
+    "gene": "BBOX1-AS1",
+    "log2_fold_change": 26.181989669799805,
+    "ranking": 28,
+    "score": 4.056821823120117
+  },
+  {
+    "adjusted_pvalue": 0.0008911373654193627,
+    "gene": "FOXD1",
+    "log2_fold_change": 26.13728141784668,
+    "ranking": 29,
+    "score": 3.933326482772827
+  },
+  {
+    "adjusted_pvalue": 0.04515614349443388,
+    "gene": "AC144450.1",
+    "log2_fold_change": 26.06060218811035,
+    "ranking": 30,
+    "score": 2.7261595726013184
+  },
+  {
+    "adjusted_pvalue": 0.026277255409770297,
+    "gene": "LINC02300",
+    "log2_fold_change": 26.0133113861084,
+    "ranking": 31,
+    "score": 2.9237520694732666
+  },
+  {
+    "adjusted_pvalue": 0.007516745532489649,
+    "gene": "SHOX2",
+    "log2_fold_change": 26.003116607666016,
+    "ranking": 32,
+    "score": 3.331286907196045
+  },
+  {
+    "adjusted_pvalue": 0.01033305538522897,
+    "gene": "SCNN1B",
+    "log2_fold_change": 25.944433212280273,
+    "ranking": 33,
+    "score": 3.2324905395507812
+  },
+  {
+    "adjusted_pvalue": 0.006341907540778539,
+    "gene": "SLCO1A2",
+    "log2_fold_change": 25.937702178955078,
+    "ranking": 34,
+    "score": 3.383772373199463
+  },
+  {
+    "adjusted_pvalue": 0.006274288809111971,
+    "gene": "LINC02253",
+    "log2_fold_change": 25.907270431518555,
+    "ranking": 35,
+    "score": 3.386859655380249
+  },
+  {
+    "adjusted_pvalue": 0.005275635978314427,
+    "gene": "AC006206.2",
+    "log2_fold_change": 25.88825798034668,
+    "ranking": 36,
+    "score": 3.439345121383667
+  },
+  {
+    "adjusted_pvalue": 0.014211659650232614,
+    "gene": "SOX21",
+    "log2_fold_change": 25.836103439331055,
+    "ranking": 37,
+    "score": 3.1306068897247314
+  },
+  {
+    "adjusted_pvalue": 0.013418204673108213,
+    "gene": "AC009271.1",
+    "log2_fold_change": 25.802213668823242,
+    "ranking": 38,
+    "score": 3.1491312980651855
+  },
+  {
+    "adjusted_pvalue": 0.03351300285326386,
+    "gene": "PSAT1",
+    "log2_fold_change": 25.77979850769043,
+    "ranking": 39,
+    "score": 2.8373055458068848
+  },
+  {
+    "adjusted_pvalue": 0.03776636169577741,
+    "gene": "AC007325.2",
+    "log2_fold_change": 25.70937728881836,
+    "ranking": 40,
+    "score": 2.7940821647644043
+  },
+  {
+    "adjusted_pvalue": 0.038054393154553376,
+    "gene": "AC107419.1",
+    "log2_fold_change": 25.603195190429688,
+    "ranking": 41,
+    "score": 2.790994644165039
+  },
+  {
+    "adjusted_pvalue": 0.03492395401872108,
+    "gene": "DEFB126",
+    "log2_fold_change": 25.58472442626953,
+    "ranking": 42,
+    "score": 2.821868419647217
+  },
+  {
+    "adjusted_pvalue": 0.03375696222101585,
+    "gene": "GJB7",
+    "log2_fold_change": 25.52077865600586,
+    "ranking": 43,
+    "score": 2.8342180252075195
+  },
+  {
+    "adjusted_pvalue": 0.03612695842835863,
+    "gene": "CT83",
+    "log2_fold_change": 25.516151428222656,
+    "ranking": 44,
+    "score": 2.809519052505493
+  },
+  {
+    "adjusted_pvalue": 1.477480309800947e-33,
+    "gene": "KRT6A",
+    "log2_fold_change": 11.481396675109863,
+    "ranking": 45,
+    "score": 12.459728240966797
+  },
+  {
+    "adjusted_pvalue": 0.002291328901264453,
+    "gene": "MMP2",
+    "log2_fold_change": 8.967630386352539,
+    "ranking": 46,
+    "score": 3.679763078689575
+  },
+  {
+    "adjusted_pvalue": 3.941263078793212e-13,
+    "gene": "APOD",
+    "log2_fold_change": 8.874870300292969,
+    "ranking": 47,
+    "score": 7.720245361328125
+  },
+  {
+    "adjusted_pvalue": 2.4381463648014114e-52,
+    "gene": "CSTA",
+    "log2_fold_change": 8.40062141418457,
+    "ranking": 48,
+    "score": 15.583325386047363
+  },
+  {
+    "adjusted_pvalue": 3.8516551718089247e-08,
+    "gene": "TP63",
+    "log2_fold_change": 8.280464172363281,
+    "ranking": 49,
+    "score": 6.011252403259277
+  },
+  {
+    "adjusted_pvalue": 1.703702435910459e-33,
+    "gene": "HOXB7",
+    "log2_fold_change": 8.253644943237305,
+    "ranking": 50,
+    "score": 12.448078155517578
+  }
+]

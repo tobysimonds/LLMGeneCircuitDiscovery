@@ -1,0 +1,33 @@
+{
+  "lineage_filter": [
+    "Pancreas"
+  ],
+  "model_count": 68,
+  "primary_disease_filter": [
+    "Pancreatic"
+  ],
+  "release": "DepMap Public 25Q3",
+  "results": [
+    {
+      "benchmark_hit": false,
+      "combined_support_score": 0.055747473421111325,
+      "depmap_column": "EFS (10278)",
+      "driver_alignment_score": 0.0,
+      "gene_symbol": "EFS",
+      "hit_rate": 0.0,
+      "mean_gene_effect": -0.055747473421111325,
+      "median_gene_effect": -0.05337199396280695,
+      "min_gene_effect": -0.2695588188416026,
+      "n_cell_lines": 48,
+      "prior_pathway_hits": [
+        "EFS"
+      ],
+      "rnai_depmap_column": null,
+      "rnai_hit_rate": 0.0,
+      "rnai_mean_gene_effect": null,
+      "rnai_median_gene_effect": null
+    }
+  ],
+  "rnai_release": "DEMETER2 Data v6",
+  "stage": "final"
+}
